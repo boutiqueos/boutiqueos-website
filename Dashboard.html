@@ -167,17 +167,48 @@
     #toast.show{display:block}
     @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-    @media(max-width:820px){
-      .sidebar{display:none}.main{margin-left:0}
-      .pl-split,.bs2{grid-template-columns:1fr}
-      .bs6{grid-template-columns:repeat(3,1fr)}
-    }
+    @media (max-width: 820px) {
+      .mobile-header {
+        display: flex !important;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 20px;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1001;
+      }
+
+      .sidebar {
+        left: -240px; 
+        transition: 0.3s ease;
+        z-index: 1002;
+        top: 0;
+        height: 100vh;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+      }
+
+      .sidebar.active {
+        left: 0; 
+      }
+
+      .main {
+        margin-left: 0 !important;
+      }
+      
+      .topbar { display: none; } /* Hide the redundant topbar on mobile */
   </style>
 </head>
 <body>
 
 <!-- LOADING -->
 <div id="loading"><div class="ring"></div></div>
+
+<div class="mobile-header" style="display: none;">
+  <div class="sidebar-brand-text">Boutique<span>OS</span></div>
+  <button class="menu-toggle" onclick="toggleSidebar()" style="background:none; border:none; color:var(--slate); font-size:24px; cursor:pointer;">☰</button>
+</div>
 
 <!-- ══════════════ LOGIN ══════════════ -->
 <div id="login-page">
@@ -898,6 +929,20 @@ window.showToast = (msg, dur=3500) => {
   const t = id('toast'); t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), dur);
 };
+
+// 3. Mobile Navigation Logic
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('active');
+}
+
+// Close menu when a link is clicked
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    if (window.innerWidth <= 820) {
+      document.querySelector('.sidebar').classList.remove('active');
+    }
+  });
+});
 
 window.switchTab = (name, btn) => {
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));

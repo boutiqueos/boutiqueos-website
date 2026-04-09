@@ -20,13 +20,14 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--slate);min-height:100vh}
 
-    /* ── LOADING ── */
+    /* LOADING */
     #loading{position:fixed;inset:0;background:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:14px;transition:opacity .4s}
     #loading.hide{opacity:0;pointer-events:none}
     .ring{width:42px;height:42px;border-radius:50%;border:3px solid var(--primary-border);border-top-color:var(--primary);animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
+    .ring-label{font-size:13px;color:var(--muted);font-weight:500}
 
-    /* ── LOGIN ── */
+    /* LOGIN */
     #login-page{display:none;min-height:100vh;background:linear-gradient(135deg,#eef2ff 0%,#f5f3ff 55%,#ede9fe 100%);align-items:center;justify-content:center}
     .login-wrap{width:400px}
     .login-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
@@ -46,16 +47,14 @@
     .login-btn:active{transform:none}
     .login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
     .forgot-link{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
-    .forgot-link a{color:var(--primary);font-weight:600;cursor:pointer;text-decoration:none}
+    .forgot-link a{color:var(--primary);font-weight:600;cursor:pointer}
     .forgot-link a:hover{text-decoration:underline}
-    .login-error{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
-    .login-success{background:var(--green-dim);color:var(--green);border:1px solid #bbf7d0;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
+    .msg-error{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
+    .msg-ok{background:var(--green-dim);color:var(--green);border:1px solid #bbf7d0;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
 
-    /* ── APP SHELL ── */
+    /* APP */
     #app{display:none;min-height:100vh}
     #app.visible{display:flex}
-
-    /* Sidebar */
     .sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;inset-y:0;left:0;z-index:50}
     .sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
     .sl-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
@@ -68,12 +67,10 @@
     .ni{font-size:15px;width:20px;text-align:center}
     .sidebar-foot{padding:12px 8px;border-top:1px solid var(--border)}
     .user-chip{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:8px}
-    .user-chip .uc-name{font-size:12px;font-weight:700;color:var(--slate)}
-    .user-chip .uc-email{font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .uc-name{font-size:12px;font-weight:700;color:var(--slate)}
+    .uc-email{font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .logout-btn{width:100%;padding:9px 12px;background:none;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
     .logout-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
-
-    /* Main */
     .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
     .topbar{height:56px;background:var(--white);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
     .topbar-title{font-size:16px;font-weight:800;color:var(--slate)}
@@ -85,12 +82,12 @@
     .tab-panel.active{display:block}
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-    /* Page header */
+    /* PAGE HEADER */
     .ph{margin-bottom:20px}
     .ph h2{font-size:20px;font-weight:800;color:var(--slate)}
     .ph p{font-size:13px;color:var(--muted);margin-top:3px}
 
-    /* Filter card */
+    /* FILTER CARD */
     .fc{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px}
     .fr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .fr label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
@@ -101,7 +98,7 @@
     .show-all{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);cursor:pointer;user-select:none;white-space:nowrap}
     .show-all input{accent-color:var(--primary);cursor:pointer}
 
-    /* Stat cards */
+    /* STAT CARDS */
     .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;margin-bottom:20px}
     .sc{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;position:relative;transition:box-shadow .2s;overflow:hidden}
     .sc:hover{box-shadow:0 6px 24px rgba(99,102,241,.12)}
@@ -111,13 +108,13 @@
     .ci{color:var(--primary)}.cg{color:var(--green)}.ca{color:var(--amber)}
     .cr{color:var(--red)}.cp{color:var(--purple)}.cb{color:var(--blue)}
 
-    /* Table */
+    /* TABLE */
     .tc{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
     .th{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
     .th h3{font-size:14px;font-weight:700}
     .tbadge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--primary-dim);color:var(--primary)}
-    .tbadge.green{background:var(--green-dim);color:var(--green)}
     .tbadge.red{background:var(--red-dim);color:var(--red)}
+    .tbadge.green{background:var(--green-dim);color:var(--green)}
     .tw{overflow-x:auto}
     table{width:100%;border-collapse:collapse;font-size:12.5px}
     thead th{padding:9px 13px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--border);white-space:nowrap}
@@ -125,16 +122,16 @@
     tbody tr:last-child{border-bottom:none}
     tbody tr:hover{background:#fafbff}
     tbody td{padding:10px 13px;white-space:nowrap}
-    .empty-row{text-align:center;padding:28px;color:var(--muted);font-size:13px}
+    .erow{text-align:center;padding:28px!important;color:var(--muted);font-size:13px;white-space:normal!important}
 
-    /* Status badges */
+    /* STATUS BADGES */
     .b{display:inline-flex;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
     .b-active{background:#dcfce7;color:#15803d}
     .b-returned{background:var(--primary-dim);color:var(--primary)}
     .b-cancelled{background:#fee2e2;color:#b91c1c}
     .b-sold{background:#fef9c3;color:#92400e}
 
-    /* Planner */
+    /* PLANNER */
     .pl-split{display:grid;grid-template-columns:1fr 1fr;gap:18px}
     .pl-col{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
     .pl-hd{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -142,111 +139,85 @@
     .cpill{font-size:11px;font-weight:700;background:var(--primary-dim);color:var(--primary);padding:3px 10px;border-radius:20px}
     .pl-body{padding:12px;display:flex;flex-direction:column;gap:8px;max-height:520px;overflow-y:auto}
     .pl-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
-    .pl-card .pcd{font-size:13px;font-weight:700}
-    .pl-card .pci{font-size:11px;color:var(--primary);font-weight:600;margin-left:5px}
-    .pl-card .pcc{font-size:12px;color:var(--muted);margin-top:4px}
-    .pl-card .pcs{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
-    .pl-card .pcn{font-size:11px;color:var(--purple);margin-top:5px;font-weight:600}
+    .pcd{font-size:13px;font-weight:700}
+    .pci{font-size:11px;color:var(--primary);font-weight:600;margin-left:5px}
+    .pcc{font-size:12px;color:var(--muted);margin-top:4px}
+    .pcs{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
+    .pcn{font-size:11px;color:var(--purple);margin-top:5px;font-weight:600}
     .pl-empty{text-align:center;padding:36px;color:var(--muted);font-size:13px}
 
-    /* Returns */
+    /* RETURNS */
     .overdue{color:var(--red)!important;font-weight:700!important}
     .due-today{color:var(--amber)!important;font-weight:700!important}
     .mark-btn{padding:5px 12px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s}
     .mark-btn:hover{opacity:.82}
 
-    /* Balance sheet */
+    /* BALANCE SHEET */
     .bs6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
     .bs2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
     .tog-row{display:flex;gap:6px}
     .tog{padding:6px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);cursor:pointer;transition:all .15s}
     .tog.on{background:var(--primary);color:white;border-color:var(--primary)}
 
-    /* Toast */
+    /* TOAST */
     #toast{position:fixed;bottom:24px;right:24px;background:var(--slate);color:white;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.22);animation:toastIn .3s ease}
     #toast.show{display:block}
     @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-    @media (max-width: 820px) {
-      .mobile-header {
-        display: flex !important;
-        background: var(--white);
-        border-bottom: 1px solid var(--border);
-        padding: 12px 20px;
-        justify-content: space-between;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        z-index: 1001;
-      }
-
-      .sidebar {
-        left: -240px; 
-        transition: 0.3s ease;
-        z-index: 1002;
-        top: 0;
-        height: 100vh;
-        box-shadow: 10px 0 30px rgba(0,0,0,0.1);
-      }
-
-      .sidebar.active {
-        left: 0; 
-      }
-
-      .main {
-        margin-left: 0 !important;
-      }
-      
-      .topbar { display: none; } /* Hide the redundant topbar on mobile */
+    @media(max-width:820px){
+      .sidebar{display:none}.main{margin-left:0}
+      .pl-split,.bs2{grid-template-columns:1fr}
+      .bs6{grid-template-columns:repeat(3,1fr)}
+    }
   </style>
 </head>
 <body>
 
-<!-- LOADING -->
-<div id="loading"><div class="ring"></div></div>
-
-<div class="mobile-header" style="display: none;">
-  <div class="sidebar-brand-text">Boutique<span>OS</span></div>
-  <button class="menu-toggle" onclick="toggleSidebar()" style="background:none; border:none; color:var(--slate); font-size:24px; cursor:pointer;">☰</button>
+<div id="loading">
+  <div class="ring"></div>
+  <div class="ring-label">Loading Boutique OS…</div>
 </div>
 
-<!-- ══════════════ LOGIN ══════════════ -->
+<!-- ════════ LOGIN ════════ -->
 <div id="login-page">
   <div class="login-wrap">
     <div class="login-logo">
+      <div class="login-logo-icon">👗</div>
       <div class="login-logo-text">Boutique <span>OS</span></div>
     </div>
     <div class="login-card">
-      <!-- Sign In View -->
+
+      <!-- Sign In -->
       <div id="view-login">
         <div class="login-title">Welcome back</div>
         <div class="login-sub">Sign in with your email and password</div>
         <div class="field"><label>Email Address</label><input type="email" id="li-email" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
         <div class="field"><label>Password</label><input type="password" id="li-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-        <div class="login-error" id="li-err"></div>
+        <div class="msg-error" id="li-err"></div>
         <button class="login-btn" id="li-btn" onclick="doLogin()">Sign In →</button>
         <div class="forgot-link"><a onclick="showView('forgot')">Forgot password?</a></div>
       </div>
 
-      <!-- Forgot Password View -->
+      <!-- Forgot Password -->
       <div id="view-forgot" style="display:none">
         <div class="login-title">Reset Password</div>
-        <div class="login-sub">We'll send a reset link to your email</div>
+        <div class="login-sub">Enter your email — we'll send a reset link</div>
         <div class="field"><label>Email Address</label><input type="email" id="fp-email" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doReset()"/></div>
-        <div class="login-error" id="fp-err"></div>
-        <div class="login-success" id="fp-ok">✅ Reset link sent! Check your inbox.</div>
+        <div class="msg-error" id="fp-err"></div>
+        <div class="msg-ok" id="fp-ok">✅ Reset link sent! Check your inbox.</div>
         <button class="login-btn" id="fp-btn" onclick="doReset()">Send Reset Link →</button>
         <div class="forgot-link"><a onclick="showView('login')">← Back to Sign In</a></div>
       </div>
+
     </div>
   </div>
 </div>
 
-<!-- ══════════════ APP ══════════════ -->
+<!-- ════════ APP ════════ -->
 <div id="app">
-  <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-logo">
+      <div class="sl-icon">👗</div>
       <div class="sl-text">Boutique <span>OS</span></div>
     </div>
     <nav class="sidebar-nav">
@@ -264,37 +235,28 @@
     </div>
   </div>
 
-  <!-- Main Content -->
   <div class="main">
     <div class="topbar">
       <div class="topbar-title" id="topbar-title">Dashboard</div>
       <div class="live-chip"><div class="live-dot"></div>Live Data</div>
     </div>
-
     <div class="content">
 
-      <!-- ══ DASHBOARD TAB ══ -->
+      <!-- ══ DASHBOARD ══ -->
       <div class="tab-panel active" id="tab-dashboard">
-        <div class="ph"><h2>Rental Dashboard</h2><p>All bookings, revenue, and status at a glance</p></div>
-
-        <!-- Stat Cards -->
+        <div class="ph"><h2>Rental Dashboard</h2><p>All bookings, revenue and status at a glance</p></div>
         <div class="sg">
           <div class="sc"><div class="sc-lbl">Total Bookings</div><div class="sc-val ci" id="d-total">—</div></div>
           <div class="sc"><div class="sc-lbl">Active Bookings</div><div class="sc-val cg" id="d-active">—</div></div>
           <div class="sc"><div class="sc-lbl">Total Revenue</div><div class="sc-val ca" id="d-revenue">—</div></div>
         </div>
-
-        <!-- Filter Card — mirrors dashboard.py 2-row filter exactly -->
         <div class="fc">
-          <!-- Row 1: Search + Dress + Status -->
           <div class="fr">
             <label>🔍 Search</label>
             <input type="text" id="d-search" placeholder="Name / Phone / Booking ID / Dress ID" oninput="debounceDash()"/>
             <div class="fsep"></div>
             <label>👗 Dress</label>
-            <select id="d-dress" onchange="renderDashboard()">
-              <option value="">All Dresses</option>
-            </select>
+            <select id="d-dress" onchange="renderDashboard()"><option value="">All Dresses</option></select>
             <div class="fsep"></div>
             <label>Status</label>
             <select id="d-status" onchange="renderDashboard()">
@@ -305,55 +267,43 @@
               <option value="CANCELLED">Cancelled</option>
             </select>
           </div>
-          <!-- Row 2: Date type + From + To + Show All -->
           <div class="fr">
             <label>📅 Filter by</label>
             <select id="d-datetype" onchange="renderDashboard()">
               <option value="booking_date">Booking Date</option>
               <option value="event_date">Event Date</option>
             </select>
-            <label>From</label>
-            <input type="date" id="d-from" onchange="renderDashboard()"/>
-            <label>To</label>
-            <input type="date" id="d-to" onchange="renderDashboard()"/>
+            <label>From</label><input type="date" id="d-from" onchange="renderDashboard()"/>
+            <label>To</label><input type="date" id="d-to" onchange="renderDashboard()"/>
             <label class="show-all">
               <input type="checkbox" id="d-showall" checked onchange="toggleDates();renderDashboard()"/>
               Show All Dates
             </label>
           </div>
         </div>
-
         <div class="tc">
           <div class="th"><h3>Bookings</h3><span class="tbadge" id="d-count">0 records</span></div>
-          <div class="tw">
-            <table>
-              <thead><tr>
-                <th>ID</th><th>Customer</th><th>Phone</th><th>Dress</th><th>Dress ID</th>
-                <th>Price</th><th>Booking Date</th><th>Event Date</th><th>Days</th><th>Status</th>
-                <th>Grand Total</th><th>Advance</th><th>Balance</th><th>Discount</th>
-                <th>GST%</th><th>Security Dep.</th><th>Notes</th>
-              </tr></thead>
-              <tbody id="d-tbody"></tbody>
-            </table>
-          </div>
+          <div class="tw"><table>
+            <thead><tr>
+              <th>ID</th><th>Customer</th><th>Phone</th><th>Dress</th><th>Dress ID</th>
+              <th>Price</th><th>Booking Date</th><th>Event Date</th><th>Days</th><th>Status</th>
+              <th>Grand Total</th><th>Advance</th><th>Balance</th><th>Discount</th>
+              <th>GST%</th><th>Security Dep.</th><th>Notes</th>
+            </tr></thead>
+            <tbody id="d-tbody"></tbody>
+          </table></div>
         </div>
       </div>
 
-      <!-- ══ BALANCE SHEET TAB ══ -->
+      <!-- ══ BALANCE SHEET ══ -->
       <div class="tab-panel" id="tab-balance">
         <div class="ph"><h2>Balance Sheet</h2><p>Financial summary for the selected date range</p></div>
-
-        <!-- Date filter — mirrors balance.py header row -->
         <div class="fc">
           <div class="fr">
-            <label>From</label>
-            <input type="date" id="bs-from" onchange="renderBalance()"/>
-            <label>To</label>
-            <input type="date" id="bs-to" onchange="renderBalance()"/>
+            <label>From</label><input type="date" id="bs-from" onchange="renderBalance()"/>
+            <label>To</label><input type="date" id="bs-to" onchange="renderBalance()"/>
           </div>
         </div>
-
-        <!-- 6 stat cards — mirrors balance.py make_bal_card exactly -->
         <div class="bs6">
           <div class="sc"><div class="sc-lbl">Total Revenue</div><div class="sc-val ci" id="bs-rev">—</div></div>
           <div class="sc"><div class="sc-lbl">Total Collected</div><div class="sc-val cg" id="bs-col">—</div></div>
@@ -362,17 +312,11 @@
           <div class="sc"><div class="sc-lbl">Total Expenses</div><div class="sc-val cr" id="bs-exp">—</div></div>
           <div class="sc"><div class="sc-lbl">Net Profit</div><div class="sc-val cb" id="bs-profit">—</div></div>
         </div>
-
         <div class="bs2">
-          <!-- Status breakdown -->
           <div class="tc" style="margin:0">
             <div class="th"><h3>Booking Status Breakdown</h3></div>
-            <div class="tw"><table>
-              <thead><tr><th>Status</th><th>Count</th><th>Revenue</th></tr></thead>
-              <tbody id="bs-status"></tbody>
-            </table></div>
+            <div class="tw"><table><thead><tr><th>Status</th><th>Count</th><th>Revenue</th></tr></thead><tbody id="bs-status"></tbody></table></div>
           </div>
-          <!-- Top 5 dresses -->
           <div class="tc" style="margin:0">
             <div class="th">
               <h3>Top 5 Dresses</h3>
@@ -381,28 +325,18 @@
                 <button class="tog" id="tog-rv" onclick="switchTopDress('revenue')">By Revenue</button>
               </div>
             </div>
-            <div class="tw"><table>
-              <thead><tr><th>#</th><th>Dress Name</th><th>Bookings</th><th>Revenue</th></tr></thead>
-              <tbody id="bs-top"></tbody>
-            </table></div>
+            <div class="tw"><table><thead><tr><th>#</th><th>Dress Name</th><th>Bookings</th><th>Revenue</th></tr></thead><tbody id="bs-top"></tbody></table></div>
           </div>
         </div>
-
-        <!-- Expense breakdown -->
         <div class="tc">
           <div class="th"><h3>Expense Breakdown by Category</h3></div>
-          <div class="tw"><table>
-            <thead><tr><th>Expense Name</th><th>Total Spent</th></tr></thead>
-            <tbody id="bs-expbody"></tbody>
-          </table></div>
+          <div class="tw"><table><thead><tr><th>Expense Name</th><th>Total Spent</th></tr></thead><tbody id="bs-expbody"></tbody></table></div>
         </div>
       </div>
 
-      <!-- ══ PLANNER TAB ══ -->
+      <!-- ══ PLANNER ══ -->
       <div class="tab-panel" id="tab-planner">
         <div class="ph"><h2>Daily Delivery Planner</h2><p>Bookings for selected event date and the next day</p></div>
-
-        <!-- Date filter — mirrors planner.py date_row exactly -->
         <div class="fc">
           <div class="fr">
             <label>📅 Event Date</label>
@@ -410,7 +344,6 @@
             <button style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer" onclick="jumpToday()">Jump to Today</button>
           </div>
         </div>
-
         <div class="pl-split">
           <div class="pl-col">
             <div class="pl-hd"><h3 id="pl-h1">📅 Selected Date</h3><span class="cpill" id="pl-c1">0</span></div>
@@ -423,23 +356,15 @@
         </div>
       </div>
 
-      <!-- ══ RETURN TRACKER TAB ══ -->
+      <!-- ══ RETURN TRACKER ══ -->
       <div class="tab-panel" id="tab-returns">
-        <div class="ph">
-          <h2>Overdue &amp; Expected Returns Tracker</h2>
-          <p>Dresses from past events not yet marked as returned — auto-refreshes every 60 seconds</p>
-        </div>
-
+        <div class="ph"><h2>Overdue &amp; Expected Returns Tracker</h2><p>Dresses from past events not yet marked as returned — auto-refreshes every 60 seconds</p></div>
         <div class="sg" style="grid-template-columns:repeat(2,1fr);max-width:380px">
           <div class="sc"><div class="sc-lbl">Pending Returns</div><div class="sc-val cr" id="ret-count">—</div></div>
           <div class="sc"><div class="sc-lbl">Balance Due</div><div class="sc-val ca" id="ret-bal">—</div></div>
         </div>
-
         <div class="tc">
-          <div class="th">
-            <h3>Items Due for Return</h3>
-            <span class="tbadge red" id="ret-badge">—</span>
-          </div>
+          <div class="th"><h3>Items Due for Return</h3><span class="tbadge red" id="ret-badge">—</span></div>
           <div class="tw"><table>
             <thead><tr>
               <th>Booking ID</th><th>Customer</th><th>Dress</th><th>Event Date</th>
@@ -450,104 +375,89 @@
         </div>
       </div>
 
-    </div><!-- /content -->
-  </div><!-- /main -->
-</div><!-- /app -->
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
-<!-- ══════════════ SCRIPT ══════════════ -->
-<script>
-// ═══════════════════════════════════════════
-// FIREBASE CONFIG
-// Set to null → demo mode (no errors, no Firebase needed)
-// Paste your real config object here when ready
-// ═══════════════════════════════════════════
-const FIREBASE_CONFIG = null;
-// const FIREBASE_CONFIG = {
-//   apiKey: "AIzaSy...",
-//   authDomain: "boutique-os.firebaseapp.com",
-//   projectId: "boutique-os",
-//   storageBucket: "boutique-os.appspot.com",
-//   messagingSenderId: "000000000",
-//   appId: "1:000000000:web:abc123"
-// };
+<script type="module">
+// ═══════════════════════════════════════════════════
+// FIREBASE CONFIG — boutiqueos-3a75c
+// ═══════════════════════════════════════════════════
+import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged,
+         signInWithEmailAndPassword, signOut,
+         sendPasswordResetEmail }                 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection,
+         getDocs, doc, updateDoc }                from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ─── State ─────────────────────────────────
-const DEMO = !FIREBASE_CONFIG;
-let fbAuth = null, fbDb = null;
-let _storeId = null;
-let _bookings = [], _expenses = [];
-let _topSort = 'bookings';
+const firebaseConfig = {
+  apiKey:            "AIzaSyDYxJtPaJm6CBKO4LGS5g8BIsyyVo3KV6Y",
+  authDomain:        "boutiqueos-3a75c.firebaseapp.com",
+  projectId:         "boutiqueos-3a75c",
+  storageBucket:     "boutiqueos-3a75c.firebasestorage.app",
+  messagingSenderId: "382726562711",
+  appId:             "1:382726562711:web:b7c840930fcb1955f3dad2",
+  measurementId:     "G-LP4G6H46L0"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ─── State ───────────────────────────────────────
+let _storeId  = null;
+let _bookings = [];
+let _expenses = [];
+let _topSort  = 'bookings';
 let _debTimer = null;
 let _retTimer = null;
 
-// ─── Boot ──────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  setDefaults();
-  if (DEMO) {
-    hide('loading');
-    show('login-page', 'flex');
+// ─── Boot ────────────────────────────────────────
+setDefaults();
+onAuthStateChanged(auth, user => {
+  hide('loading');
+  if (user) {
+    _storeId = user.uid;
+    enterApp(user.email);
   } else {
-    initFirebase();
+    show('login-page', 'flex');
   }
 });
 
 function setDefaults() {
-  const t = new Date(), y = t.getFullYear(), m = t.getMonth();
+  const t = new Date();
   const fmt = d => d.toISOString().slice(0,10);
-  const firstOfMonth = new Date(y, m, 1);
-  setVal('d-from', fmt(t)); setVal('d-to', fmt(t));
+  const firstOfMonth = new Date(t.getFullYear(), t.getMonth(), 1);
+  setVal('d-from', fmt(t));   setVal('d-to', fmt(t));
   setVal('bs-from', fmt(firstOfMonth)); setVal('bs-to', fmt(t));
   setVal('pl-date', fmt(t));
 }
 
-// ─── Firebase ──────────────────────────────
-async function initFirebase() {
-  try {
-    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
-    const { getAuth, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
-    const { getFirestore } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    const app = initializeApp(FIREBASE_CONFIG);
-    fbAuth = getAuth(app); fbDb = getFirestore(app);
-    onAuthStateChanged(fbAuth, user => {
-      hide('loading');
-      if (user) { _storeId = user.uid; enterApp(user.email); }
-      else       { show('login-page','flex'); }
-    });
-  } catch(e) {
-    hide('loading'); show('login-page','flex');
-    showErr('li-err', '⚠️ Firebase error: ' + e.message);
-  }
-}
-
-// ─── Auth ──────────────────────────────────
-window.showView = (v) => {
+// ─── Auth ────────────────────────────────────────
+window.showView = v => {
   hide('view-login'); hide('view-forgot');
   show('view-'+v);
   hideEl('li-err'); hideEl('fp-err'); hideEl('fp-ok');
 };
 
 window.doLogin = async () => {
-  const email = val('li-email').trim();
-  const pass  = val('li-pass');
-  if (!email || !pass) { showErr('li-err','Please enter email and password.'); return; }
-
-  if (DEMO) { enterApp(email); return; }
-
-  const btn = id('li-btn');
+  const email = g('li-email').value.trim();
+  const pass  = g('li-pass').value;
+  if (!email || !pass) { showErr('li-err','Please enter your email and password.'); return; }
+  const btn = g('li-btn');
   btn.disabled = true; btn.textContent = 'Signing in…';
   hideEl('li-err');
   try {
-    const { signInWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
-    await signInWithEmailAndPassword(fbAuth, email, pass);
+    await signInWithEmailAndPassword(auth, email, pass);
   } catch(e) {
     const msgs = {
-      'auth/user-not-found': 'No account found with this email.',
-      'auth/wrong-password': 'Incorrect password. Try again.',
-      'auth/invalid-email':  'Invalid email address.',
-      'auth/too-many-requests': 'Too many attempts. Try again later.',
-      'auth/invalid-credential': 'Incorrect email or password.',
+      'auth/user-not-found':    'No account found with this email.',
+      'auth/wrong-password':    'Incorrect password. Try again.',
+      'auth/invalid-email':     'Invalid email address.',
+      'auth/too-many-requests': 'Too many attempts. Please try again later.',
+      'auth/invalid-credential':'Incorrect email or password.',
     };
     showErr('li-err', msgs[e.code] || e.message);
     btn.disabled = false; btn.textContent = 'Sign In →';
@@ -555,17 +465,13 @@ window.doLogin = async () => {
 };
 
 window.doReset = async () => {
-  const email = val('fp-email').trim();
+  const email = g('fp-email').value.trim();
   if (!email) { showErr('fp-err','Please enter your email.'); return; }
   hideEl('fp-err'); hideEl('fp-ok');
-
-  if (DEMO) { showEl('fp-ok'); return; }
-
-  const btn = id('fp-btn');
+  const btn = g('fp-btn');
   btn.disabled = true; btn.textContent = 'Sending…';
   try {
-    const { sendPasswordResetEmail } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
-    await sendPasswordResetEmail(fbAuth, email);
+    await sendPasswordResetEmail(auth, email);
     showEl('fp-ok');
   } catch(e) {
     showErr('fp-err', e.code === 'auth/user-not-found' ? 'No account with this email.' : e.message);
@@ -575,119 +481,88 @@ window.doReset = async () => {
 };
 
 window.doLogout = async () => {
-  if (!DEMO && fbAuth) {
-    const { signOut } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
-    await signOut(fbAuth);
-  }
   clearInterval(_retTimer);
+  await signOut(auth);
   hideEl('app'); show('login-page','flex');
-  id('li-email').value = ''; id('li-pass').value = '';
+  g('li-email').value = ''; g('li-pass').value = '';
   showView('login');
 };
 
-// ─── Enter App ─────────────────────────────
+// ─── Enter App ───────────────────────────────────
 async function enterApp(email) {
   hide('login-page');
-  id('app').style.display = 'flex';
+  g('app').style.display = 'flex';
   setTxt('uc-email', email || '—');
-  setTxt('uc-name', email ? email.split('@')[0] : 'My Boutique');
-
-  if (DEMO) {
-    _bookings = getDemoBookings();
-    _expenses = getDemoExpenses();
-  } else {
-    await fetchAllData();
-  }
-
+  setTxt('uc-name',  email ? email.split('@')[0] : 'My Boutique');
+  await fetchAllData();
   populateDressFilter();
   renderDashboard();
   renderBalance();
   renderPlanner();
   renderReturns();
-
-  // Auto-refresh returns every 60s (mirrors returns.py QTimer)
   clearInterval(_retTimer);
   _retTimer = setInterval(renderReturns, 60000);
 }
 
-// ─── Firestore fetch ───────────────────────
+// ─── Firestore ───────────────────────────────────
 async function fetchAllData() {
   try {
-    const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    const getSub = async (name) => {
-      const snap = await getDocs(collection(fbDb, 'stores', _storeId, name));
-      return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const getSub = async name => {
+      const snap = await getDocs(collection(db,'stores',_storeId,name));
+      return snap.docs.map(d => ({id:d.id,...d.data()}));
     };
     [_bookings, _expenses] = await Promise.all([getSub('bookings'), getSub('expenses')]);
   } catch(e) {
-    showToast('⚠️ Could not load data. Showing demo.');
-    _bookings = getDemoBookings(); _expenses = getDemoExpenses();
+    showToast('⚠️ Could not load data: ' + e.message);
   }
 }
 
-// ─── Dress filter population ───────────────
 function populateDressFilter() {
-  const sel = id('d-dress');
-  const unique = [...new Map(_bookings.map(b => [b.dress_id, b.dress_name])).entries()].sort((a,b)=>a[1].localeCompare(b[1]));
-  sel.innerHTML = '<option value="">All Dresses</option>' +
-    unique.map(([did, dn]) => `<option value="${did}">${dn||did}</option>`).join('');
+  const seen = new Map();
+  _bookings.forEach(b => { if(b.dress_id && !seen.has(b.dress_id)) seen.set(b.dress_id, b.dress_name||b.dress_id); });
+  const sorted = [...seen.entries()].sort((a,b) => a[1].localeCompare(b[1]));
+  g('d-dress').innerHTML = '<option value="">All Dresses</option>' +
+    sorted.map(([id,name]) => `<option value="${id}">${name}</option>`).join('');
 }
 
-// ════════════════════════════════════════════
+// ════════════════════════════════════════════════
 // DASHBOARD
-// ════════════════════════════════════════════
+// ════════════════════════════════════════════════
 window.toggleDates = () => {
-  const all = id('d-showall').checked;
-  id('d-from').disabled = all; id('d-to').disabled = all;
+  const all = g('d-showall').checked;
+  g('d-from').disabled = all; g('d-to').disabled = all;
 };
-
-window.debounceDash = () => {
-  clearTimeout(_debTimer);
-  _debTimer = setTimeout(renderDashboard, 350);
-};
+window.debounceDash = () => { clearTimeout(_debTimer); _debTimer = setTimeout(renderDashboard, 350); };
 
 window.renderDashboard = () => {
-  const search   = val('d-search').toLowerCase();
-  const dressF   = val('d-dress');
-  const statusF  = val('d-status').toUpperCase();
-  const allDates = id('d-showall').checked;
-  const dateType = val('d-datetype'); // 'booking_date' or 'event_date'
-  const fromD    = val('d-from');
-  const toD      = val('d-to');
+  const search   = g('d-search').value.toLowerCase();
+  const dressF   = g('d-dress').value;
+  const statusF  = g('d-status').value.toUpperCase();
+  const allDates = g('d-showall').checked;
+  const dateType = g('d-datetype').value;
+  const fromD    = g('d-from').value;
+  const toD      = g('d-to').value;
 
-  // Stat cards always from full dataset (mirrors dashboard.py cursor.execute at bottom)
-  const total   = _bookings.length;
-  const active  = _bookings.filter(b => (b.status||'').toUpperCase() === 'ACTIVE').length;
-  const revenue = _bookings.filter(b => (b.status||'').toUpperCase() !== 'CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0);
-  setTxt('d-total', total); setTxt('d-active', active); setTxt('d-revenue', '₹ '+fmt(revenue));
+  // Stat cards from full dataset
+  setTxt('d-total',   _bookings.length);
+  setTxt('d-active',  _bookings.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
+  setTxt('d-revenue', '₹ '+fmt(_bookings.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
 
-  // Filter rows — mirrors dashboard.py load_dashboard_data query
+  // Filtered rows
   let rows = _bookings;
-
   if (search) rows = rows.filter(r =>
     (r.customer||'').toLowerCase().includes(search) ||
     (r.phone||'').includes(search) ||
     String(r.booking_id||'').toLowerCase().includes(search) ||
-    (r.dress_id||'').toLowerCase().includes(search)
-  );
+    (r.dress_id||'').toLowerCase().includes(search));
+  if (dressF)   rows = rows.filter(r => r.dress_id === dressF);
+  if (statusF)  rows = rows.filter(r => (r.status||'').toUpperCase() === statusF);
+  if (!allDates && fromD && toD)
+    rows = rows.filter(r => { const d=r[dateType]||''; return d>=fromD && d<=toD; });
+  rows = [...rows].sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
 
-  if (dressF) rows = rows.filter(r => r.dress_id === dressF);
-
-  if (statusF) rows = rows.filter(r => (r.status||'').toUpperCase() === statusF);
-
-  if (!allDates && fromD && toD) {
-    rows = rows.filter(r => {
-      const d = r[dateType] || '';
-      return d >= fromD && d <= toD;
-    });
-  }
-
-  // ORDER BY bi.event_date ASC
-  rows = [...rows].sort((a,b) => (a.event_date||'').localeCompare(b.event_date||''));
-
-  setTxt('d-count', rows.length + ' records');
-
-  id('d-tbody').innerHTML = rows.length ? rows.map(r => `
+  setTxt('d-count', rows.length+' records');
+  g('d-tbody').innerHTML = rows.length ? rows.map(r=>`
     <tr>
       <td style="font-weight:700;color:var(--primary)">${r.booking_id||'—'}</td>
       <td>${r.customer||'—'}</td>
@@ -698,7 +573,7 @@ window.renderDashboard = () => {
       <td>${r.booking_date||'—'}</td>
       <td>${r.event_date||'—'}</td>
       <td style="text-align:center">${r.booking_days||1}</td>
-      <td>${statusBadge(r.status)}</td>
+      <td>${sBadge(r.status)}</td>
       <td style="font-weight:700">₹${fmt(r.grand_total)}</td>
       <td>₹${fmt(r.total_advance)}</td>
       <td style="font-weight:700;color:${(r.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(r.total_balance)}</td>
@@ -707,146 +582,106 @@ window.renderDashboard = () => {
       <td style="color:var(--amber)">₹${fmt(r.security_amount)}</td>
       <td style="max-width:160px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td>
     </tr>`).join('')
-  : `<tr><td colspan="17" class="empty-row">No records match the current filters</td></tr>`;
+  : `<tr><td colspan="17" class="erow">No records match the current filters</td></tr>`;
 };
 
-// ════════════════════════════════════════════
+// ════════════════════════════════════════════════
 // BALANCE SHEET
-// ════════════════════════════════════════════
-window.switchTopDress = (sort) => {
+// ════════════════════════════════════════════════
+window.switchTopDress = sort => {
   _topSort = sort;
-  id('tog-bk').className = 'tog' + (sort==='bookings'?' on':'');
-  id('tog-rv').className = 'tog' + (sort==='revenue'?' on':'');
+  g('tog-bk').className='tog'+(sort==='bookings'?' on':'');
+  g('tog-rv').className='tog'+(sort==='revenue'?' on':'');
   renderBalance();
 };
 
 window.renderBalance = () => {
-  const d1 = val('bs-from'), d2 = val('bs-to');
-
-  // Mirrors balance.py load_balance_sheet_data — filter by booking_date BETWEEN d1 AND d2, status != CANCELLED
-  const inRange = b => (!d1 || (b.booking_date||'') >= d1) && (!d2 || (b.booking_date||'') <= d2);
-  const filtered = _bookings.filter(b => inRange(b) && (b.status||'').toUpperCase() !== 'CANCELLED');
-  const all      = _bookings.filter(b => inRange(b)); // for status breakdown (includes cancelled)
+  const d1=g('bs-from').value, d2=g('bs-to').value;
+  const inRange = b => (!d1||(b.booking_date||'')>=d1)&&(!d2||(b.booking_date||'')<=d2);
+  const filtered = _bookings.filter(b=>inRange(b)&&(b.status||'').toUpperCase()!=='CANCELLED');
+  const all      = _bookings.filter(b=>inRange(b));
 
   const totalRev = filtered.reduce((s,b)=>s+(b.grand_total||0),0);
   const totalCol = filtered.reduce((s,b)=>s+(b.total_advance||0),0);
   const totalBal = filtered.reduce((s,b)=>s+(b.total_balance||0),0);
   const totalGst = filtered.reduce((s,b)=>s+(b.gst_amount||0),0);
-
-  const expInRange = _expenses.filter(e => (!d1||(e.exp_date||'')>=d1)&&(!d2||(e.exp_date||'')<=d2));
+  const expInRange = _expenses.filter(e=>(!d1||(e.exp_date||'')>=d1)&&(!d2||(e.exp_date||'')<=d2));
   const totalExp = expInRange.reduce((s,e)=>s+(e.amount||0),0);
+  const netProfit = (totalRev-totalGst)-totalExp;
 
-  // net_profit = (total_rev - total_gst) - total_exp  ← mirrors balance.py exactly
-  const netProfit = (totalRev - totalGst) - totalExp;
+  setTxt('bs-rev','₹ '+fmt(totalRev)); setTxt('bs-col','₹ '+fmt(totalCol));
+  setTxt('bs-pend','₹ '+fmt(totalBal)); setTxt('bs-gst','₹ '+fmt(totalGst));
+  setTxt('bs-exp','₹ '+fmt(totalExp));
+  const pe=g('bs-profit'); pe.textContent='₹ '+fmt(netProfit); pe.className='sc-val '+(netProfit>=0?'cb':'cr');
 
-  setTxt('bs-rev', '₹ '+fmt(totalRev)); setTxt('bs-col', '₹ '+fmt(totalCol));
-  setTxt('bs-pend','₹ '+fmt(totalBal)); setTxt('bs-gst', '₹ '+fmt(totalGst));
-  setTxt('bs-exp', '₹ '+fmt(totalExp));
-  const profEl = id('bs-profit');
-  profEl.textContent = '₹ '+fmt(netProfit);
-  profEl.className = 'sc-val ' + (netProfit >= 0 ? 'cb' : 'cr');
+  const byS={};
+  all.forEach(b=>{const s=b.status||'—';if(!byS[s])byS[s]={count:0,rev:0};byS[s].count++;byS[s].rev+=(b.grand_total||0);});
+  const sc={ACTIVE:'#15803d',RETURNED:'var(--primary)',CANCELLED:'var(--red)',Sold:'var(--amber)'};
+  g('bs-status').innerHTML=Object.entries(byS).map(([s,v])=>
+    `<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.count}</td><td>₹ ${fmt(v.rev)}</td></tr>`
+  ).join('')||eRow(3);
 
-  // Status breakdown
-  const byStatus = {};
-  all.forEach(b => { const s=b.status||'—'; if(!byStatus[s]) byStatus[s]={count:0,rev:0}; byStatus[s].count++; byStatus[s].rev+=(b.grand_total||0); });
-  const statusColor = {ACTIVE:'#15803d',RETURNED:'var(--primary)',CANCELLED:'var(--red)',Sold:'var(--amber)'};
-  id('bs-status').innerHTML = Object.entries(byStatus).map(([s,v])=>
-    `<tr><td style="color:${statusColor[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.count}</td><td>₹ ${fmt(v.rev)}</td></tr>`
-  ).join('') || emptyRow(3);
-
-  // Top 5 dresses — mirrors _load_top_dresses
-  const dressStat = {};
-  filtered.forEach(b => {
-    const k = b.dress_id||'?';
-    if (!dressStat[k]) dressStat[k] = {name:b.dress_name||k, bk:0, rev:0};
-    dressStat[k].bk++; dressStat[k].rev += (b.price||0);
-  });
-  const top5 = Object.values(dressStat).sort((a,b) => _topSort==='bookings' ? b.bk-a.bk : b.rev-a.rev).slice(0,5);
-  id('bs-top').innerHTML = top5.map((d,i)=>
+  const ds={};
+  filtered.forEach(b=>{const k=b.dress_id||'?';if(!ds[k])ds[k]={name:b.dress_name||k,bk:0,rev:0};ds[k].bk++;ds[k].rev+=(b.price||0);});
+  const top=Object.values(ds).sort((a,b)=>_topSort==='bookings'?b.bk-a.bk:b.rev-a.rev).slice(0,5);
+  g('bs-top').innerHTML=top.map((d,i)=>
     `<tr><td style="font-weight:800;text-align:center;color:var(--primary)">${i+1}</td><td>${d.name}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rev)}</td></tr>`
-  ).join('') || emptyRow(4);
+  ).join('')||eRow(4);
 
-  // Expense breakdown — mirrors bal_exp_table, GROUP BY exp_name ORDER BY SUM DESC
-  const expByCat = {};
-  expInRange.forEach(e => { const n=e.exp_name||'Other'; if(!expByCat[n]) expByCat[n]=0; expByCat[n]+=(e.amount||0); });
-  const expRows = Object.entries(expByCat).sort((a,b)=>b[1]-a[1]);
-  id('bs-expbody').innerHTML = expRows.map(([n,a])=>
+  const ec={};
+  expInRange.forEach(e=>{const n=e.exp_name||'Other';if(!ec[n])ec[n]=0;ec[n]+=(e.amount||0);});
+  g('bs-expbody').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>
     `<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`
-  ).join('') || emptyRow(2,'No expenses recorded in this period');
+  ).join('')||eRow(2,'No expenses recorded in this period');
 };
 
-// ════════════════════════════════════════════
+// ════════════════════════════════════════════════
 // PLANNER
-// ════════════════════════════════════════════
-window.jumpToday = () => { setVal('pl-date', new Date().toISOString().slice(0,10)); renderPlanner(); };
+// ════════════════════════════════════════════════
+window.jumpToday = () => { setVal('pl-date',new Date().toISOString().slice(0,10)); renderPlanner(); };
 
 window.renderPlanner = () => {
-  const selDate = val('pl-date');
-  if (!selDate) return;
-
-  const next = new Date(selDate+'T00:00:00');
-  next.setDate(next.getDate()+1);
-  const nextStr = next.toISOString().slice(0,10);
-
-  // Mirrors planner.py: event_date IN (today, tomorrow) AND status != 'CANCELLED'
-  const items = _bookings.filter(b =>
-    (b.event_date === selDate || b.event_date === nextStr) &&
-    (b.status||'').toUpperCase() !== 'CANCELLED'
-  );
-  const selItems  = items.filter(b => b.event_date === selDate);
-  const nextItems = items.filter(b => b.event_date === nextStr);
-
-  const fmtD = s => {
-    if (!s) return '—';
-    const dt = new Date(s+'T00:00:00');
-    return dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
-  };
-
-  // Update group box titles — mirrors today_box.setTitle and tomorrow_box.setTitle
-  setTxt('pl-h1', `📅 ${fmtD(selDate)} (Selected Date)`);
-  setTxt('pl-h2', `⏳ ${fmtD(nextStr)} (Next Day)`);
-  setTxt('pl-c1', selItems.length);
-  setTxt('pl-c2', nextItems.length);
-
-  const mkCards = arr => arr.length ? arr.map(b => `
+  const sel=g('pl-date').value; if(!sel) return;
+  const nx=new Date(sel+'T00:00:00'); nx.setDate(nx.getDate()+1);
+  const nxs=nx.toISOString().slice(0,10);
+  const items=_bookings.filter(b=>(b.event_date===sel||b.event_date===nxs)&&(b.status||'').toUpperCase()!=='CANCELLED');
+  const s1=items.filter(b=>b.event_date===sel), s2=items.filter(b=>b.event_date===nxs);
+  const fD=s=>{if(!s)return'—';return new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});};
+  setTxt('pl-h1',`📅 ${fD(sel)} (Selected Date)`); setTxt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
+  setTxt('pl-c1',s1.length); setTxt('pl-c2',s2.length);
+  const mk=arr=>arr.length?arr.map(b=>`
     <div class="pl-card">
       <div><span class="pcd">${b.dress_name||'—'}</span><span class="pci">[ID #${b.booking_id}]</span></div>
       <div class="pcc">👤 ${b.customer||'—'} (${b.phone||'—'})</div>
       <div class="pcs">📏 CH ${b.chest||'—'} | W ${b.waist||'—'} | L ${b.length||'—'}</div>
-      ${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}
-    </div>`).join('')
-  : '<div class="pl-empty">No events on this day</div>';
-
-  id('pl-b1').innerHTML = mkCards(selItems);
-  id('pl-b2').innerHTML = mkCards(nextItems);
+      ${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}`
+    +`</div>`).join(''):'<div class="pl-empty">No events on this day</div>';
+  g('pl-b1').innerHTML=mk(s1); g('pl-b2').innerHTML=mk(s2);
 };
 
-// ════════════════════════════════════════════
+// ════════════════════════════════════════════════
 // RETURN TRACKER
-// ════════════════════════════════════════════
+// ════════════════════════════════════════════════
 window.renderReturns = () => {
-  const today = new Date().toISOString().slice(0,10);
+  const today=new Date().toISOString().slice(0,10);
+  const due=_bookings.filter(b=>{
+    if((b.status||'').toUpperCase()!=='ACTIVE') return false;
+    const ev=new Date((b.event_date||'9999-12-31')+'T00:00:00');
+    ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1));
+    return ev.toISOString().slice(0,10)<=today;
+  }).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
 
-  // Mirrors returns.py: date(event_date, '+' || booking_days || ' days') <= today AND status='ACTIVE'
-  const due = _bookings.filter(b => {
-    if ((b.status||'').toUpperCase() !== 'ACTIVE') return false;
-    const ev = new Date((b.event_date||'9999-12-31')+'T00:00:00');
-    ev.setDate(ev.getDate() + (parseInt(b.booking_days)||1));
-    return ev.toISOString().slice(0,10) <= today;
-  }).sort((a,b) => (a.event_date||'').localeCompare(b.event_date||''));
+  setTxt('ret-count',due.length);
+  setTxt('ret-bal','₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
+  setTxt('ret-badge',due.length?due.length+' pending':'All clear ✅');
 
-  setTxt('ret-count', due.length);
-  setTxt('ret-bal',   '₹ ' + fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
-  setTxt('ret-badge', due.length ? due.length+' pending' : 'All clear ✅');
-
-  id('ret-tbody').innerHTML = due.length ? due.map(b => {
-    const isToday = b.event_date === today;
-    const cls = isToday ? 'due-today' : 'overdue';
+  g('ret-tbody').innerHTML=due.length?due.map(b=>{
+    const isToday=b.event_date===today;
     return `<tr>
       <td style="font-weight:700;color:var(--primary)">${b.booking_id||'—'}</td>
       <td>${b.customer||'—'}</td>
       <td>${b.dress_name||'—'}</td>
-      <td class="${cls}">${b.event_date||'—'}</td>
+      <td class="${isToday?'due-today':'overdue'}">${b.event_date||'—'}</td>
       <td>₹${fmt(b.grand_total)}</td>
       <td>₹${fmt(b.total_advance)}</td>
       <td style="font-weight:700;color:${(b.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(b.total_balance)}</td>
@@ -855,102 +690,44 @@ window.renderReturns = () => {
       <td><button class="mark-btn" onclick="markReturned('${b.booking_id}','${b.item_id||b.booking_id}',${b.total_balance||0})">Mark Returned</button></td>
     </tr>`;
   }).join('')
-  : `<tr><td colspan="10" class="empty-row" style="color:var(--green);font-weight:600">✅ No pending returns — all caught up!</td></tr>`;
+  :`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns — all caught up!</td></tr>`;
 };
 
 window.markReturned = async (bookingId, itemId, balance) => {
-  if (DEMO) { showToast(`✅ [Demo] #${bookingId} marked as returned`); return; }
-  // Real Firestore — update booking status
   try {
-    const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    await updateDoc(doc(fbDb,'stores',_storeId,'bookings',bookingId), { status: 'RETURNED' });
+    await updateDoc(doc(db,'stores',_storeId,'bookings',bookingId),{status:'RETURNED'});
     showToast(`✅ Booking #${bookingId} marked as returned`);
     await fetchAllData(); renderReturns(); renderDashboard();
-  } catch(e) { showToast('❌ Error: ' + e.message); }
+  } catch(e) { showToast('❌ Error: '+e.message); }
 };
 
-// ════════════════════════════════════════════
-// DEMO DATA — matches Boutique OS DB schema
-// ════════════════════════════════════════════
-function getDemoBookings() {
-  const t = new Date();
-  const d = n => { const x=new Date(t); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
-  return [
-    {booking_id:'BK-001',customer:'Priya Sharma',phone:'9876543210',dress_name:'Royal Blue Lehenga',dress_id:'DRS-01',price:2500,booking_date:d(-10),event_date:d(0),booking_days:1,status:'ACTIVE',grand_total:2500,total_advance:1000,total_balance:1500,discount:0,gst_percent:5,gst_amount:125,security_amount:500,security_refunded:0,notes:'Needs alteration at waist',chest:'36',waist:'28',length:'42'},
-    {booking_id:'BK-002',customer:'Meena Rathod',phone:'9765432109',dress_name:'Pink Anarkali',dress_id:'DRS-02',price:1800,booking_date:d(-5),event_date:d(1),booking_days:1,status:'ACTIVE',grand_total:1800,total_advance:1800,total_balance:0,discount:200,gst_percent:0,gst_amount:0,security_amount:0,security_refunded:0,notes:'',chest:'34',waist:'26',length:'40'},
-    {booking_id:'BK-003',customer:'Kavya Tiwari',phone:'9654321098',dress_name:'Golden Saree Set',dress_id:'DRS-03',price:3200,booking_date:d(-15),event_date:d(-3),booking_days:2,status:'ACTIVE',grand_total:3200,total_advance:1500,total_balance:1700,discount:0,gst_percent:5,gst_amount:160,security_amount:1000,security_refunded:0,notes:'Handle with care — heavy embroidery',chest:'38',waist:'30',length:'44'},
-    {booking_id:'BK-004',customer:'Asha Kumar',phone:'9543210987',dress_name:'Royal Blue Lehenga',dress_id:'DRS-01',price:2500,booking_date:d(-20),event_date:d(-8),booking_days:1,status:'RETURNED',grand_total:2500,total_advance:2500,total_balance:0,discount:0,gst_percent:5,gst_amount:125,security_amount:500,security_refunded:500,notes:'',chest:'36',waist:'28',length:'42'},
-    {booking_id:'BK-005',customer:'Nisha Patel',phone:'9432109876',dress_name:'Emerald Green Gown',dress_id:'DRS-04',price:4000,booking_date:d(-3),event_date:d(3),booking_days:1,status:'ACTIVE',grand_total:4000,total_advance:2000,total_balance:2000,discount:0,gst_percent:5,gst_amount:200,security_amount:1000,security_refunded:0,notes:'Urgent delivery',chest:'34',waist:'26',length:'40'},
-    {booking_id:'BK-006',customer:'Rekha Mehta',phone:'9321098765',dress_name:'Pink Anarkali',dress_id:'DRS-02',price:1800,booking_date:d(-8),event_date:d(-1),booking_days:1,status:'ACTIVE',grand_total:1800,total_advance:500,total_balance:1300,discount:0,gst_percent:0,gst_amount:0,security_amount:300,security_refunded:0,notes:'',chest:'32',waist:'24',length:'38'},
-    {booking_id:'BK-007',customer:'Sunita Joshi',phone:'9210987654',dress_name:'Golden Saree Set',dress_id:'DRS-03',price:3200,booking_date:d(-30),event_date:d(-20),booking_days:1,status:'CANCELLED',grand_total:3200,total_advance:0,total_balance:0,discount:0,gst_percent:5,gst_amount:160,security_amount:0,security_refunded:0,notes:'Cancelled by customer',chest:'',waist:'',length:''},
-    {booking_id:'BK-008',customer:'Divya Singh',phone:'9109876543',dress_name:'Emerald Green Gown',dress_id:'DRS-04',price:4000,booking_date:d(-1),event_date:d(2),booking_days:1,status:'ACTIVE',grand_total:4000,total_advance:4000,total_balance:0,discount:500,gst_percent:5,gst_amount:175,security_amount:800,security_refunded:0,notes:'',chest:'36',waist:'28',length:'42'},
-    {booking_id:'BK-009',customer:'Pooja Verma',phone:'9098765432',dress_name:'Silk Saree Set',dress_id:'DRS-05',price:2800,booking_date:d(-2),event_date:d(-2),booking_days:1,status:'ACTIVE',grand_total:2800,total_advance:1000,total_balance:1800,discount:0,gst_percent:5,gst_amount:140,security_amount:600,security_refunded:0,notes:'Overdue — call customer',chest:'36',waist:'30',length:'43'},
-  ];
+// ─── UI helpers ──────────────────────────────────
+const g      = i => document.getElementById(i);
+const setTxt = (i,v) => { const e=g(i); if(e) e.textContent=v; };
+const setVal = (i,v) => { const e=g(i); if(e) e.value=v; };
+const show   = (i,d='block') => { const e=g(i); if(e) e.style.display=d; };
+const hide   = i => { const e=g(i); if(e) e.style.display='none'; };
+const showEl = i => { const e=g(i); if(e) e.style.display='block'; };
+const hideEl = i => { const e=g(i); if(e) e.style.display='none'; };
+const fmt    = n => Math.round(n||0).toLocaleString('en-IN');
+const eRow   = (cols,msg='No data') => `<tr><td colspan="${cols}" class="erow">${msg}</td></tr>`;
+
+function sBadge(s) {
+  const m={'ACTIVE':'active','RETURNED':'returned','CANCELLED':'cancelled','SOLD':'sold','Sold':'sold'};
+  const c=m[(s||'').toUpperCase()]||m[s]||'returned';
+  return `<span class="b b-${c}">${s||'—'}</span>`;
 }
-
-function getDemoExpenses() {
-  const t = new Date();
-  const d = n => { const x=new Date(t); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
-  return [
-    {exp_name:'Fabric & Embroidery',amount:8000,exp_date:d(-15)},
-    {exp_name:'Dry Cleaning',amount:2400,exp_date:d(-10)},
-    {exp_name:'Electricity',amount:1800,exp_date:d(-8)},
-    {exp_name:'Staff Salary',amount:12000,exp_date:d(-5)},
-    {exp_name:'Packaging Material',amount:600,exp_date:d(-3)},
-    {exp_name:'Transport',amount:900,exp_date:d(-2)},
-  ];
-}
-
-// ─── UI helpers ────────────────────────────
-const id  = i => document.getElementById(i);
-const val = i => id(i) ? id(i).value : '';
-const setTxt = (i,v) => { const e=id(i); if(e) e.textContent=v; };
-const setVal = (i,v) => { const e=id(i); if(e) e.value=v; };
-const show   = (i,d='block') => { const e=id(i); if(e) e.style.display=d; };
-const hide   = i => { const e=id(i); if(e) e.style.display='none'; };
-const showEl = i => { const e=id(i); if(e) e.style.display='block'; };
-const hideEl = i => { const e=id(i); if(e) e.style.display='none'; };
-const fmt = n => Math.round(n||0).toLocaleString('en-IN');
-const emptyRow = (cols, msg='No data') => `<tr><td colspan="${cols}" class="empty-row">${msg}</td></tr>`;
-
-function statusBadge(s) {
-  const map = {'ACTIVE':'active','RETURNED':'returned','CANCELLED':'cancelled','SOLD':'sold','Sold':'sold'};
-  const cls = map[(s||'').toUpperCase()] || map[s] || 'returned';
-  return `<span class="b b-${cls}">${s||'—'}</span>`;
-}
-
-function showErr(elId, msg) {
-  const e = id(elId);
-  if (!e) return;
-  e.textContent = msg; e.style.display = 'block';
-}
-
-window.showToast = (msg, dur=3500) => {
-  const t = id('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), dur);
+function showErr(elId,msg) { const e=g(elId); if(!e)return; e.textContent=msg; e.style.display='block'; }
+window.showToast = (msg,dur=3500) => {
+  const t=g('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
 };
-
-// 3. Mobile Navigation Logic
-function toggleSidebar() {
-  document.querySelector('.sidebar').classList.toggle('active');
-}
-
-// Close menu when a link is clicked
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    if (window.innerWidth <= 820) {
-      document.querySelector('.sidebar').classList.remove('active');
-    }
-  });
-});
-
-window.switchTab = (name, btn) => {
+window.switchTab = (name,btn) => {
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  id('tab-'+name).classList.add('active');
-  btn.classList.add('active');
+  g('tab-'+name).classList.add('active'); btn.classList.add('active');
   const titles={dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'};
-  setTxt('topbar-title', titles[name]||name);
+  setTxt('topbar-title',titles[name]||name);
 };
 </script>
 </body>

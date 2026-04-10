@@ -13,6 +13,7 @@
       --border:#e2e8f0; --muted:#64748b; --sw:240px;
     }
     body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--light); color:var(--dark); min-height:100vh; overflow-x:hidden; }
+    body.login-open { overflow:hidden; }
 
     /* ── LOADING ── */
     #loading { position:fixed; inset:0; background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; gap:16px; transition:opacity .4s; }
@@ -23,7 +24,7 @@
     #ld-err { display:none; margin-top:8px; padding:14px 20px; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; color:var(--red); font-size:13px; font-weight:600; text-align:center; max-width:420px; line-height:1.6; }
 
     /* ── LOGIN ── */
-    #login-page { display:none; min-height:100vh; background:linear-gradient(135deg,#1e1b4b 0%,#312e81 30%,#4f46e5 65%,#7c3aed 100%); align-items:center; justify-content:center; position:relative; overflow:hidden; }
+    #login-page { display:none; min-height:100vh; background:linear-gradient(135deg,#1e1b4b 0%,#312e81 30%,#4f46e5 65%,#7c3aed 100%); align-items:center; justify-content:center; position:fixed; inset:0; overflow-y:auto; z-index:500; }
     .orb { position:absolute; border-radius:50%; filter:blur(80px); animation:float 8s ease-in-out infinite; pointer-events:none; }
     .orb-1 { width:400px; height:400px; background:rgba(124,58,237,.25); top:-100px; right:-80px; }
     .orb-2 { width:300px; height:300px; background:rgba(79,70,229,.3); bottom:-80px; left:-60px; animation-delay:3s; }
@@ -59,7 +60,7 @@
     .login-foot a:hover { color:#a5b4fc; }
 
     /* ── APP ── */
-    #app { display:none; min-height:100vh; }
+    #app { display:none; min-height:100vh; overflow:hidden; }
     #app.visible { display:flex; }
 
     /* ── DESKTOP SIDEBAR ── */
@@ -218,6 +219,7 @@
 
     /* ── MOBILE BOTTOM NAV ── */
     .mob-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--white); border-top:1px solid var(--border); z-index:90; padding:6px 0 env(safe-area-inset-bottom,6px); box-shadow:0 -4px 20px rgba(0,0,0,.08); }
+    #app:not(.visible) ~ .mob-nav { display:none !important; }
     .mob-nav-inner { display:flex; }
     .mob-nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:5px 4px; background:none; border:none; cursor:pointer; font-family:inherit; color:var(--muted); transition:color .15s; }
     .mob-nav-btn.active { color:var(--indigo); }
@@ -564,8 +566,8 @@ let uid=null,currentStoreId=null,allStores=[],BK=[],EX=[],topSort='bookings',deb
 
 onAuthStateChanged(auth,async user=>{
   ge('loading').classList.add('hide');
-  if(user){uid=user.uid;await enterApp(user.email)}
-  else{sho('login-page','flex')}
+  if(user){uid=user.uid;document.body.classList.remove('login-open');await enterApp(user.email)}
+  else{sho('login-page','flex');document.body.classList.add('login-open')}
 },err=>showLoadErr("Connection failed:\n"+err.message+"\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in"));
 
 setTimeout(()=>{if(!ge('loading').classList.contains('hide'))showLoadErr("Connection timed out.\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in\n\nThen refresh.")},12000);
@@ -585,10 +587,10 @@ window.doReset=async()=>{
   catch(e){showErr('fp-err',e.code==='auth/user-not-found'?'No account with this email.':e.message)}
   finally{btn.disabled=false;btn.textContent='Send Reset Link →'}
 };
-window.doLogout=async()=>{clearInterval(retT);await signOut(auth);hid('app');sho('login-page','flex');ge('li-em').value='';ge('li-pw').value='';showView('vl')};
+window.doLogout=async()=>{clearInterval(retT);await signOut(auth);hid('app');sho('login-page','flex');document.body.classList.add('login-open');ge('li-em').value='';ge('li-pw').value='';showView('vl')};
 
 async function enterApp(email){
-  hid('login-page');ge('app').style.display='flex';
+  hid('login-page');document.body.classList.remove('login-open');ge('app').style.display='flex';
   txt('uc-e',email||'—');txt('uc-n',email?email.split('@')[0]:'My Boutique');
   txt('mob-dd-user',email||'—');
   setDefaults();await resolveStores();await loadData();

@@ -3,27 +3,16 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <!-- CSP: allow Firebase, Google Fonts, and self -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src https://fonts.gstatic.com;
-    connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com;
-    frame-src https://boutiqueos-3a75c.firebaseapp.com;
-    img-src 'self' data:;
-  "/>
   <title>Boutique OS — Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    :root {
+    :root{
       --primary:#4f46e5;--primary-dim:#eef2ff;--primary-border:#c7d2fe;
-      --purple:#7c3aed;--blue:#0284c7;--blue-dim:#f0f9ff;
+      --purple:#7c3aed;--blue:#0284c7;
       --green:#16a34a;--green-dim:#f0fdf4;
-      --amber:#d97706;--amber-dim:#fffbeb;
-      --red:#dc2626;--red-dim:#fef2f2;
+      --amber:#d97706;--red:#dc2626;--red-dim:#fef2f2;
       --slate:#1e293b;--muted:#64748b;--border:#e2e8f0;
-      --bg:#f8fafc;--white:#fff;--sidebar-w:230px;
+      --bg:#f8fafc;--white:#fff;--sw:230px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--slate);min-height:100vh}
@@ -33,19 +22,19 @@
     #loading.hide{opacity:0;pointer-events:none}
     .ring{width:44px;height:44px;border-radius:50%;border:3px solid var(--primary-border);border-top-color:var(--primary);animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .ring-lbl{font-size:13px;color:var(--muted);font-weight:500}
-    #load-err{margin-top:8px;padding:12px 20px;background:var(--red-dim);border:1px solid #fecaca;border-radius:10px;color:var(--red);font-size:13px;font-weight:600;text-align:center;max-width:380px;display:none;line-height:1.5}
+    #ld-lbl{font-size:13px;color:var(--muted);font-weight:500}
+    #ld-err{display:none;margin-top:8px;padding:14px 20px;background:var(--red-dim);border:1px solid #fecaca;border-radius:10px;color:var(--red);font-size:13px;font-weight:600;text-align:center;max-width:420px;line-height:1.6}
 
     /* LOGIN */
     #login-page{display:none;min-height:100vh;background:linear-gradient(135deg,#eef2ff 0%,#f5f3ff 55%,#ede9fe 100%);align-items:center;justify-content:center}
     .lw{width:400px}
     .ll{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
-    .ll-icon{width:46px;height:46px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 18px rgba(99,102,241,.35)}
-    .ll-text{font-size:24px;font-weight:800;color:var(--slate)}
-    .ll-text span{color:var(--primary)}
-    .lc{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px 36px;box-shadow:0 20px 60px rgba(99,102,241,.12)}
-    .lt{font-size:20px;font-weight:800;margin-bottom:4px}
-    .ls{font-size:13px;color:var(--muted);margin-bottom:28px}
+    .ll-ic{width:46px;height:46px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 18px rgba(99,102,241,.35)}
+    .ll-tx{font-size:24px;font-weight:800;color:var(--slate)}
+    .ll-tx span{color:var(--primary)}
+    .lcard{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px 36px;box-shadow:0 20px 60px rgba(99,102,241,.12)}
+    .ltit{font-size:20px;font-weight:800;margin-bottom:4px}
+    .lsub{font-size:13px;color:var(--muted);margin-bottom:28px}
     .fi{margin-bottom:16px}
     .fi label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
     .fi input{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--slate);outline:none;transition:border-color .2s,box-shadow .2s}
@@ -55,34 +44,34 @@
     .lbtn:hover{opacity:.9;transform:translateY(-1px)}
     .lbtn:active{transform:none}
     .lbtn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-    .fl{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
-    .fl a{color:var(--primary);font-weight:600;cursor:pointer}
-    .fl a:hover{text-decoration:underline}
+    .flink{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
+    .flink a{color:var(--primary);font-weight:600;cursor:pointer}
+    .flink a:hover{text-decoration:underline}
     .merr{background:var(--red-dim);color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
     .mok{background:var(--green-dim);color:var(--green);border:1px solid #bbf7d0;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
 
     /* APP */
     #app{display:none;min-height:100vh}
     #app.visible{display:flex}
-    .sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;inset-y:0;left:0;z-index:50}
-    .sl{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-    .sl-ic{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-    .sl-tx{font-size:16px;font-weight:800;color:var(--slate)}
-    .sl-tx span{color:var(--primary)}
+    .sidebar{width:var(--sw);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;inset-y:0;left:0;z-index:50}
+    .slogo{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .slic{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .sltx{font-size:16px;font-weight:800;color:var(--slate)}
+    .sltx span{color:var(--primary)}
     .snav{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2px}
-    .ni{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;width:100%;text-align:left;transition:all .15s}
-    .ni:hover{background:var(--bg);color:var(--slate)}
-    .ni.active{background:var(--primary-dim);color:var(--primary)}
+    .nitem{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;width:100%;text-align:left;transition:all .15s}
+    .nitem:hover{background:var(--bg);color:var(--slate)}
+    .nitem.active{background:var(--primary-dim);color:var(--primary)}
     .nic{font-size:15px;width:20px;text-align:center}
-    .sft{padding:12px 8px;border-top:1px solid var(--border)}
-    .uc{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+    .sfoot{padding:12px 8px;border-top:1px solid var(--border)}
+    .uchip{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:8px}
     .ucn{font-size:12px;font-weight:700;color:var(--slate)}
     .uce{font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .outbtn{width:100%;padding:9px 12px;background:none;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
-    .outbtn:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
-    .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+    .obtn{width:100%;padding:9px 12px;background:none;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+    .obtn:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
+    .main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
     .topbar{height:56px;background:var(--white);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
-    .tbt{font-size:16px;font-weight:800;color:var(--slate)}
+    .tbtl{font-size:16px;font-weight:800;color:var(--slate)}
     .lchip{display:flex;align-items:center;gap:6px;padding:5px 13px;background:var(--green-dim);border-radius:20px;font-size:12px;font-weight:700;color:var(--green)}
     .ldot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
@@ -95,7 +84,6 @@
     .ph h2{font-size:20px;font-weight:800}
     .ph p{font-size:13px;color:var(--muted);margin-top:3px}
 
-    /* FILTER CARD */
     .fc{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px}
     .fr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .fr label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
@@ -106,19 +94,17 @@
     .showall{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);cursor:pointer;user-select:none;white-space:nowrap}
     .showall input{accent-color:var(--primary);cursor:pointer}
 
-    /* STAT CARDS */
     .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;margin-bottom:20px}
     .sc{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;position:relative;overflow:hidden;transition:box-shadow .2s}
     .sc:hover{box-shadow:0 6px 24px rgba(99,102,241,.12)}
     .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--purple))}
-    .sc-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
-    .sc-v{font-size:26px;font-weight:800;line-height:1}
+    .scl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+    .scv{font-size:26px;font-weight:800;line-height:1}
     .ci{color:var(--primary)}.cg{color:var(--green)}.ca{color:var(--amber)}.cr{color:var(--red)}.cp{color:var(--purple)}.cb{color:var(--blue)}
 
-    /* TABLE */
     .tc{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
-    .th{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-    .th h3{font-size:14px;font-weight:700}
+    .thead{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+    .thead h3{font-size:14px;font-weight:700}
     .tbg{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--primary-dim);color:var(--primary)}
     .tbg.red{background:var(--red-dim);color:var(--red)}
     .tw{overflow-x:auto}
@@ -131,28 +117,25 @@
     .erow{text-align:center!important;padding:28px!important;color:var(--muted);font-size:13px;white-space:normal!important}
 
     .b{display:inline-flex;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
-    .b-active{background:#dcfce7;color:#15803d}
-    .b-returned{background:var(--primary-dim);color:var(--primary)}
-    .b-cancelled{background:#fee2e2;color:#b91c1c}
-    .b-sold{background:#fef9c3;color:#92400e}
+    .ba{background:#dcfce7;color:#15803d}
+    .br{background:var(--primary-dim);color:var(--primary)}
+    .bc{background:#fee2e2;color:#b91c1c}
+    .bs{background:#fef9c3;color:#92400e}
 
-    /* PLANNER */
     .plsp{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    .plc{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-    .plh{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-    .plh h3{font-size:14px;font-weight:700}
+    .plcol{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .plhd{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .plhd h3{font-size:14px;font-weight:700}
     .cpil{font-size:11px;font-weight:700;background:var(--primary-dim);color:var(--primary);padding:3px 10px;border-radius:20px}
-    .plb{padding:12px;display:flex;flex-direction:column;gap:8px;max-height:520px;overflow-y:auto}
+    .plbd{padding:12px;display:flex;flex-direction:column;gap:8px;max-height:520px;overflow-y:auto}
     .plcard{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
-    .pcd{font-size:13px;font-weight:700}
-    .pci{font-size:11px;color:var(--primary);font-weight:600;margin-left:5px}
-    .pcc{font-size:12px;color:var(--muted);margin-top:4px}
-    .pcs{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
+    .pcd{font-size:13px;font-weight:700}.pci{font-size:11px;color:var(--primary);font-weight:600;margin-left:5px}
+    .pcc{font-size:12px;color:var(--muted);margin-top:4px}.pcs{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
     .pcn{font-size:11px;color:var(--purple);margin-top:5px;font-weight:600}
     .plem{text-align:center;padding:36px;color:var(--muted);font-size:13px}
 
-    .overdue{color:var(--red)!important;font-weight:700!important}
-    .duetoday{color:var(--amber)!important;font-weight:700!important}
+    .ov{color:var(--red)!important;font-weight:700!important}
+    .dt{color:var(--amber)!important;font-weight:700!important}
     .mbtn{padding:5px 12px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s}
     .mbtn:hover{opacity:.82}
 
@@ -174,64 +157,55 @@
 </head>
 <body>
 
-<!-- LOADING -->
 <div id="loading">
   <div class="ring"></div>
-  <div class="ring-lbl" id="load-lbl">Connecting to Firebase…</div>
-  <div id="load-err"></div>
+  <div id="ld-lbl">Connecting to Firebase…</div>
+  <div id="ld-err"></div>
 </div>
 
-<!-- LOGIN -->
 <div id="login-page">
   <div class="lw">
-    <div class="ll">
-      <div class="ll-icon">👗</div>
-      <div class="ll-text">Boutique <span>OS</span></div>
-    </div>
-    <div class="lc">
+    <div class="ll"><div class="ll-ic">👗</div><div class="ll-tx">Boutique <span>OS</span></div></div>
+    <div class="lcard">
       <div id="vl">
-        <div class="lt">Welcome back</div>
-        <div class="ls">Sign in with your email and password</div>
+        <div class="ltit">Welcome back</div>
+        <div class="lsub">Sign in with your email and password</div>
         <div class="fi"><label>Email Address</label><input type="email" id="li-em" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
         <div class="fi"><label>Password</label><input type="password" id="li-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
         <div class="merr" id="li-err"></div>
         <button class="lbtn" id="li-btn" onclick="doLogin()">Sign In →</button>
-        <div class="fl"><a onclick="showView('vf')">Forgot password?</a></div>
+        <div class="flink"><a onclick="showView('vf')">Forgot password?</a></div>
       </div>
       <div id="vf" style="display:none">
-        <div class="lt">Reset Password</div>
-        <div class="ls">We'll send a reset link to your email</div>
+        <div class="ltit">Reset Password</div>
+        <div class="lsub">We'll send a reset link to your email</div>
         <div class="fi"><label>Email Address</label><input type="email" id="fp-em" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doReset()"/></div>
         <div class="merr" id="fp-err"></div>
         <div class="mok" id="fp-ok">✅ Reset link sent! Check your inbox.</div>
         <button class="lbtn" id="fp-btn" onclick="doReset()">Send Reset Link →</button>
-        <div class="fl"><a onclick="showView('vl')">← Back to Sign In</a></div>
+        <div class="flink"><a onclick="showView('vl')">← Back to Sign In</a></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <div class="sidebar">
-    <div class="sl">
-      <div class="sl-ic">👗</div>
-      <div class="sl-tx">Boutique <span>OS</span></div>
-    </div>
+    <div class="slogo"><div class="slic">👗</div><div class="sltx">Boutique <span>OS</span></div></div>
     <nav class="snav">
-      <button class="ni active" onclick="switchTab('dashboard',this)"><span class="nic">📊</span>Dashboard</button>
-      <button class="ni" onclick="switchTab('balance',this)"><span class="nic">💰</span>Balance Sheet</button>
-      <button class="ni" onclick="switchTab('planner',this)"><span class="nic">📅</span>Planner</button>
-      <button class="ni" onclick="switchTab('returns',this)"><span class="nic">🔄</span>Return Tracker</button>
+      <button class="nitem active" onclick="switchTab('dashboard',this)"><span class="nic">📊</span>Dashboard</button>
+      <button class="nitem" onclick="switchTab('balance',this)"><span class="nic">💰</span>Balance Sheet</button>
+      <button class="nitem" onclick="switchTab('planner',this)"><span class="nic">📅</span>Planner</button>
+      <button class="nitem" onclick="switchTab('returns',this)"><span class="nic">🔄</span>Return Tracker</button>
     </nav>
-    <div class="sft">
-      <div class="uc"><div class="ucn" id="uc-n">My Boutique</div><div class="uce" id="uc-e">—</div></div>
-      <button class="outbtn" onclick="doLogout()">Sign Out</button>
+    <div class="sfoot">
+      <div class="uchip"><div class="ucn" id="uc-n">My Boutique</div><div class="uce" id="uc-e">—</div></div>
+      <button class="obtn" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
   <div class="main">
     <div class="topbar">
-      <div class="tbt" id="tbt">Dashboard</div>
+      <div class="tbtl" id="tbtl">Dashboard</div>
       <div class="lchip"><div class="ldot"></div>Live Data</div>
     </div>
     <div class="cont">
@@ -240,9 +214,9 @@
       <div class="tp active" id="tab-dashboard">
         <div class="ph"><h2>Rental Dashboard</h2><p>All bookings, revenue and status at a glance</p></div>
         <div class="sg">
-          <div class="sc"><div class="sc-l">Total Bookings</div><div class="sc-v ci" id="d-tot">—</div></div>
-          <div class="sc"><div class="sc-l">Active Bookings</div><div class="sc-v cg" id="d-act">—</div></div>
-          <div class="sc"><div class="sc-l">Total Revenue</div><div class="sc-v ca" id="d-rev">—</div></div>
+          <div class="sc"><div class="scl">Total Bookings</div><div class="scv ci" id="d-tot">—</div></div>
+          <div class="sc"><div class="scl">Active Bookings</div><div class="scv cg" id="d-act">—</div></div>
+          <div class="sc"><div class="scl">Total Revenue</div><div class="scv ca" id="d-rev">—</div></div>
         </div>
         <div class="fc">
           <div class="fr">
@@ -273,7 +247,7 @@
           </div>
         </div>
         <div class="tc">
-          <div class="th"><h3>Bookings</h3><span class="tbg" id="d-cnt">0 records</span></div>
+          <div class="thead"><h3>Bookings</h3><span class="tbg" id="d-cnt">0 records</span></div>
           <div class="tw"><table>
             <thead><tr><th>ID</th><th>Customer</th><th>Phone</th><th>Dress</th><th>Dress ID</th><th>Price</th><th>Booking Date</th><th>Event Date</th><th>Days</th><th>Status</th><th>Grand Total</th><th>Advance</th><th>Balance</th><th>Discount</th><th>GST%</th><th>Security</th><th>Notes</th></tr></thead>
             <tbody id="d-tb"></tbody>
@@ -284,34 +258,32 @@
       <!-- BALANCE SHEET -->
       <div class="tp" id="tab-balance">
         <div class="ph"><h2>Balance Sheet</h2><p>Financial summary for the selected date range</p></div>
-        <div class="fc">
-          <div class="fr">
-            <label>From</label><input type="date" id="bs-fr" onchange="rBal()"/>
-            <label>To</label><input type="date" id="bs-to" onchange="rBal()"/>
-          </div>
-        </div>
+        <div class="fc"><div class="fr">
+          <label>From</label><input type="date" id="bs-fr" onchange="rBal()"/>
+          <label>To</label><input type="date" id="bs-to" onchange="rBal()"/>
+        </div></div>
         <div class="bs6">
-          <div class="sc"><div class="sc-l">Total Revenue</div><div class="sc-v ci" id="bs-rv">—</div></div>
-          <div class="sc"><div class="sc-l">Total Collected</div><div class="sc-v cg" id="bs-cl">—</div></div>
-          <div class="sc"><div class="sc-l">Pending Balance</div><div class="sc-v ca" id="bs-pd">—</div></div>
-          <div class="sc"><div class="sc-l">GST Collected</div><div class="sc-v cp" id="bs-gs">—</div></div>
-          <div class="sc"><div class="sc-l">Total Expenses</div><div class="sc-v cr" id="bs-ex">—</div></div>
-          <div class="sc"><div class="sc-l">Net Profit</div><div class="sc-v cb" id="bs-pr">—</div></div>
+          <div class="sc"><div class="scl">Total Revenue</div><div class="scv ci" id="bs-rv">—</div></div>
+          <div class="sc"><div class="scl">Total Collected</div><div class="scv cg" id="bs-cl">—</div></div>
+          <div class="sc"><div class="scl">Pending Balance</div><div class="scv ca" id="bs-pd">—</div></div>
+          <div class="sc"><div class="scl">GST Collected</div><div class="scv cp" id="bs-gs">—</div></div>
+          <div class="sc"><div class="scl">Total Expenses</div><div class="scv cr" id="bs-ex">—</div></div>
+          <div class="sc"><div class="scl">Net Profit</div><div class="scv cb" id="bs-pr">—</div></div>
         </div>
         <div class="bs2">
           <div class="tc" style="margin:0">
-            <div class="th"><h3>Booking Status Breakdown</h3></div>
+            <div class="thead"><h3>Booking Status Breakdown</h3></div>
             <div class="tw"><table><thead><tr><th>Status</th><th>Count</th><th>Revenue</th></tr></thead><tbody id="bs-st"></tbody></table></div>
           </div>
           <div class="tc" style="margin:0">
-            <div class="th"><h3>Top 5 Dresses</h3>
+            <div class="thead"><h3>Top 5 Dresses</h3>
               <div class="togr"><button class="tog on" id="tgbk" onclick="swTop('bookings')">By Bookings</button><button class="tog" id="tgrv" onclick="swTop('revenue')">By Revenue</button></div>
             </div>
             <div class="tw"><table><thead><tr><th>#</th><th>Dress Name</th><th>Bookings</th><th>Revenue</th></tr></thead><tbody id="bs-tp"></tbody></table></div>
           </div>
         </div>
         <div class="tc">
-          <div class="th"><h3>Expense Breakdown by Category</h3></div>
+          <div class="thead"><h3>Expense Breakdown by Category</h3></div>
           <div class="tw"><table><thead><tr><th>Expense Name</th><th>Total Spent</th></tr></thead><tbody id="bs-eb"></tbody></table></div>
         </div>
       </div>
@@ -319,28 +291,26 @@
       <!-- PLANNER -->
       <div class="tp" id="tab-planner">
         <div class="ph"><h2>Daily Delivery Planner</h2><p>Bookings for selected event date and the next day</p></div>
-        <div class="fc">
-          <div class="fr">
-            <label>📅 Event Date</label>
-            <input type="date" id="pl-dt" onchange="rPlan()"/>
-            <button style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer" onclick="jumpToday()">Jump to Today</button>
-          </div>
-        </div>
+        <div class="fc"><div class="fr">
+          <label>📅 Event Date</label>
+          <input type="date" id="pl-dt" onchange="rPlan()"/>
+          <button style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer" onclick="jumpToday()">Jump to Today</button>
+        </div></div>
         <div class="plsp">
-          <div class="plc"><div class="plh"><h3 id="pl-h1">📅 Selected Date</h3><span class="cpil" id="pl-c1">0</span></div><div class="plb" id="pl-b1"></div></div>
-          <div class="plc"><div class="plh"><h3 id="pl-h2">⏳ Next Day</h3><span class="cpil" id="pl-c2">0</span></div><div class="plb" id="pl-b2"></div></div>
+          <div class="plcol"><div class="plhd"><h3 id="pl-h1">📅 Selected Date</h3><span class="cpil" id="pl-c1">0</span></div><div class="plbd" id="pl-b1"></div></div>
+          <div class="plcol"><div class="plhd"><h3 id="pl-h2">⏳ Next Day</h3><span class="cpil" id="pl-c2">0</span></div><div class="plbd" id="pl-b2"></div></div>
         </div>
       </div>
 
       <!-- RETURNS -->
       <div class="tp" id="tab-returns">
-        <div class="ph"><h2>Overdue &amp; Expected Returns Tracker</h2><p>Dresses not yet returned — auto-refreshes every 60 seconds</p></div>
+        <div class="ph"><h2>Overdue &amp; Expected Returns</h2><p>Dresses not yet returned — auto-refreshes every 60 seconds</p></div>
         <div class="sg" style="grid-template-columns:repeat(2,1fr);max-width:380px">
-          <div class="sc"><div class="sc-l">Pending Returns</div><div class="sc-v cr" id="rt-ct">—</div></div>
-          <div class="sc"><div class="sc-l">Balance Due</div><div class="sc-v ca" id="rt-bl">—</div></div>
+          <div class="sc"><div class="scl">Pending Returns</div><div class="scv cr" id="rt-ct">—</div></div>
+          <div class="sc"><div class="scl">Balance Due</div><div class="scv ca" id="rt-bl">—</div></div>
         </div>
         <div class="tc">
-          <div class="th"><h3>Items Due for Return</h3><span class="tbg red" id="rt-bg">—</span></div>
+          <div class="thead"><h3>Items Due for Return</h3><span class="tbg red" id="rt-bg">—</span></div>
           <div class="tw"><table>
             <thead><tr><th>Booking ID</th><th>Customer</th><th>Dress</th><th>Event Date</th><th>Total</th><th>Advance</th><th>Balance</th><th>Security</th><th>Notes</th><th>Action</th></tr></thead>
             <tbody id="rt-tb"></tbody>
@@ -355,14 +325,62 @@
 <div id="toast"></div>
 
 <script type="module">
-import { initializeApp }      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+// ── ALL HELPERS DEFINED FIRST — no "before initialization" errors ──────────
+const ge  = id => document.getElementById(id);
+const txt = (id,v) => { const e=ge(id); if(e) e.textContent=v; };
+const sv  = (id,v) => { const e=ge(id); if(e) e.value=v; };
+const sho = (id,d='block') => { const e=ge(id); if(e) e.style.display=d; };
+const hid = id => { const e=ge(id); if(e) e.style.display='none'; };
+const shE = id => { const e=ge(id); if(e) e.style.display='block'; };
+const hiE = id => { const e=ge(id); if(e) e.style.display='none'; };
+const fmt = n  => Math.round(n||0).toLocaleString('en-IN');
+const er  = (c,m='No data') => `<tr><td colspan="${c}" class="erow">${m}</td></tr>`;
+
+function showLoadErr(msg) {
+  const e = ge('ld-err');
+  e.innerHTML = msg.replace(/\n/g,'<br>');
+  e.style.display = 'block';
+  const r = document.querySelector('.ring');
+  if (r) r.style.display = 'none';
+  txt('ld-lbl','');
+}
+function setLbl(t) { txt('ld-lbl', t); }
+function showErr(id, msg) { const e=ge(id); if(!e) return; e.textContent=msg; e.style.display='block'; }
+function sbadge(s) {
+  const u=(s||'').toUpperCase();
+  if(u==='ACTIVE')    return `<span class="b ba">Active</span>`;
+  if(u==='RETURNED')  return `<span class="b br">Returned</span>`;
+  if(u==='CANCELLED') return `<span class="b bc">Cancelled</span>`;
+  if(u==='SOLD'||s==='Sold') return `<span class="b bs">Sold</span>`;
+  return `<span class="b br">${s||'—'}</span>`;
+}
+window.showToast = (msg,dur=3500) => {
+  const t=ge('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+};
+window.switchTab = (n,btn) => {
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nitem').forEach(b=>b.classList.remove('active'));
+  ge('tab-'+n).classList.add('active'); btn.classList.add('active');
+  txt('tbtl',{dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'}[n]||n);
+};
+window.showView = id => {
+  hid('vl'); hid('vf');
+  sho(id);
+  hiE('li-err'); hiE('fp-err'); hiE('fp-ok');
+};
+
+// ── FIREBASE IMPORTS ───────────────────────────────────────────────────────
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged,
          signInWithEmailAndPassword,
-         sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection,
-         getDocs, doc, updateDoc }         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+         sendPasswordResetEmail, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ── CONFIG ──────────────────────────────────────────
+// ── CONFIG ─────────────────────────────────────────────────────────────────
 const cfg = {
   apiKey:            "AIzaSyDYxJtPaJm6CBKO4LGS5g8BIsyyVo3KV6Y",
   authDomain:        "boutiqueos-3a75c.firebaseapp.com",
@@ -372,126 +390,139 @@ const cfg = {
   appId:             "1:382726562711:web:b7c840930fcb1955f3dad2"
 };
 
-// ── INIT ─────────────────────────────────────────────
+// ── INIT ───────────────────────────────────────────────────────────────────
 let auth, db;
 try {
-  const fbApp = initializeApp(cfg);
-  auth = getAuth(fbApp);
-  db   = getFirestore(fbApp);
-  setLbl("Firebase connected — checking session…");
+  const app = initializeApp(cfg);
+  auth = getAuth(app);
+  db   = getFirestore(app);
+  setLbl("Checking session…");
 } catch(e) {
-  showLoadErr("Firebase init failed: " + e.message + "\n\nCheck your internet connection and try again.");
-  throw e;
+  showLoadErr("Firebase init failed:\n" + e.message);
 }
 
-// ── STATE ────────────────────────────────────────────
-let uid = null, BK = [], EX = [], topSort = 'bookings', debT = null, retT = null;
+// ── STATE ──────────────────────────────────────────────────────────────────
+let uid=null, BK=[], EX=[], topSort='bookings', debT=null, retT=null;
 
-// ── AUTH STATE ───────────────────────────────────────
+// ── AUTH STATE ─────────────────────────────────────────────────────────────
 onAuthStateChanged(auth, user => {
-  g('loading').classList.add('hide');
-  if (user) { uid = user.uid; enterApp(user.email); }
-  else      { show('login-page','flex'); }
+  ge('loading').classList.add('hide');
+  if (user) { uid=user.uid; enterApp(user.email); }
+  else      { sho('login-page','flex'); }
 }, err => {
-  showLoadErr("Auth error: " + err.message);
+  showLoadErr("Auth connection failed:\n" + err.message +
+    "\n\nMake sure boutiqueos.in is added in:\nFirebase Console → Authentication → Settings → Authorized Domains");
 });
 
-// Timeout: if still spinning after 10s, show error
+// Timeout safety net — show error if still loading after 12 seconds
 setTimeout(() => {
-  const ld = g('loading');
-  if (!ld.classList.contains('hide')) {
-    showLoadErr("Connection timed out.\n\nPossible causes:\n• No internet connection\n• Firebase domain not authorized\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in");
+  if (!ge('loading').classList.contains('hide')) {
+    showLoadErr(
+      "Connection timed out.\n\n" +
+      "Most likely fix:\n" +
+      "Firebase Console → Authentication → Settings → Authorized Domains\n" +
+      "→ Add:  boutiqueos.in\n\n" +
+      "Then refresh this page."
+    );
   }
-}, 10000);
+}, 12000);
 
-// ── AUTH ACTIONS ─────────────────────────────────────
-window.showView = id => {
-  ['vl','vf'].forEach(v => g(v) && (g(v).style.display='none'));
-  g(id) && (g(id).style.display='block');
-  ['li-err','fp-err','fp-ok'].forEach(hideEl);
-};
-
+// ── AUTH ACTIONS ───────────────────────────────────────────────────────────
 window.doLogin = async () => {
-  const em = g('li-em').value.trim(), pw = g('li-pw').value;
-  if (!em || !pw) { showErr('li-err','Please enter email and password.'); return; }
-  const btn = g('li-btn'); btn.disabled=true; btn.textContent='Signing in…'; hideEl('li-err');
+  const em=ge('li-em').value.trim(), pw=ge('li-pw').value;
+  if(!em||!pw){ showErr('li-err','Please enter email and password.'); return; }
+  const btn=ge('li-btn'); btn.disabled=true; btn.textContent='Signing in…'; hiE('li-err');
   try {
-    await signInWithEmailAndPassword(auth, em, pw);
+    await signInWithEmailAndPassword(auth,em,pw);
   } catch(e) {
-    const m={'auth/user-not-found':'No account with this email.','auth/wrong-password':'Wrong password.','auth/invalid-email':'Invalid email.','auth/too-many-requests':'Too many attempts. Wait a moment.','auth/invalid-credential':'Wrong email or password.'};
+    const m={
+      'auth/user-not-found':    'No account found with this email.',
+      'auth/wrong-password':    'Wrong password. Try again.',
+      'auth/invalid-email':     'Invalid email address.',
+      'auth/too-many-requests': 'Too many attempts. Please wait.',
+      'auth/invalid-credential':'Wrong email or password.',
+    };
     showErr('li-err', m[e.code]||e.message);
     btn.disabled=false; btn.textContent='Sign In →';
   }
 };
 
 window.doReset = async () => {
-  const em = g('fp-em').value.trim();
-  if (!em) { showErr('fp-err','Please enter your email.'); return; }
-  hideEl('fp-err'); hideEl('fp-ok');
-  const btn=g('fp-btn'); btn.disabled=true; btn.textContent='Sending…';
+  const em=ge('fp-em').value.trim();
+  if(!em){ showErr('fp-err','Please enter your email.'); return; }
+  hiE('fp-err'); hiE('fp-ok');
+  const btn=ge('fp-btn'); btn.disabled=true; btn.textContent='Sending…';
   try {
-    await sendPasswordResetEmail(auth, em);
-    showEl('fp-ok');
-  } catch(e) { showErr('fp-err', e.code==='auth/user-not-found'?'No account with this email.':e.message); }
-  finally { btn.disabled=false; btn.textContent='Send Reset Link →'; }
+    await sendPasswordResetEmail(auth,em);
+    shE('fp-ok');
+  } catch(e) {
+    showErr('fp-err', e.code==='auth/user-not-found'?'No account with this email.':e.message);
+  } finally { btn.disabled=false; btn.textContent='Send Reset Link →'; }
 };
 
 window.doLogout = async () => {
-  clearInterval(retT); await signOut(auth);
-  hideEl('app'); show('login-page','flex');
-  g('li-em').value=''; g('li-pw').value=''; showView('vl');
+  clearInterval(retT);
+  await signOut(auth);
+  hid('app'); sho('login-page','flex');
+  ge('li-em').value=''; ge('li-pw').value='';
+  showView('vl');
 };
 
-// ── ENTER APP ────────────────────────────────────────
+// ── ENTER APP ──────────────────────────────────────────────────────────────
 async function enterApp(email) {
-  hide('login-page');
-  g('app').style.display='flex';
-  setTxt('uc-e', email||'—');
-  setTxt('uc-n', email?email.split('@')[0]:'My Boutique');
+  hid('login-page');
+  ge('app').style.display='flex';
+  txt('uc-e', email||'—');
+  txt('uc-n', email?email.split('@')[0]:'My Boutique');
   setDefaults();
   await loadData();
   fillDressFilter();
   rDash(); rBal(); rPlan(); rRet();
-  clearInterval(retT); retT = setInterval(rRet, 60000);
+  clearInterval(retT);
+  retT = setInterval(rRet, 60000);
 }
 
 function setDefaults() {
   const t=new Date(), f=d=>d.toISOString().slice(0,10);
-  const fm=new Date(t.getFullYear(),t.getMonth(),1);
-  sv('d-fr',f(t)); sv('d-to',f(t)); sv('bs-fr',f(fm)); sv('bs-to',f(t)); sv('pl-dt',f(t));
+  sv('d-fr',f(t)); sv('d-to',f(t));
+  sv('bs-fr',f(new Date(t.getFullYear(),t.getMonth(),1))); sv('bs-to',f(t));
+  sv('pl-dt',f(t));
 }
 
 async function loadData() {
   try {
-    setLbl('Loading your data…');
-    const sub = async n => { const s=await getDocs(collection(db,'stores',uid,n)); return s.docs.map(d=>({id:d.id,...d.data()})); };
+    const sub = async n => {
+      const s = await getDocs(collection(db,'stores',uid,n));
+      return s.docs.map(d=>({id:d.id,...d.data()}));
+    };
     [BK,EX] = await Promise.all([sub('bookings'),sub('expenses')]);
-  } catch(e) { toast('⚠️ Data load error: '+e.message); }
+  } catch(e) { showToast('⚠️ Data error: '+e.message); }
 }
 
 function fillDressFilter() {
-  const m=new Map(); BK.forEach(b=>{ if(b.dress_id&&!m.has(b.dress_id)) m.set(b.dress_id,b.dress_name||b.dress_id); });
-  g('d-drs').innerHTML='<option value="">All Dresses</option>'+[...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('');
+  const m=new Map();
+  BK.forEach(b=>{ if(b.dress_id&&!m.has(b.dress_id)) m.set(b.dress_id,b.dress_name||b.dress_id); });
+  ge('d-drs').innerHTML='<option value="">All Dresses</option>'+
+    [...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('');
 }
 
-// ── DASHBOARD ────────────────────────────────────────
-window.togDates = () => { const a=g('d-all').checked; g('d-fr').disabled=a; g('d-to').disabled=a; };
+// ── DASHBOARD ──────────────────────────────────────────────────────────────
+window.togDates = () => { const a=ge('d-all').checked; ge('d-fr').disabled=a; ge('d-to').disabled=a; };
 window.debD     = () => { clearTimeout(debT); debT=setTimeout(rDash,350); };
-
-window.rDash = () => {
-  const srch=g('d-srch').value.toLowerCase(), drs=g('d-drs').value, sts=g('d-sts').value.toUpperCase();
-  const all=g('d-all').checked, dtyp=g('d-dtyp').value, fr=g('d-fr').value, to=g('d-to').value;
-  setTxt('d-tot', BK.length);
-  setTxt('d-act', BK.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
-  setTxt('d-rev', '₹ '+fmt(BK.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
+window.rDash    = () => {
+  const srch=ge('d-srch').value.toLowerCase(), drs=ge('d-drs').value, sts=ge('d-sts').value.toUpperCase();
+  const all=ge('d-all').checked, dtyp=ge('d-dtyp').value, fr=ge('d-fr').value, to=ge('d-to').value;
+  txt('d-tot', BK.length);
+  txt('d-act', BK.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
+  txt('d-rev', '₹ '+fmt(BK.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
   let rows=BK;
   if(srch) rows=rows.filter(r=>(r.customer||'').toLowerCase().includes(srch)||(r.phone||'').includes(srch)||String(r.booking_id||'').toLowerCase().includes(srch)||(r.dress_id||'').toLowerCase().includes(srch));
   if(drs)  rows=rows.filter(r=>r.dress_id===drs);
   if(sts)  rows=rows.filter(r=>(r.status||'').toUpperCase()===sts);
   if(!all&&fr&&to) rows=rows.filter(r=>{ const d=r[dtyp]||''; return d>=fr&&d<=to; });
   rows=[...rows].sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
-  setTxt('d-cnt',rows.length+' records');
-  g('d-tb').innerHTML=rows.length?rows.map(r=>`<tr>
+  txt('d-cnt', rows.length+' records');
+  ge('d-tb').innerHTML = rows.length ? rows.map(r=>`<tr>
     <td style="font-weight:700;color:var(--primary)">${r.booking_id||'—'}</td>
     <td>${r.customer||'—'}</td><td style="color:var(--muted)">${r.phone||'—'}</td>
     <td>${r.dress_name||'—'}</td><td style="color:var(--muted)">${r.dress_id||'—'}</td>
@@ -502,14 +533,13 @@ window.rDash = () => {
     <td>${r.discount||0}</td><td>${r.gst_percent||0}%</td>
     <td style="color:var(--amber)">₹${fmt(r.security_amount)}</td>
     <td style="max-width:160px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td>
-  </tr>`).join(''):`<tr><td colspan="17" class="erow">No records match the current filters</td></tr>`;
+  </tr>`).join('') : er(17,'No records match the current filters');
 };
 
-// ── BALANCE SHEET ─────────────────────────────────────
-window.swTop = s => { topSort=s; g('tgbk').className='tog'+(s==='bookings'?' on':''); g('tgrv').className='tog'+(s==='revenue'?' on':''); rBal(); };
-
+// ── BALANCE SHEET ──────────────────────────────────────────────────────────
+window.swTop = s => { topSort=s; ge('tgbk').className='tog'+(s==='bookings'?' on':''); ge('tgrv').className='tog'+(s==='revenue'?' on':''); rBal(); };
 window.rBal = () => {
-  const d1=g('bs-fr').value, d2=g('bs-to').value;
+  const d1=ge('bs-fr').value, d2=ge('bs-to').value;
   const inR=b=>(!d1||(b.booking_date||'')>=d1)&&(!d2||(b.booking_date||'')<=d2);
   const fil=BK.filter(b=>inR(b)&&(b.status||'').toUpperCase()!=='CANCELLED');
   const allR=BK.filter(inR);
@@ -517,41 +547,56 @@ window.rBal = () => {
   const pd=fil.reduce((s,b)=>s+(b.total_balance||0),0), gs=fil.reduce((s,b)=>s+(b.gst_amount||0),0);
   const exF=EX.filter(e=>(!d1||(e.exp_date||'')>=d1)&&(!d2||(e.exp_date||'')<=d2));
   const ex=exF.reduce((s,e)=>s+(e.amount||0),0), np=(rv-gs)-ex;
-  setTxt('bs-rv','₹ '+fmt(rv)); setTxt('bs-cl','₹ '+fmt(cl)); setTxt('bs-pd','₹ '+fmt(pd));
-  setTxt('bs-gs','₹ '+fmt(gs)); setTxt('bs-ex','₹ '+fmt(ex));
-  const pe=g('bs-pr'); pe.textContent='₹ '+fmt(np); pe.className='sc-v '+(np>=0?'cb':'cr');
-  const byS={}; allR.forEach(b=>{ const s=b.status||'—'; if(!byS[s])byS[s]={c:0,r:0}; byS[s].c++; byS[s].r+=(b.grand_total||0); });
+  txt('bs-rv','₹ '+fmt(rv)); txt('bs-cl','₹ '+fmt(cl)); txt('bs-pd','₹ '+fmt(pd));
+  txt('bs-gs','₹ '+fmt(gs)); txt('bs-ex','₹ '+fmt(ex));
+  const pe=ge('bs-pr'); pe.textContent='₹ '+fmt(np); pe.className='scv '+(np>=0?'cb':'cr');
+  const byS={};
+  allR.forEach(b=>{ const s=b.status||'—'; if(!byS[s])byS[s]={c:0,r:0}; byS[s].c++; byS[s].r+=(b.grand_total||0); });
   const sc={ACTIVE:'#15803d',RETURNED:'var(--primary)',CANCELLED:'var(--red)',Sold:'var(--amber)'};
-  g('bs-st').innerHTML=Object.entries(byS).map(([s,v])=>`<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.c}</td><td>₹ ${fmt(v.r)}</td></tr>`).join('')||er(3);
-  const ds={}; fil.forEach(b=>{ const k=b.dress_id||'?'; if(!ds[k])ds[k]={n:b.dress_name||k,bk:0,rv:0}; ds[k].bk++; ds[k].rv+=(b.price||0); });
-  g('bs-tp').innerHTML=Object.values(ds).sort((a,b)=>topSort==='bookings'?b.bk-a.bk:b.rv-a.rv).slice(0,5).map((d,i)=>`<tr><td style="font-weight:800;text-align:center;color:var(--primary)">${i+1}</td><td>${d.n}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rv)}</td></tr>`).join('')||er(4);
-  const ec={}; exF.forEach(e=>{ const n=e.exp_name||'Other'; if(!ec[n])ec[n]=0; ec[n]+=(e.amount||0); });
-  g('bs-eb').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>`<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`).join('')||er(2,'No expenses in this period');
+  ge('bs-st').innerHTML=Object.entries(byS).map(([s,v])=>`<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.c}</td><td>₹ ${fmt(v.r)}</td></tr>`).join('')||er(3);
+  const ds={};
+  fil.forEach(b=>{ const k=b.dress_id||'?'; if(!ds[k])ds[k]={n:b.dress_name||k,bk:0,rv:0}; ds[k].bk++; ds[k].rv+=(b.price||0); });
+  ge('bs-tp').innerHTML=Object.values(ds).sort((a,b)=>topSort==='bookings'?b.bk-a.bk:b.rv-a.rv).slice(0,5).map((d,i)=>`<tr><td style="font-weight:800;text-align:center;color:var(--primary)">${i+1}</td><td>${d.n}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rv)}</td></tr>`).join('')||er(4);
+  const ec={};
+  exF.forEach(e=>{ const n=e.exp_name||'Other'; if(!ec[n])ec[n]=0; ec[n]+=(e.amount||0); });
+  ge('bs-eb').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>`<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`).join('')||er(2,'No expenses in this period');
 };
 
-// ── PLANNER ──────────────────────────────────────────
+// ── PLANNER ────────────────────────────────────────────────────────────────
 window.jumpToday = () => { sv('pl-dt',new Date().toISOString().slice(0,10)); rPlan(); };
 window.rPlan = () => {
-  const sel=g('pl-dt').value; if(!sel) return;
+  const sel=ge('pl-dt').value; if(!sel) return;
   const nx=new Date(sel+'T00:00:00'); nx.setDate(nx.getDate()+1); const nxs=nx.toISOString().slice(0,10);
   const its=BK.filter(b=>(b.event_date===sel||b.event_date===nxs)&&(b.status||'').toUpperCase()!=='CANCELLED');
   const s1=its.filter(b=>b.event_date===sel), s2=its.filter(b=>b.event_date===nxs);
   const fD=s=>s?new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
-  setTxt('pl-h1',`📅 ${fD(sel)} (Selected)`); setTxt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
-  setTxt('pl-c1',s1.length); setTxt('pl-c2',s2.length);
-  const mk=a=>a.length?a.map(b=>`<div class="plcard"><div><span class="pcd">${b.dress_name||'—'}</span><span class="pci">[#${b.booking_id}]</span></div><div class="pcc">👤 ${b.customer||'—'} (${b.phone||'—'})</div><div class="pcs">📏 CH ${b.chest||'—'} | W ${b.waist||'—'} | L ${b.length||'—'}</div>${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}</div>`).join(''):'<div class="plem">No events on this day</div>';
-  g('pl-b1').innerHTML=mk(s1); g('pl-b2').innerHTML=mk(s2);
+  txt('pl-h1',`📅 ${fD(sel)} (Selected)`); txt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
+  txt('pl-c1',s1.length); txt('pl-c2',s2.length);
+  const mk=a=>a.length?a.map(b=>`<div class="plcard">
+    <div><span class="pcd">${b.dress_name||'—'}</span><span class="pci">[#${b.booking_id}]</span></div>
+    <div class="pcc">👤 ${b.customer||'—'} (${b.phone||'—'})</div>
+    <div class="pcs">📏 CH ${b.chest||'—'} | W ${b.waist||'—'} | L ${b.length||'—'}</div>
+    ${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}</div>`).join('')
+    :'<div class="plem">No events on this day</div>';
+  ge('pl-b1').innerHTML=mk(s1); ge('pl-b2').innerHTML=mk(s2);
 };
 
-// ── RETURNS ──────────────────────────────────────────
+// ── RETURNS ────────────────────────────────────────────────────────────────
 window.rRet = () => {
   const today=new Date().toISOString().slice(0,10);
-  const due=BK.filter(b=>{ if((b.status||'').toUpperCase()!=='ACTIVE') return false; const ev=new Date((b.event_date||'9999-12-31')+'T00:00:00'); ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1)); return ev.toISOString().slice(0,10)<=today; }).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
-  setTxt('rt-ct',due.length); setTxt('rt-bl','₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0))); setTxt('rt-bg',due.length?due.length+' pending':'All clear ✅');
-  g('rt-tb').innerHTML=due.length?due.map(b=>`<tr>
+  const due=BK.filter(b=>{
+    if((b.status||'').toUpperCase()!=='ACTIVE') return false;
+    const ev=new Date((b.event_date||'9999-12-31')+'T00:00:00');
+    ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1));
+    return ev.toISOString().slice(0,10)<=today;
+  }).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
+  txt('rt-ct', due.length);
+  txt('rt-bl', '₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
+  txt('rt-bg', due.length?due.length+' pending':'All clear ✅');
+  ge('rt-tb').innerHTML=due.length?due.map(b=>`<tr>
     <td style="font-weight:700;color:var(--primary)">${b.booking_id||'—'}</td>
     <td>${b.customer||'—'}</td><td>${b.dress_name||'—'}</td>
-    <td class="${b.event_date===today?'duetoday':'overdue'}">${b.event_date||'—'}</td>
+    <td class="${b.event_date===today?'dt':'ov'}">${b.event_date||'—'}</td>
     <td>₹${fmt(b.grand_total)}</td><td>₹${fmt(b.total_advance)}</td>
     <td style="font-weight:700;color:${(b.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(b.total_balance)}</td>
     <td style="color:var(--amber)">₹${fmt(b.security_amount)}</td>
@@ -560,31 +605,12 @@ window.rRet = () => {
   </tr>`).join(''):`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns!</td></tr>`;
 };
 window.markRet = async bid => {
-  try { await updateDoc(doc(db,'stores',uid,'bookings',bid),{status:'RETURNED'}); toast('✅ #'+bid+' marked returned'); await loadData(); rRet(); rDash(); }
-  catch(e){ toast('❌ '+e.message); }
+  try {
+    await updateDoc(doc(db,'stores',uid,'bookings',bid),{status:'RETURNED'});
+    showToast('✅ #'+bid+' marked returned');
+    await loadData(); rRet(); rDash();
+  } catch(e){ showToast('❌ '+e.message); }
 };
-
-// ── HELPERS ──────────────────────────────────────────
-const g=i=>document.getElementById(i);
-const setTxt=(i,v)=>{const e=g(i);if(e)e.textContent=v};
-const sv=(i,v)=>{const e=g(i);if(e)e.value=v};
-const show=(i,d='block')=>{const e=g(i);if(e)e.style.display=d};
-const hide=i=>{const e=g(i);if(e)e.style.display='none'};
-const showEl=i=>{const e=g(i);if(e)e.style.display='block'};
-const hideEl=i=>{const e=g(i);if(e)e.style.display='none'};
-const fmt=n=>Math.round(n||0).toLocaleString('en-IN');
-const er=(c,m='No data')=>`<tr><td colspan="${c}" class="erow">${m}</td></tr>`;
-const setLbl=t=>setTxt('load-lbl',t);
-function showLoadErr(msg){
-  const e=g('load-err'); e.style.display='block';
-  e.innerHTML=msg.replace(/\n/g,'<br>');
-  g('ring-lbl') && (g('ring-lbl').style.display='none');
-  document.querySelector('.ring') && (document.querySelector('.ring').style.display='none');
-}
-function showErr(id,msg){const e=g(id);if(!e)return;e.textContent=msg;e.style.display='block';}
-function sbadge(s){const m={'ACTIVE':'active','RETURNED':'returned','CANCELLED':'cancelled','SOLD':'sold','Sold':'sold'};const c=m[(s||'').toUpperCase()]||m[s]||'returned';return`<span class="b b-${c}">${s||'—'}</span>`;}
-function toast(msg,dur=3500){const t=g('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
-window.switchTab=(n,btn)=>{document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.ni').forEach(b=>b.classList.remove('active'));g('tab-'+n).classList.add('active');btn.classList.add('active');setTxt('tbt',{dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'}[n]||n);};
 </script>
 </body>
 </html>

@@ -811,7 +811,7 @@ window.rPlan=()=>{
         <div class="pcm">📏 Bottom: W ${r.waist||'—'} | SE ${r.seat||'—'} | L ${r.bot_length||'—'}</div>`;
     }else{
       // Female: show single measurement line
-      measHtml=`<div class="pcm">📏 CH ${r.chest||'—'} | W ${r.waist||'—'} | L ${r.bot_length||r.waist||'—'}</div>`;
+      measHtml=`<div class="pcm">📏 CH ${r.chest||'—'} | W ${r.waist||'—'} | SH ${r.shoulder||'—'} | SL ${r.arms||'—'} | L ${r.bot_length||r.waist||'—'}</div>`;
     }
     const notesHtml=r.notes?`<div class="pcn">📝 ${r.notes}</div>`:'';
     return`<div class="plcard">

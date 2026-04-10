@@ -13,9 +13,8 @@
       --border:#e2e8f0; --muted:#64748b; --sw:240px;
     }
     body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--light); color:var(--dark); min-height:100vh; overflow-x:hidden; }
-    body.login-open { overflow:hidden; }
 
-    /* ── LOADING ── */
+    /* LOADING */
     #loading { position:fixed; inset:0; background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; gap:16px; transition:opacity .4s; }
     #loading.hide { opacity:0; pointer-events:none; }
     .ring { width:44px; height:44px; border-radius:50%; border:3px solid #e0e7ff; border-top-color:var(--indigo); animation:spin .8s linear infinite; }
@@ -23,7 +22,7 @@
     #ld-lbl { font-size:13px; color:var(--muted); font-weight:500; }
     #ld-err { display:none; margin-top:8px; padding:14px 20px; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; color:var(--red); font-size:13px; font-weight:600; text-align:center; max-width:420px; line-height:1.6; }
 
-    /* ── LOGIN ── */
+    /* LOGIN */
     #login-page { display:none; min-height:100vh; background:linear-gradient(135deg,#1e1b4b 0%,#312e81 30%,#4f46e5 65%,#7c3aed 100%); align-items:center; justify-content:center; position:fixed; inset:0; overflow-y:auto; z-index:500; }
     .orb { position:absolute; border-radius:50%; filter:blur(80px); animation:float 8s ease-in-out infinite; pointer-events:none; }
     .orb-1 { width:400px; height:400px; background:rgba(124,58,237,.25); top:-100px; right:-80px; }
@@ -44,7 +43,7 @@
     .fi input::placeholder { color:#94a3b8; }
     .pw-wrap { position:relative; }
     .pw-wrap input { padding-right:44px; }
-    .pw-eye { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--muted); font-size:16px; padding:4px; line-height:1; }
+    .pw-eye { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--muted); padding:4px; line-height:1; display:flex; align-items:center; }
     .pw-eye:hover { color:var(--indigo); }
     .lbtn { width:100%; padding:13px; background:linear-gradient(135deg,var(--indigo),var(--purple)); border:none; border-radius:10px; color:white; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; transition:transform .2s,box-shadow .2s; box-shadow:0 4px 16px rgba(79,70,229,.38); margin-top:6px; }
     .lbtn:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(79,70,229,.45); }
@@ -57,13 +56,13 @@
     .mok  { background:#f0fdf4; color:var(--green); border:1px solid #bbf7d0; border-radius:8px; padding:9px 13px; font-size:13px; font-weight:500; margin-top:10px; display:none; }
     .login-foot { text-align:center; margin-top:20px; font-size:12px; color:rgba(255,255,255,.35); }
     .login-foot a { color:rgba(255,255,255,.45); text-decoration:none; }
-    .login-foot a:hover { color:#a5b4fc; }
 
-    /* ── APP ── */
-    #app { display:none; min-height:100vh; overflow:hidden; }
+    /* APP */
+    #app { display:none; min-height:100vh; }
     #app.visible { display:flex; }
+    body.login-open { overflow:hidden; }
 
-    /* ── DESKTOP SIDEBAR ── */
+    /* SIDEBAR */
     .sidebar { width:var(--sw); background:linear-gradient(180deg,#1e1b4b 0%,#2d2a6e 40%,#312e81 100%); display:flex; flex-direction:column; position:fixed; inset-y:0; left:0; z-index:100; box-shadow:4px 0 24px rgba(0,0,0,.25); }
     .slogo { padding:24px 20px 18px; border-bottom:1px solid rgba(255,255,255,.08); }
     .slogo-text { font-size:22px; font-weight:800; color:var(--white); letter-spacing:-0.5px; }
@@ -87,7 +86,7 @@
     .obtn { width:100%; padding:9px 12px; background:none; border:1.5px solid rgba(255,255,255,.15); border-radius:10px; font-family:inherit; font-size:13px; font-weight:600; color:rgba(255,255,255,.55); cursor:pointer; transition:all .2s; }
     .obtn:hover { border-color:#fca5a5; color:#fca5a5; background:rgba(220,38,38,.1); }
 
-    /* ── MOBILE TOP BAR ── */
+    /* MOBILE TOP BAR */
     .mob-topbar { display:none; height:54px; background:linear-gradient(135deg,#1e1b4b,#4f46e5); padding:0 16px; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:200; box-shadow:0 2px 16px rgba(0,0,0,.25); }
     .mob-logo { font-size:18px; font-weight:800; color:white; letter-spacing:-0.3px; }
     .mob-logo span { color:#a5b4fc; }
@@ -97,57 +96,36 @@
     .ham-btn { background:none; border:none; cursor:pointer; color:white; font-size:22px; line-height:1; padding:4px 6px; transition:transform .15s; }
     .ham-btn.open { transform:rotate(90deg); }
 
-    /* ── MOBILE DROPDOWN — drops from top, full width ── */
-    .mob-dropdown {
-      display:none;
-      position:fixed; top:54px; left:0; right:0; z-index:199;
-      background:linear-gradient(180deg,#1e1b4b 0%,#312e81 100%);
-      border-bottom:1px solid rgba(255,255,255,.1);
-      box-shadow:0 8px 32px rgba(0,0,0,.4);
-      animation:dropDown .2s cubic-bezier(.4,0,.2,1);
-    }
+    /* MOBILE DROPDOWN */
+    .mob-dropdown { display:none; position:fixed; top:54px; left:0; right:0; z-index:199; background:linear-gradient(180deg,#1e1b4b 0%,#312e81 100%); border-bottom:1px solid rgba(255,255,255,.1); box-shadow:0 8px 32px rgba(0,0,0,.4); animation:dropDown .2s cubic-bezier(.4,0,.2,1); }
     .mob-dropdown.open { display:block; }
     @keyframes dropDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
     .mob-dd-body { padding:12px 14px 16px; }
-
-    /* Store info row inside dropdown */
     .mob-dd-store { display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,.08); }
     .mob-dd-store-lbl { font-size:10px; font-weight:700; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.08em; }
     .mob-dd-store-name { font-size:13px; font-weight:700; color:rgba(255,255,255,.8); margin-top:2px; }
     .mob-store-sel { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); border-radius:8px; color:white; font-family:inherit; font-size:13px; font-weight:600; padding:6px 10px; outline:none; }
     .mob-store-sel option { background:#312e81; }
-
-    /* Nav grid in dropdown */
     .mob-dd-nav { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
-    .mob-dd-btn {
-      display:flex; align-items:center; gap:10px;
-      padding:13px 14px; border-radius:10px; border:none;
-      background:rgba(255,255,255,.07); font-family:inherit;
-      font-size:13px; font-weight:600; color:rgba(255,255,255,.7);
-      cursor:pointer; text-align:left; transition:all .15s;
-    }
+    .mob-dd-btn { display:flex; align-items:center; gap:10px; padding:13px 14px; border-radius:10px; border:none; background:rgba(255,255,255,.07); font-family:inherit; font-size:13px; font-weight:600; color:rgba(255,255,255,.7); cursor:pointer; text-align:left; transition:all .15s; }
     .mob-dd-btn:hover { background:rgba(255,255,255,.13); color:white; }
     .mob-dd-btn.active { background:rgba(165,180,252,.2); color:white; border:1px solid rgba(165,180,252,.25); }
     .mob-dd-icon { font-size:18px; }
-
-    /* Sign out row in dropdown */
     .mob-dd-foot { display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid rgba(255,255,255,.08); }
     .mob-dd-user { font-size:11px; color:rgba(255,255,255,.38); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; margin-right:10px; }
     .mob-dd-out { background:none; border:1px solid rgba(255,255,255,.18); border-radius:8px; color:rgba(255,255,255,.6); font-family:inherit; font-size:12px; font-weight:600; padding:5px 14px; cursor:pointer; white-space:nowrap; transition:all .2s; }
     .mob-dd-out:hover { border-color:#fca5a5; color:#fca5a5; }
-
-    /* Tap outside to close */
     .mob-dd-overlay { display:none; position:fixed; inset:0; top:54px; z-index:198; }
     .mob-dd-overlay.show { display:block; }
 
-    /* ── DESKTOP TOPBAR ── */
+    /* DESKTOP TOPBAR */
     .topbar { height:56px; background:var(--white); border-bottom:1px solid var(--border); padding:0 28px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; box-shadow:0 1px 20px rgba(0,0,0,.05); }
     .tbtl { font-size:16px; font-weight:800; color:var(--dark); letter-spacing:-0.3px; }
     .lchip { display:flex; align-items:center; gap:6px; padding:5px 13px; background:#dcfce7; border-radius:100px; font-size:12px; font-weight:700; color:var(--green); }
     .ldot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-    /* ── MAIN ── */
+    /* MAIN */
     .main { margin-left:var(--sw); flex:1; display:flex; flex-direction:column; min-height:100vh; }
     .cont { flex:1; padding:24px 28px; }
     .tp { display:none; animation:fup .25s ease; }
@@ -157,7 +135,7 @@
     .ph h2 { font-size:22px; font-weight:800; color:var(--dark); letter-spacing:-0.5px; }
     .ph p  { font-size:13px; color:var(--muted); margin-top:3px; }
 
-    /* ── FILTERS ── */
+    /* FILTERS */
     .fc { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:14px 18px; margin-bottom:20px; display:flex; flex-direction:column; gap:10px; box-shadow:0 2px 8px rgba(79,70,229,.04); }
     .fr { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     .fr label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; }
@@ -168,7 +146,7 @@
     .showall { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:12px; font-weight:600; color:var(--muted); background:var(--light); cursor:pointer; user-select:none; white-space:nowrap; }
     .showall input { accent-color:var(--indigo); cursor:pointer; }
 
-    /* ── STAT CARDS ── */
+    /* STAT CARDS */
     .sg { display:grid; grid-template-columns:repeat(auto-fill,minmax(175px,1fr)); gap:16px; margin-bottom:22px; }
     .sc { background:var(--white); border:1px solid #e0e7ff; border-radius:16px; padding:20px 22px; position:relative; overflow:hidden; transition:transform .2s,box-shadow .2s; box-shadow:0 2px 12px rgba(79,70,229,.06); }
     .sc:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(79,70,229,.13); }
@@ -177,7 +155,7 @@
     .scv { font-size:26px; font-weight:900; line-height:1; letter-spacing:-0.5px; }
     .ci{color:var(--indigo)}.cg{color:var(--green)}.ca{color:var(--amber)}.cr{color:var(--red)}.cp{color:var(--purple)}.cb{color:#0284c7}
 
-    /* ── TABLE ── */
+    /* TABLE */
     .tc { background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:22px; box-shadow:0 2px 8px rgba(79,70,229,.04); }
     .thead { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
     .thead h3 { font-size:14px; font-weight:800; color:var(--dark); }
@@ -194,7 +172,7 @@
     .b { display:inline-flex; padding:3px 10px; border-radius:100px; font-size:11px; font-weight:700; }
     .ba{background:#dcfce7;color:#15803d}.br{background:#eef2ff;color:var(--indigo)}.bc{background:#fee2e2;color:#b91c1c}.bs{background:#fef9c3;color:#92400e}
 
-    /* ── PLANNER ── */
+    /* PLANNER */
     .plsp { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
     .plcol { background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(79,70,229,.04); }
     .plhd { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
@@ -204,11 +182,12 @@
     .plcard { background:var(--light); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
     .pcd{font-size:13px;font-weight:700;color:var(--dark)}.pci{font-size:11px;color:var(--indigo);font-weight:700;margin-left:5px}
     .pcc{font-size:12px;color:var(--muted);margin-top:4px}.pcs{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
+    .pcm{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
     .pcn{font-size:11px;color:var(--purple);margin-top:5px;font-weight:600}
     .plem{text-align:center;padding:36px;color:var(--muted);font-size:13px}
     .ov{color:var(--red)!important;font-weight:700!important}.dt{color:var(--amber)!important;font-weight:700!important}
 
-    /* ── BALANCE ── */
+    /* BALANCE */
     .bs6{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:22px}
     .bs2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
     .togr{display:flex;gap:6px}
@@ -217,27 +196,22 @@
     .jbtn{padding:7px 16px;border:1.5px solid var(--border);border-radius:8px;background:var(--light);font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
     .jbtn:hover{border-color:var(--indigo);color:var(--indigo);background:#eef2ff}
 
-    /* ── MOBILE BOTTOM NAV ── */
+    /* MOBILE BOTTOM NAV */
     .mob-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--white); border-top:1px solid var(--border); z-index:90; padding:6px 0 env(safe-area-inset-bottom,6px); box-shadow:0 -4px 20px rgba(0,0,0,.08); }
-    #app:not(.visible) ~ .mob-nav { display:none !important; }
     .mob-nav-inner { display:flex; }
     .mob-nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:5px 4px; background:none; border:none; cursor:pointer; font-family:inherit; color:var(--muted); transition:color .15s; }
     .mob-nav-btn.active { color:var(--indigo); }
     .mob-nav-icon { font-size:20px; }
     .mob-nav-lbl { font-size:10px; font-weight:700; }
 
-    /* Toast */
     #toast{position:fixed;bottom:80px;right:16px;background:var(--dark);color:white;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.22)}
     #toast.show{display:block;animation:toastIn .3s ease}
     @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-    /* ── RESPONSIVE ── */
+    /* RESPONSIVE */
     @media(max-width:820px){
-      /* Sidebar fully removed from layout — not just hidden */
       .sidebar{display:none !important;width:0 !important;position:absolute !important}
-      /* App no longer flex row — stacks normally */
       #app{display:block !important}
-      /* Main takes full 100% width */
       .main{margin-left:0 !important;width:100% !important;padding-bottom:72px}
       .topbar{display:none}
       .mob-topbar{display:flex}
@@ -252,17 +226,14 @@
       .ph h2{font-size:18px}
       #toast{bottom:80px}
     }
-    @media(max-width:400px){
-      .login-card{padding:26px 18px}
-    }
+    @media(max-width:400px){.login-card{padding:26px 18px}}
   </style>
 </head>
 <body>
 
-<!-- LOADING -->
 <div id="loading"><div class="ring"></div><div id="ld-lbl">Connecting to BoutiqueOS…</div><div id="ld-err"></div></div>
 
-<!-- ════════ LOGIN ════════ -->
+<!-- LOGIN -->
 <div id="login-page">
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="hero-grid"></div>
   <div class="login-wrap">
@@ -277,12 +248,9 @@
           <label>Password</label>
           <div class="pw-wrap">
             <input type="password" id="li-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
-            <button class="pw-eye" type="button" onclick="togglePw('li-pw',this)" title="Show/hide password">
-            <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-          </button>
+            <button class="pw-eye" type="button" onclick="togglePw('li-pw',this)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
           </div>
         </div>
         <div class="merr" id="li-err"></div>
@@ -303,24 +271,15 @@
   </div>
 </div>
 
-<!-- ════════ APP ════════ -->
+<!-- APP -->
 <div id="app">
-
-  <!-- ── DESKTOP SIDEBAR ── -->
   <div class="sidebar">
     <div class="slogo">
       <div class="slogo-text">Boutique<span>OS</span></div>
       <div class="slogo-sub">Store Dashboard</div>
     </div>
-    <div id="desk-store-multi" style="display:none">
-      <div class="store-switcher">
-        <label>Select Store</label>
-        <select class="store-select" id="store-select" onchange="switchStore(this.value)"></select>
-      </div>
-    </div>
-    <div id="desk-store-single" style="display:none">
-      <div class="store-single" id="desk-store-name">—</div>
-    </div>
+    <div id="desk-store-multi" style="display:none"><div class="store-switcher"><label>Select Store</label><select class="store-select" id="store-select" onchange="switchStore(this.value)"></select></div></div>
+    <div id="desk-store-single" style="display:none"><div class="store-single" id="desk-store-name">—</div></div>
     <nav class="snav">
       <button class="nitem active" onclick="switchTab('dashboard',this)"><span class="nic">📊</span>Dashboard</button>
       <button class="nitem" onclick="switchTab('balance',this)"><span class="nic">💰</span>Balance Sheet</button>
@@ -333,42 +292,34 @@
     </div>
   </div>
 
-  <!-- ── MOBILE TOP BAR ── -->
+  <!-- Mobile Top Bar -->
   <div class="mob-topbar">
     <button class="ham-btn" id="ham-btn" onclick="toggleDropdown()">☰</button>
     <div class="mob-logo">Boutique<span>OS</span></div>
     <div class="mob-right"><div class="mob-live"><div class="mob-live-dot"></div>Live</div></div>
   </div>
 
-  <!-- ── MOBILE DROPDOWN MENU ── -->
+  <!-- Mobile Dropdown -->
   <div class="mob-dropdown" id="mob-dropdown">
     <div class="mob-dd-body">
-      <!-- Store switcher row -->
       <div class="mob-dd-store" id="mob-store-row">
-        <div>
-          <div class="mob-dd-store-lbl">Store</div>
-          <div class="mob-dd-store-name" id="mob-store-name">—</div>
-        </div>
+        <div><div class="mob-dd-store-lbl">Store</div><div class="mob-dd-store-name" id="mob-store-name">—</div></div>
         <select class="mob-store-sel" id="mob-store-select" style="display:none" onchange="switchStore(this.value)"></select>
       </div>
-      <!-- 2x2 nav grid -->
       <div class="mob-dd-nav">
         <button class="mob-dd-btn active" id="mdb-dashboard" onclick="mobSwitchTab('dashboard')"><span class="mob-dd-icon">📊</span>Dashboard</button>
         <button class="mob-dd-btn" id="mdb-balance"   onclick="mobSwitchTab('balance')"  ><span class="mob-dd-icon">💰</span>Balance Sheet</button>
         <button class="mob-dd-btn" id="mdb-planner"   onclick="mobSwitchTab('planner')"  ><span class="mob-dd-icon">📅</span>Planner</button>
         <button class="mob-dd-btn" id="mdb-returns"   onclick="mobSwitchTab('returns')"  ><span class="mob-dd-icon">🔄</span>Return Tracker</button>
       </div>
-      <!-- User + sign out -->
       <div class="mob-dd-foot">
         <div class="mob-dd-user" id="mob-dd-user">—</div>
         <button class="mob-dd-out" onclick="doLogout()">Sign Out</button>
       </div>
     </div>
   </div>
-  <!-- Tap outside to close -->
   <div class="mob-dd-overlay" id="mob-dd-overlay" onclick="closeDropdown()"></div>
 
-  <!-- ── DESKTOP TOPBAR ── -->
   <div class="main">
     <div class="topbar">
       <div class="tbtl" id="tbtl">Dashboard</div>
@@ -398,10 +349,18 @@
               <option value="Sold">Sold</option><option value="RETURNED">Returned</option>
               <option value="CANCELLED">Cancelled</option>
             </select>
+            <div class="fsep"></div>
+            <label>Gender</label>
+            <select id="d-gender" onchange="rDash()">
+              <option value="">All</option><option value="F">F</option><option value="M">M</option>
+            </select>
           </div>
           <div class="fr">
             <label>📅 Filter by</label>
-            <select id="d-dtyp" onchange="rDash()"><option value="booking_date">Booking Date</option><option value="event_date">Event Date</option></select>
+            <select id="d-dtyp" onchange="rDash()">
+              <option value="booking_date">Booking Date</option>
+              <option value="event_date">Event Date</option>
+            </select>
             <label>From</label><input type="date" id="d-fr" onchange="rDash()"/>
             <label>To</label><input type="date" id="d-to" onchange="rDash()"/>
             <label class="showall"><input type="checkbox" id="d-all" checked onchange="togDates();rDash()"/> Show All Dates</label>
@@ -410,7 +369,14 @@
         <div class="tc">
           <div class="thead"><h3>Bookings</h3><span class="tbg" id="d-cnt">0 records</span></div>
           <div class="tw"><table>
-            <thead><tr><th>ID</th><th>Customer</th><th>Phone</th><th>Dress</th><th>Dress ID</th><th>Price</th><th>Booking Date</th><th>Event Date</th><th>Days</th><th>Status</th><th>Grand Total</th><th>Advance</th><th>Balance</th><th>Discount</th><th>GST%</th><th>Security</th><th>Notes</th></tr></thead>
+            <thead><tr>
+              <th>ID</th><th>Customer</th><th>Gender</th><th>Phone</th><th>Dress</th><th>Dress ID</th>
+              <th>Price</th><th>Booking Date</th><th>Event Date</th><th>Days</th><th>Status</th>
+              <th>Grand Total</th><th>Advance</th><th>Cash</th><th>UPI</th><th>Balance</th>
+              <th>Discount</th><th>GST%</th><th>GST Amt</th><th>Security</th><th>Sec Refunded</th>
+              <th>Sec Held</th><th>Notes</th><th>Chest</th><th>Waist</th><th>Shoulder</th>
+              <th>Arms</th><th>Stomach</th><th>Top Len</th><th>Bot Len</th><th>Seat</th>
+            </tr></thead>
             <tbody id="d-tb"></tbody>
           </table></div>
         </div>
@@ -483,11 +449,11 @@
       <button class="mob-nav-btn" id="mn-returns"   onclick="mobSwitchTab('returns')"  ><span class="mob-nav-icon">🔄</span><span class="mob-nav-lbl">Returns</span></button>
     </div>
   </div>
-
-</div><!-- /app -->
+</div>
 <div id="toast"></div>
 
 <script type="module">
+// ── HELPERS ────────────────────────────────────────────────────────────────
 const ge=(id)=>document.getElementById(id);
 const txt=(id,v)=>{const e=ge(id);if(e)e.textContent=v};
 const sv=(id,v)=>{const e=ge(id);if(e)e.value=v};
@@ -503,55 +469,16 @@ function showLoadErr(msg){const e=ge('ld-err');e.innerHTML=msg.replace(/\n/g,'<b
 function showErr(id,msg){const e=ge(id);if(!e)return;e.textContent=msg;e.style.display='block'}
 function sbadge(s){const u=(s||'').toUpperCase();if(u==='ACTIVE')return`<span class="b ba">Active</span>`;if(u==='RETURNED')return`<span class="b br">Returned</span>`;if(u==='CANCELLED')return`<span class="b bc">Cancelled</span>`;if(u==='SOLD'||s==='Sold')return`<span class="b bs">Sold</span>`;return`<span class="b br">${s||'—'}</span>`}
 window.showToast=(msg,dur=3500)=>{const t=ge('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)};
+window.togglePw=(id,btn)=>{const i=ge(id);if(!i)return;const s=i.type==='password';i.type=s?'text':'password';btn.innerHTML=s?`<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`:`<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`};
 
-window.togglePw=(id,btn)=>{
-  const i=ge(id); if(!i) return;
-  const show=i.type==='password';
-  i.type=show?'text':'password';
-  // Swap between eye and eye-off SVG
-  btn.innerHTML=show
-    ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
-    : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-};
-
-// ── MOBILE DROPDOWN ───────────────────────────────────────────────────────
-window.toggleDropdown=()=>{
-  const dd=ge('mob-dropdown'), ov=ge('mob-dd-overlay'), btn=ge('ham-btn');
-  const isOpen=dd.classList.contains('open');
-  if(isOpen){dd.classList.remove('open');ov.classList.remove('show');btn.classList.remove('open');}
-  else{dd.classList.add('open');ov.classList.add('show');btn.classList.add('open');}
-};
-window.closeDropdown=()=>{
-  ge('mob-dropdown').classList.remove('open');
-  ge('mob-dd-overlay').classList.remove('show');
-  ge('ham-btn').classList.remove('open');
-};
-
-// Tab switch — works for both desktop sidebar and mobile
+window.toggleDropdown=()=>{const dd=ge('mob-dropdown'),ov=ge('mob-dd-overlay'),btn=ge('ham-btn');const o=dd.classList.contains('open');if(o){dd.classList.remove('open');ov.classList.remove('show');btn.classList.remove('open')}else{dd.classList.add('open');ov.classList.add('show');btn.classList.add('open')}};
+window.closeDropdown=()=>{ge('mob-dropdown').classList.remove('open');ge('mob-dd-overlay').classList.remove('show');ge('ham-btn').classList.remove('open')};
 const TAB_TITLES={dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'};
-window.switchTab=(n,btn)=>{
-  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nitem').forEach(b=>b.classList.remove('active'));
-  ge('tab-'+n).classList.add('active');
-  if(btn)btn.classList.add('active');
-  txt('tbtl',TAB_TITLES[n]||n);
-};
-window.mobSwitchTab=(n)=>{
-  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.mob-dd-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.nitem').forEach(b=>b.classList.remove('active'));
-  ge('tab-'+n).classList.add('active');
-  const mn=ge('mn-'+n);if(mn)mn.classList.add('active');
-  const mdb=ge('mdb-'+n);if(mdb)mdb.classList.add('active');
-  txt('tbtl',TAB_TITLES[n]||n);
-  closeDropdown();
-  window.scrollTo({top:0,behavior:'smooth'});
-};
-
+window.switchTab=(n,btn)=>{document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nitem').forEach(b=>b.classList.remove('active'));ge('tab-'+n).classList.add('active');if(btn)btn.classList.add('active');txt('tbtl',TAB_TITLES[n]||n)};
+window.mobSwitchTab=(n)=>{document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.mob-nav-btn,.mob-dd-btn,.nitem').forEach(b=>b.classList.remove('active'));ge('tab-'+n).classList.add('active');const mn=ge('mn-'+n);if(mn)mn.classList.add('active');const mdb=ge('mdb-'+n);if(mdb)mdb.classList.add('active');txt('tbtl',TAB_TITLES[n]||n);closeDropdown();window.scrollTo({top:0,behavior:'smooth'})};
 window.showView=id=>{hid('vl');hid('vf');sho(id);hiE('li-err');hiE('fp-err');hiE('fp-ok')};
 
-// ── FIREBASE ──────────────────────────────────────────────────────────────
+// ── FIREBASE ───────────────────────────────────────────────────────────────
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,sendPasswordResetEmail,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import{getFirestore,collection,getDocs,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -562,15 +489,22 @@ let auth,db;
 try{const a=initializeApp(cfg);auth=getAuth(a);db=getFirestore(a);setLbl("Checking session…")}
 catch(e){showLoadErr("Firebase init failed:\n"+e.message)}
 
-let uid=null,currentStoreId=null,allStores=[],BK=[],EX=[],topSort='bookings',debT=null,retT=null;
+// ── STATE ──────────────────────────────────────────────────────────────────
+let uid=null,currentStoreId=null,allStores=[];
+// Raw collections from Firestore
+let RAW_BOOKINGS={},RAW_ITEMS={},RAW_EXPENSES=[];
+// Joined rows: one row per booking_item with booking fields merged in
+let JOINED=[];
+let topSort='bookings',debT=null,retT=null;
 
+// ── AUTH ───────────────────────────────────────────────────────────────────
 onAuthStateChanged(auth,async user=>{
   ge('loading').classList.add('hide');
   if(user){uid=user.uid;document.body.classList.remove('login-open');await enterApp(user.email)}
   else{sho('login-page','flex');document.body.classList.add('login-open')}
 },err=>showLoadErr("Connection failed:\n"+err.message+"\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in"));
 
-setTimeout(()=>{if(!ge('loading').classList.contains('hide'))showLoadErr("Connection timed out.\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in\n\nThen refresh.")},12000);
+setTimeout(()=>{if(!ge('loading').classList.contains('hide'))showLoadErr("Connection timed out.\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add: boutiqueos.in\n\nThen refresh.")},12000);
 
 window.doLogin=async()=>{
   const em=ge('li-em').value.trim(),pw=ge('li-pw').value;
@@ -580,24 +514,40 @@ window.doLogin=async()=>{
   catch(e){const m={'auth/user-not-found':'No account found.','auth/wrong-password':'Wrong password.','auth/invalid-email':'Invalid email.','auth/too-many-requests':'Too many attempts.','auth/invalid-credential':'Wrong email or password.'};showErr('li-err',m[e.code]||e.message);btn.disabled=false;btn.textContent='Sign In →'}
 };
 window.doReset=async()=>{
-  const em=ge('fp-em').value.trim();
-  if(!em){showErr('fp-err','Please enter your email.');return}
+  const em=ge('fp-em').value.trim();if(!em){showErr('fp-err','Please enter your email.');return}
   hiE('fp-err');hiE('fp-ok');const btn=ge('fp-btn');btn.disabled=true;btn.textContent='Sending…';
   try{await sendPasswordResetEmail(auth,em);shE('fp-ok')}
   catch(e){showErr('fp-err',e.code==='auth/user-not-found'?'No account with this email.':e.message)}
   finally{btn.disabled=false;btn.textContent='Send Reset Link →'}
 };
-window.doLogout=async()=>{clearInterval(retT);await signOut(auth);hid('app');sho('login-page','flex');document.body.classList.add('login-open');ge('li-em').value='';ge('li-pw').value='';showView('vl')};
+window.doLogout=async()=>{
+  clearInterval(retT);await signOut(auth);
+  hid('app');sho('login-page','flex');document.body.classList.add('login-open');
+  ge('li-em').value='';ge('li-pw').value='';showView('vl')
+};
 
+// ── ENTER APP ──────────────────────────────────────────────────────────────
 async function enterApp(email){
-  hid('login-page');document.body.classList.remove('login-open');ge('app').style.display='flex';
+  hid('login-page');ge('app').style.display='flex';
   txt('uc-e',email||'—');txt('uc-n',email?email.split('@')[0]:'My Boutique');
   txt('mob-dd-user',email||'—');
-  setDefaults();await resolveStores();await loadData();
-  fillDressFilter();rDash();rBal();rPlan();rRet();
+  setDefaults();
+  await resolveStores();
+  await loadData();
+  buildJoined();
+  fillDressFilter();
+  rDash();rBal();rPlan();rRet();
   clearInterval(retT);retT=setInterval(rRet,60000);
 }
 
+function setDefaults(){
+  const t=new Date(),f=d=>d.toISOString().slice(0,10);
+  sv('d-fr',f(t));sv('d-to',f(t));
+  sv('bs-fr',f(new Date(t.getFullYear(),t.getMonth(),1)));sv('bs-to',f(t));
+  sv('pl-dt',f(t));
+}
+
+// ── STORE RESOLUTION ───────────────────────────────────────────────────────
 async function resolveStores(){
   try{
     const ud=await getDoc(doc(db,'users',uid));
@@ -608,84 +558,301 @@ async function resolveStores(){
     const opts=allStores.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
     sho('desk-store-multi');hid('desk-store-single');
     ge('store-select').innerHTML=opts;
-    sho('mob-store-select');
-    ge('mob-store-select').innerHTML=opts;
+    sho('mob-store-select');ge('mob-store-select').innerHTML=opts;
   }else{
     hid('desk-store-multi');sho('desk-store-single');
     txt('desk-store-name',allStores[0].name);
-    txt('mob-store-name',allStores[0].name);
-    hid('mob-store-select');
+    txt('mob-store-name',allStores[0].name);hid('mob-store-select');
   }
 }
 window.switchStore=async(id)=>{
-  currentStoreId=id;await loadData();
+  currentStoreId=id;await loadData();buildJoined();
   fillDressFilter();rDash();rBal();rPlan();rRet();
   showToast('Switched to '+(allStores.find(s=>s.id===id)?.name||id));
 };
 
-function setDefaults(){const t=new Date(),f=d=>d.toISOString().slice(0,10);sv('d-fr',f(t));sv('d-to',f(t));sv('bs-fr',f(new Date(t.getFullYear(),t.getMonth(),1)));sv('bs-to',f(t));sv('pl-dt',f(t))}
+// ── FIRESTORE DATA LOAD ────────────────────────────────────────────────────
+// New structure: separate bookings / booking_items / expenses collections
 async function loadData(){
-  try{const sub=async n=>{const s=await getDocs(collection(db,'stores',currentStoreId,n));return s.docs.map(d=>({id:d.id,...d.data()}))};[BK,EX]=await Promise.all([sub('bookings'),sub('expenses')])}
-  catch(e){showToast('⚠️ Data error: '+e.message)}
+  try{
+    const sub=async n=>{
+      const s=await getDocs(collection(db,'stores',currentStoreId,n));
+      return s.docs.map(d=>({id:d.id,...d.data()}));
+    };
+    const [bkArr,itArr,exArr]=await Promise.all([sub('bookings'),sub('booking_items'),sub('expenses')]);
+    // Index bookings by booking_id for fast join
+    RAW_BOOKINGS={};
+    bkArr.forEach(b=>{RAW_BOOKINGS[b.booking_id||b.id]=b});
+    // Index items by item_id
+    RAW_ITEMS={};
+    itArr.forEach(i=>{RAW_ITEMS[i.item_id||i.id]=i});
+    // Expenses: exclude soft-deleted
+    RAW_EXPENSES=exArr.filter(e=>!e.deleted&&e.deleted!==1&&e.deleted!=='1'&&e.deleted!==true);
+  }catch(e){showToast('⚠️ Data error: '+e.message)}
 }
-function fillDressFilter(){const m=new Map();BK.forEach(b=>{if(b.dress_id&&!m.has(b.dress_id))m.set(b.dress_id,b.dress_name||b.dress_id)});ge('d-drs').innerHTML='<option value="">All Dresses</option>'+[...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('')}
 
+// ── JOIN bookings + booking_items ──────────────────────────────────────────
+// Mirrors the SQL join in dashboard.py exactly
+// Result: one flat row per booking_item with all booking fields merged
+function buildJoined(){
+  JOINED=[];
+  Object.values(RAW_ITEMS).forEach(item=>{
+    const bk=RAW_BOOKINGS[item.booking_id]||{};
+    JOINED.push({
+      // From booking_items
+      item_id:      item.item_id||item.id||'',
+      booking_id:   item.booking_id||'',
+      dress_name:   item.dress_name||'',
+      dress_id:     item.dress_id||'',
+      event_date:   item.event_date||'',
+      booking_days: parseInt(item.booking_days)||1,
+      item_status:  item.status||'',
+      price:        parseFloat(item.price)||0,
+      chest:        item.chest||'',
+      waist:        item.waist||'',
+      shoulder:     item.shoulder||'',
+      arms:         item.arms||'',
+      stomach:      item.stomach||'',
+      top_length:   item.top_length||'',
+      bot_length:   item.bot_length||'',
+      seat:         item.seat||'',
+      // From bookings
+      customer:     bk.customer||'',
+      gender:       bk.gender||'F',
+      phone:        bk.phone||'',
+      booking_date: bk.booking_date||'',
+      bk_status:    bk.status||'',
+      grand_total:  parseFloat(bk.grand_total)||0,
+      total_advance:parseFloat(bk.total_advance)||0,
+      advance_cash: parseFloat(bk.advance_cash)||0,
+      advance_upi:  parseFloat(bk.advance_upi)||0,
+      total_balance:parseFloat(bk.total_balance)||0,
+      discount:     parseFloat(bk.discount)||0,
+      gst_percent:  parseFloat(bk.gst_percent)||0,
+      gst_amount:   parseFloat(bk.gst_amount)||0,
+      security_amount:   parseFloat(bk.security_amount)||0,
+      security_refunded: parseFloat(bk.security_refunded)||0,
+      security_held:     parseFloat(bk.security_held)||0,
+      notes:        bk.notes||'',
+    });
+  });
+  // Sort by event_date ASC — mirrors ORDER BY bi.event_date ASC
+  JOINED.sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
+}
+
+function fillDressFilter(){
+  const m=new Map();
+  JOINED.forEach(r=>{if(r.dress_id&&!m.has(r.dress_id))m.set(r.dress_id,r.dress_name||r.dress_id)});
+  ge('d-drs').innerHTML='<option value="">All Dresses</option>'+[...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('');
+}
+
+// ── DASHBOARD ──────────────────────────────────────────────────────────────
+// Stat cards mirror dashboard.py exactly:
+//   Total Bookings = COUNT(*) from bookings
+//   Active Bookings = SUM CASE WHEN status='ACTIVE'
+//   Total Revenue = SUM grand_total WHERE status != 'CANCELLED'
 window.togDates=()=>{const a=ge('d-all').checked;ge('d-fr').disabled=a;ge('d-to').disabled=a};
 window.debD=()=>{clearTimeout(debT);debT=setTimeout(rDash,350)};
+
 window.rDash=()=>{
-  const srch=ge('d-srch').value.toLowerCase(),drs=ge('d-drs').value,sts=ge('d-sts').value.toUpperCase();
+  // Stat cards — from RAW_BOOKINGS (one per booking, not per item)
+  const allBk=Object.values(RAW_BOOKINGS);
+  txt('d-tot',allBk.length);
+  txt('d-act',allBk.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
+  txt('d-rev','₹ '+fmt(allBk.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(parseFloat(b.grand_total)||0),0)));
+
+  // Filter the joined rows
+  const srch=ge('d-srch').value.toLowerCase(),drs=ge('d-drs').value;
+  const sts=ge('d-sts').value.toUpperCase(),gdr=ge('d-gender').value;
   const all=ge('d-all').checked,dtyp=ge('d-dtyp').value,fr=ge('d-fr').value,to=ge('d-to').value;
-  txt('d-tot',BK.length);txt('d-act',BK.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
-  txt('d-rev','₹ '+fmt(BK.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
-  let rows=BK;
-  if(srch)rows=rows.filter(r=>(r.customer||'').toLowerCase().includes(srch)||(r.phone||'').includes(srch)||String(r.booking_id||'').toLowerCase().includes(srch)||(r.dress_id||'').toLowerCase().includes(srch));
-  if(drs)rows=rows.filter(r=>r.dress_id===drs);
-  if(sts)rows=rows.filter(r=>(r.status||'').toUpperCase()===sts);
-  if(!all&&fr&&to)rows=rows.filter(r=>{const d=r[dtyp]||'';return d>=fr&&d<=to});
-  rows=[...rows].sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
+
+  let rows=JOINED;
+  if(srch) rows=rows.filter(r=>(r.customer||'').toLowerCase().includes(srch)||(r.phone||'').includes(srch)||String(r.booking_id||'').toLowerCase().includes(srch)||(r.dress_id||'').toLowerCase().includes(srch));
+  if(drs)  rows=rows.filter(r=>r.dress_id===drs);
+  // Status filter matches bi.status (item_status) as in dashboard.py
+  if(sts)  rows=rows.filter(r=>(r.item_status||'').toUpperCase()===sts);
+  if(gdr)  rows=rows.filter(r=>(r.gender||'F')===gdr);
+  if(!all&&fr&&to) rows=rows.filter(r=>{const d=dtyp==='booking_date'?r.booking_date:r.event_date;return d&&d>=fr&&d<=to});
+
   txt('d-cnt',rows.length+' records');
-  ge('d-tb').innerHTML=rows.length?rows.map(r=>`<tr><td style="font-weight:700;color:var(--indigo)">${r.booking_id||'—'}</td><td>${r.customer||'—'}</td><td style="color:var(--muted)">${r.phone||'—'}</td><td>${r.dress_name||'—'}</td><td style="color:var(--muted)">${r.dress_id||'—'}</td><td>₹${fmt(r.price)}</td><td>${r.booking_date||'—'}</td><td>${r.event_date||'—'}</td><td style="text-align:center">${r.booking_days||1}</td><td>${sbadge(r.status)}</td><td style="font-weight:700">₹${fmt(r.grand_total)}</td><td>₹${fmt(r.total_advance)}</td><td style="font-weight:700;color:${(r.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(r.total_balance)}</td><td>${r.discount||0}</td><td>${r.gst_percent||0}%</td><td style="color:var(--amber)">₹${fmt(r.security_amount)}</td><td style="max-width:160px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td></tr>`).join(''):er(17,'No records match the current filters');
+  ge('d-tb').innerHTML=rows.length?rows.map(r=>`<tr>
+    <td style="font-weight:700;color:var(--indigo)">${r.booking_id||'—'}</td>
+    <td>${r.customer||'—'}</td>
+    <td style="color:var(--muted)">${r.gender||'F'}</td>
+    <td style="color:var(--muted)">${r.phone||'—'}</td>
+    <td>${r.dress_name||'—'}</td>
+    <td style="color:var(--muted)">${r.dress_id||'—'}</td>
+    <td>₹${fmt(r.price)}</td>
+    <td>${r.booking_date||'—'}</td>
+    <td>${r.event_date||'—'}</td>
+    <td style="text-align:center">${r.booking_days||1}</td>
+    <td>${sbadge(r.item_status)}</td>
+    <td style="font-weight:700">₹${fmt(r.grand_total)}</td>
+    <td>₹${fmt(r.total_advance)}</td>
+    <td>₹${fmt(r.advance_cash)}</td>
+    <td>₹${fmt(r.advance_upi)}</td>
+    <td style="font-weight:700;color:${(r.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(r.total_balance)}</td>
+    <td>${r.discount||0}</td>
+    <td>${r.gst_percent||0}%</td>
+    <td>₹${fmt(r.gst_amount)}</td>
+    <td style="color:var(--amber)">₹${fmt(r.security_amount)}</td>
+    <td>₹${fmt(r.security_refunded)}</td>
+    <td>₹${fmt(r.security_held)}</td>
+    <td style="max-width:150px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td>
+    <td>${r.chest||'—'}</td><td>${r.waist||'—'}</td><td>${r.shoulder||'—'}</td>
+    <td>${r.arms||'—'}</td><td>${r.stomach||'—'}</td><td>${r.top_length||'—'}</td>
+    <td>${r.bot_length||'—'}</td><td>${r.seat||'—'}</td>
+  </tr>`).join(''):er(31,'No records match the current filters');
 };
 
+// ── BALANCE SHEET ──────────────────────────────────────────────────────────
+// Mirrors balance.py load_balance_sheet_data exactly:
+//   Filter by booking_date BETWEEN d1 AND d2 AND status != 'CANCELLED'
+//   Expenses: filter by exp_date BETWEEN d1 AND d2 AND deleted != 1
+//   net_profit = (total_rev - total_gst) - total_exp
 window.swTop=s=>{topSort=s;ge('tgbk').className='tog'+(s==='bookings'?' on':'');ge('tgrv').className='tog'+(s==='revenue'?' on':'');rBal()};
+
 window.rBal=()=>{
   const d1=ge('bs-fr').value,d2=ge('bs-to').value;
-  const inR=b=>(!d1||(b.booking_date||'')>=d1)&&(!d2||(b.booking_date||'')<=d2);
-  const fil=BK.filter(b=>inR(b)&&(b.status||'').toUpperCase()!=='CANCELLED'),allR=BK.filter(inR);
-  const rv=fil.reduce((s,b)=>s+(b.grand_total||0),0),cl=fil.reduce((s,b)=>s+(b.total_advance||0),0);
-  const pd=fil.reduce((s,b)=>s+(b.total_balance||0),0),gs=fil.reduce((s,b)=>s+(b.gst_amount||0),0);
-  const exF=EX.filter(e=>(!d1||(e.exp_date||'')>=d1)&&(!d2||(e.exp_date||'')<=d2));
-  const ex=exF.reduce((s,e)=>s+(e.amount||0),0),np=(rv-gs)-ex;
-  txt('bs-rv','₹ '+fmt(rv));txt('bs-cl','₹ '+fmt(cl));txt('bs-pd','₹ '+fmt(pd));txt('bs-gs','₹ '+fmt(gs));txt('bs-ex','₹ '+fmt(ex));
-  const pe=ge('bs-pr');pe.textContent='₹ '+fmt(np);pe.className='scv '+(np>=0?'cb':'cr');
-  const byS={};allR.forEach(b=>{const s=b.status||'—';if(!byS[s])byS[s]={c:0,r:0};byS[s].c++;byS[s].r+=(b.grand_total||0)});
+  const allBk=Object.values(RAW_BOOKINGS);
+
+  // Filter bookings by booking_date — mirrors balance.py WHERE booking_date BETWEEN
+  const inRange=b=>(!d1||(b.booking_date||'')>=d1)&&(!d2||(b.booking_date||'')<=d2);
+  const notCancelled=b=>(b.status||'').toUpperCase()!=='CANCELLED';
+  const filtered=allBk.filter(b=>inRange(b)&&notCancelled(b));
+  const allInRange=allBk.filter(inRange);
+
+  const totalRev=filtered.reduce((s,b)=>s+(parseFloat(b.grand_total)||0),0);
+  const totalCol=filtered.reduce((s,b)=>s+(parseFloat(b.total_advance)||0),0);
+  const totalBal=filtered.reduce((s,b)=>s+(parseFloat(b.total_balance)||0),0);
+  const totalGst=filtered.reduce((s,b)=>s+(parseFloat(b.gst_amount)||0),0);
+
+  // Expenses: filter by exp_date, exclude deleted
+  const exInRange=RAW_EXPENSES.filter(e=>(!d1||(e.exp_date||'')>=d1)&&(!d2||(e.exp_date||'')<=d2));
+  const totalExp=exInRange.reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
+
+  // net_profit = (total_rev - total_gst) - total_exp — exact match with balance.py
+  const netProfit=(totalRev-totalGst)-totalExp;
+
+  txt('bs-rv','₹ '+fmt(totalRev));txt('bs-cl','₹ '+fmt(totalCol));
+  txt('bs-pd','₹ '+fmt(totalBal));txt('bs-gs','₹ '+fmt(totalGst));txt('bs-ex','₹ '+fmt(totalExp));
+  const pe=ge('bs-pr');pe.textContent='₹ '+fmt(netProfit);
+  pe.className='scv '+(netProfit>=0?'cb':'cr');
+
+  // Status breakdown — all bookings in range (including cancelled)
+  const byS={};
+  allInRange.forEach(b=>{const s=b.status||'—';if(!byS[s])byS[s]={c:0,r:0};byS[s].c++;byS[s].r+=(parseFloat(b.grand_total)||0)});
   const sc={ACTIVE:'#15803d',RETURNED:'var(--indigo)',CANCELLED:'var(--red)',Sold:'var(--amber)'};
-  ge('bs-st').innerHTML=Object.entries(byS).map(([s,v])=>`<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.c}</td><td>₹ ${fmt(v.r)}</td></tr>`).join('')||er(3);
-  const ds={};fil.forEach(b=>{const k=b.dress_id||'?';if(!ds[k])ds[k]={n:b.dress_name||k,bk:0,rv:0};ds[k].bk++;ds[k].rv+=(b.price||0)});
-  ge('bs-tp').innerHTML=Object.values(ds).sort((a,b)=>topSort==='bookings'?b.bk-a.bk:b.rv-a.rv).slice(0,5).map((d,i)=>`<tr><td style="font-weight:800;text-align:center;color:var(--indigo)">${i+1}</td><td>${d.n}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rv)}</td></tr>`).join('')||er(4);
-  const ec={};exF.forEach(e=>{const n=e.exp_name||'Other';if(!ec[n])ec[n]=0;ec[n]+=(e.amount||0)});
-  ge('bs-eb').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>`<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`).join('')||er(2,'No expenses in this period');
+  ge('bs-st').innerHTML=Object.entries(byS).sort((a,b)=>b[1].c-a[1].c).map(([s,v])=>
+    `<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.c}</td><td>₹ ${fmt(v.r)}</td></tr>`
+  ).join('')||er(3);
+
+  // Top 5 dresses — from JOINED (booking_items join)
+  const ds={};
+  JOINED.filter(r=>inRange({booking_date:r.booking_date})&&(r.bk_status||'').toUpperCase()!=='CANCELLED').forEach(r=>{
+    const k=r.dress_id||'?';if(!ds[k])ds[k]={n:r.dress_name||k,bk:0,rv:0};
+    ds[k].bk++;ds[k].rv+=(r.price||0);
+  });
+  ge('bs-tp').innerHTML=Object.values(ds).sort((a,b)=>topSort==='bookings'?b.bk-a.bk:b.rv-a.rv).slice(0,5).map((d,i)=>
+    `<tr><td style="font-weight:800;text-align:center;color:var(--indigo)">${i+1}</td><td>${d.n}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rv)}</td></tr>`
+  ).join('')||er(4);
+
+  // Expense breakdown by category
+  const ec={};
+  exInRange.forEach(e=>{const n=e.exp_name||'Other';if(!ec[n])ec[n]=0;ec[n]+=(parseFloat(e.amount)||0)});
+  ge('bs-eb').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>
+    `<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`
+  ).join('')||er(2,'No expenses in this period');
 };
 
+// ── PLANNER ────────────────────────────────────────────────────────────────
+// Mirrors planner.py load_planner_data exactly
+// Shows: name, phone, notes, measurements (top+bottom for M, single for F)
+// Next day = selDate + 1 day (fixed)
 window.jumpToday=()=>{sv('pl-dt',new Date().toISOString().slice(0,10));rPlan()};
+
 window.rPlan=()=>{
   const sel=ge('pl-dt').value;if(!sel)return;
-  const nx=new Date(sel+'T00:00:00');nx.setDate(nx.getDate()+1);const nxs=nx.toISOString().slice(0,10);
-  const its=BK.filter(b=>(b.event_date===sel||b.event_date===nxs)&&(b.status||'').toUpperCase()!=='CANCELLED');
-  const s1=its.filter(b=>b.event_date===sel),s2=its.filter(b=>b.event_date===nxs);
-  const fD=s=>s?new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
-  txt('pl-h1',`📅 ${fD(sel)} (Selected)`);txt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
+
+  // Fix: correctly compute next day by parsing the date
+  const selParts=sel.split('-');
+  const selDt=new Date(parseInt(selParts[0]),parseInt(selParts[1])-1,parseInt(selParts[2]));
+  const nxDt=new Date(selDt);nxDt.setDate(nxDt.getDate()+1);
+  const pad=n=>String(n).padStart(2,'0');
+  const nxs=`${nxDt.getFullYear()}-${pad(nxDt.getMonth()+1)}-${pad(nxDt.getDate())}`;
+
+  // Filter items: event_date IN (sel, nxs) AND booking status != CANCELLED
+  // Mirrors: WHERE bi.event_date IN (?, ?) AND b.status != 'CANCELLED'
+  const items=JOINED.filter(r=>(r.event_date===sel||r.event_date===nxs)&&(r.bk_status||'').toUpperCase()!=='CANCELLED');
+  const s1=items.filter(r=>r.event_date===sel);
+  const s2=items.filter(r=>r.event_date===nxs);
+
+  const fD=s=>{
+    if(!s)return'—';
+    const p=s.split('-');
+    const d=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
+    return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  };
+
+  // Update titles — mirrors today_box.setTitle and tomorrow_box.setTitle
+  txt('pl-h1',`📅 ${fD(sel)} (Selected Date)`);
+  txt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
   txt('pl-c1',s1.length);txt('pl-c2',s2.length);
-  const mk=a=>a.length?a.map(b=>`<div class="plcard"><div><span class="pcd">${b.dress_name||'—'}</span><span class="pci">[#${b.booking_id}]</span></div><div class="pcc">👤 ${b.customer||'—'} (${b.phone||'—'})</div><div class="pcs">📏 CH ${b.chest||'—'} | W ${b.waist||'—'} | L ${b.length||'—'}</div>${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}</div>`).join(''):'<div class="plem">No events on this day</div>';
-  ge('pl-b1').innerHTML=mk(s1);ge('pl-b2').innerHTML=mk(s2);
+
+  // Build card HTML — mirrors planner.py card layout
+  const mkCard=r=>{
+    const isM=(r.gender||'F')==='M';
+    const gTag=isM?'[M]':'[F]';
+    let measHtml='';
+    if(isM){
+      // Male: show top and bottom measurements separately
+      measHtml=`
+        <div class="pcm">📏 Top: CH ${r.chest||'—'} | ST ${r.stomach||'—'} | SH ${r.shoulder||'—'} | SL ${r.arms||'—'} | L ${r.top_length||'—'}</div>
+        <div class="pcm">📏 Bottom: W ${r.waist||'—'} | SE ${r.seat||'—'} | L ${r.bot_length||'—'}</div>`;
+    }else{
+      // Female: show single measurement line
+      measHtml=`<div class="pcm">📏 CH ${r.chest||'—'} | W ${r.waist||'—'} | L ${r.bot_length||r.waist||'—'}</div>`;
+    }
+    const notesHtml=r.notes?`<div class="pcn">📝 ${r.notes}</div>`:'';
+    return`<div class="plcard">
+      <div><span class="pcd">${r.dress_name||'—'}</span><span class="pci">[#${r.booking_id}] ${gTag}</span></div>
+      <div class="pcc">👤 ${r.customer||'—'} (${r.phone||'—'})</div>
+      ${measHtml}${notesHtml}
+    </div>`;
+  };
+
+  const mk=arr=>arr.length?arr.map(mkCard).join(''):'<div class="plem">No events on this day</div>';
+  ge('pl-b1').innerHTML=mk(s1);
+  ge('pl-b2').innerHTML=mk(s2);
 };
 
+// ── RETURNS (read-only) ────────────────────────────────────────────────────
+// Mirrors returns.py: event_date + booking_days <= today AND item_status = 'ACTIVE'
 window.rRet=()=>{
   const today=new Date().toISOString().slice(0,10);
-  const due=BK.filter(b=>{if((b.status||'').toUpperCase()!=='ACTIVE')return false;const ev=new Date((b.event_date||'9999-12-31')+'T00:00:00');ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1));return ev.toISOString().slice(0,10)<=today}).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
-  txt('rt-ct',due.length);txt('rt-bl','₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
+  const due=JOINED.filter(r=>{
+    if((r.item_status||'').toUpperCase()!=='ACTIVE')return false;
+    const ev=new Date((r.event_date||'9999-12-31')+'T00:00:00');
+    ev.setDate(ev.getDate()+(parseInt(r.booking_days)||1));
+    return ev.toISOString().slice(0,10)<=today;
+  }).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
+
+  txt('rt-ct',due.length);
+  txt('rt-bl','₹ '+fmt(due.reduce((s,r)=>s+(r.total_balance||0),0)));
   txt('rt-bg',due.length?due.length+' pending':'All clear ✅');
-  ge('rt-tb').innerHTML=due.length?due.map(b=>`<tr><td style="font-weight:700;color:var(--indigo)">${b.booking_id||'—'}</td><td>${b.customer||'—'}</td><td>${b.dress_name||'—'}</td><td class="${b.event_date===today?'dt':'ov'}">${b.event_date||'—'}</td><td style="text-align:center">${b.booking_days||1}</td><td>₹${fmt(b.grand_total)}</td><td>₹${fmt(b.total_advance)}</td><td style="font-weight:700;color:${(b.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(b.total_balance)}</td><td style="color:var(--amber)">₹${fmt(b.security_amount)}</td><td style="font-size:11px;color:var(--muted);max-width:140px;white-space:normal">${b.notes||'—'}</td></tr>`).join(''):`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns — all caught up!</td></tr>`;
+
+  ge('rt-tb').innerHTML=due.length?due.map(r=>`<tr>
+    <td style="font-weight:700;color:var(--indigo)">${r.booking_id||'—'}</td>
+    <td>${r.customer||'—'}</td>
+    <td>${r.dress_name||'—'}</td>
+    <td class="${r.event_date===today?'dt':'ov'}">${r.event_date||'—'}</td>
+    <td style="text-align:center">${r.booking_days||1}</td>
+    <td>₹${fmt(r.grand_total)}</td>
+    <td>₹${fmt(r.total_advance)}</td>
+    <td style="font-weight:700;color:${(r.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(r.total_balance)}</td>
+    <td style="color:var(--amber)">₹${fmt(r.security_amount)}</td>
+    <td style="font-size:11px;color:var(--muted);max-width:140px;white-space:normal">${r.notes||'—'}</td>
+  </tr>`).join(''):`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns — all caught up!</td></tr>`;
 };
 </script>
 </body>

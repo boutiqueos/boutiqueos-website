@@ -3,173 +3,322 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Boutique OS — Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <title>BoutiqueOS — Store Dashboard</title>
   <style>
-    :root{
-      --primary:#4f46e5;--primary-dim:#eef2ff;--primary-border:#c7d2fe;
-      --purple:#7c3aed;--blue:#0284c7;
-      --green:#16a34a;--green-dim:#f0fdf4;
-      --amber:#d97706;--red:#dc2626;--red-dim:#fef2f2;
-      --slate:#1e293b;--muted:#64748b;--border:#e2e8f0;
-      --bg:#f8fafc;--white:#fff;--sw:230px;
+    /* ── EXACT SAME ROOT VARIABLES AS index.html ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --indigo:      #4f46e5;
+      --indigo-dark: #3730a3;
+      --purple:      #7c3aed;
+      --dark:        #0f172a;
+      --slate:       #475569;
+      --light:       #f8fafc;
+      --white:       #ffffff;
+      --green:       #16a34a;
+      --amber:       #d97706;
+      --red:         #dc2626;
+      --border:      #e2e8f0;
+      --muted:       #64748b;
+      --sw:          232px;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--slate);min-height:100vh}
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-    /* LOADING */
-    #loading{position:fixed;inset:0;background:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:14px;transition:opacity .4s}
-    #loading.hide{opacity:0;pointer-events:none}
-    .ring{width:44px;height:44px;border-radius:50%;border:3px solid var(--primary-border);border-top-color:var(--primary);animation:spin .8s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    #ld-lbl{font-size:13px;color:var(--muted);font-weight:500}
-    #ld-err{display:none;margin-top:8px;padding:14px 20px;background:var(--red-dim);border:1px solid #fecaca;border-radius:10px;color:var(--red);font-size:13px;font-weight:600;text-align:center;max-width:420px;line-height:1.6}
+    /* ── LOADING ── */
+    #loading {
+      position: fixed; inset: 0; background: var(--white);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999; gap: 16px; transition: opacity .4s;
+    }
+    #loading.hide { opacity: 0; pointer-events: none; }
+    .ring {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 3px solid #e0e7ff; border-top-color: var(--indigo);
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #ld-lbl { font-size: 13px; color: var(--muted); font-weight: 500; }
+    #ld-err {
+      display: none; margin-top: 8px; padding: 14px 20px;
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
+      color: var(--red); font-size: 13px; font-weight: 600;
+      text-align: center; max-width: 420px; line-height: 1.6;
+    }
 
-    /* LOGIN */
-    #login-page{display:none;min-height:100vh;background:linear-gradient(135deg,#eef2ff 0%,#f5f3ff 55%,#ede9fe 100%);align-items:center;justify-content:center}
-    .lw{width:400px}
-    .ll{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
-    .ll-ic{width:46px;height:46px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 18px rgba(99,102,241,.35)}
-    .ll-tx{font-size:24px;font-weight:800;color:var(--slate)}
-    .ll-tx span{color:var(--primary)}
-    .lcard{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px 36px;box-shadow:0 20px 60px rgba(99,102,241,.12)}
-    .ltit{font-size:20px;font-weight:800;margin-bottom:4px}
-    .lsub{font-size:13px;color:var(--muted);margin-bottom:28px}
-    .fi{margin-bottom:16px}
-    .fi label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
-    .fi input{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--slate);outline:none;transition:border-color .2s,box-shadow .2s}
-    .fi input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.13)}
-    .fi input::placeholder{color:#94a3b8}
-    .lbtn{width:100%;padding:13px;background:linear-gradient(135deg,var(--primary),var(--purple));border:none;border-radius:10px;color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;box-shadow:0 4px 16px rgba(99,102,241,.38);margin-top:6px}
-    .lbtn:hover{opacity:.9;transform:translateY(-1px)}
-    .lbtn:active{transform:none}
-    .lbtn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-    .flink{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
-    .flink a{color:var(--primary);font-weight:600;cursor:pointer}
-    .flink a:hover{text-decoration:underline}
-    .merr{background:var(--red-dim);color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
-    .mok{background:var(--green-dim);color:var(--green);border:1px solid #bbf7d0;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
+    /* ── LOGIN PAGE — matches hero gradient from index.html ── */
+    #login-page {
+      display: none; min-height: 100vh;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4f46e5 65%, #7c3aed 100%);
+      align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    /* Floating orbs — same as hero in index.html */
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); animation: float 8s ease-in-out infinite; }
+    .orb-1 { width: 400px; height: 400px; background: rgba(124,58,237,.25); top: -100px; right: -80px; }
+    .orb-2 { width: 300px; height: 300px; background: rgba(79,70,229,.3); bottom: -80px; left: -60px; animation-delay: 3s; }
+    @keyframes float { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-20px) scale(1.04)} }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+      background-size: 60px 60px;
+    }
+    .login-wrap { position: relative; z-index: 1; width: 420px; }
 
-    /* APP */
-    #app{display:none;min-height:100vh}
-    #app.visible{display:flex}
-    .sidebar{width:var(--sw);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;inset-y:0;left:0;z-index:50}
-    .slogo{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-    .slic{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-    .sltx{font-size:16px;font-weight:800;color:var(--slate)}
-    .sltx span{color:var(--primary)}
-    .snav{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2px}
-    .nitem{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;width:100%;text-align:left;transition:all .15s}
-    .nitem:hover{background:var(--bg);color:var(--slate)}
-    .nitem.active{background:var(--primary-dim);color:var(--primary)}
-    .nic{font-size:15px;width:20px;text-align:center}
-    .sfoot{padding:12px 8px;border-top:1px solid var(--border)}
-    .uchip{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:8px}
-    .ucn{font-size:12px;font-weight:700;color:var(--slate)}
-    .uce{font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .obtn{width:100%;padding:9px 12px;background:none;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
-    .obtn:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
-    .main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
-    .topbar{height:56px;background:var(--white);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
-    .tbtl{font-size:16px;font-weight:800;color:var(--slate)}
-    .lchip{display:flex;align-items:center;gap:6px;padding:5px 13px;background:var(--green-dim);border-radius:20px;font-size:12px;font-weight:700;color:var(--green)}
-    .ldot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-    .cont{flex:1;padding:24px 28px}
-    .tp{display:none;animation:fup .25s ease}
-    .tp.active{display:block}
-    @keyframes fup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    /* Logo — exact match to nav-logo in index.html */
+    .login-logo {
+      text-align: center; margin-bottom: 32px;
+      font-size: 28px; font-weight: 800; color: var(--white); letter-spacing: -0.5px;
+    }
+    .login-logo span { color: #a5b4fc; }
+    .login-tagline { text-align: center; color: rgba(255,255,255,.6); font-size: 13px; margin-top: 4px; margin-bottom: 32px; }
 
-    .ph{margin-bottom:20px}
-    .ph h2{font-size:20px;font-weight:800}
-    .ph p{font-size:13px;color:var(--muted);margin-top:3px}
+    .login-card {
+      background: var(--white); border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.35), 0 8px 32px rgba(79,70,229,.2);
+    }
+    .lt { font-size: 20px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+    .ls { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+    .fi { margin-bottom: 16px; }
+    .fi label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .06em; }
+    .fi input {
+      width: 100%; padding: 11px 14px;
+      background: var(--light); border: 1.5px solid var(--border);
+      border-radius: 10px; font-family: inherit; font-size: 14px; color: var(--dark);
+      outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    .fi input:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(79,70,229,.12); }
+    .fi input::placeholder { color: #94a3b8; }
 
-    .fc{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px}
-    .fr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .fr label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
-    .fr select,.fr input[type=date],.fr input[type=text]{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;color:var(--slate);background:var(--bg);outline:none;transition:border-color .2s;cursor:pointer}
-    .fr select:focus,.fr input:focus{border-color:var(--primary)}
-    .fr input[type=text]{min-width:230px}
-    .fsep{width:1px;height:22px;background:var(--border);flex-shrink:0}
-    .showall{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);cursor:pointer;user-select:none;white-space:nowrap}
-    .showall input{accent-color:var(--primary);cursor:pointer}
+    /* Primary button — matches btn-hero-primary style */
+    .lbtn {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      border: none; border-radius: 10px; color: white;
+      font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(79,70,229,.38); margin-top: 6px;
+    }
+    .lbtn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(79,70,229,.45); }
+    .lbtn:active { transform: none; }
+    .lbtn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .flink { text-align: center; margin-top: 14px; font-size: 13px; color: var(--muted); }
+    .flink a { color: var(--indigo); font-weight: 600; cursor: pointer; }
+    .flink a:hover { text-decoration: underline; }
+    .merr { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; border-radius: 8px; padding: 9px 13px; font-size: 13px; font-weight: 500; margin-top: 10px; display: none; }
+    .mok  { background: #f0fdf4; color: var(--green); border: 1px solid #bbf7d0; border-radius: 8px; padding: 9px 13px; font-size: 13px; font-weight: 500; margin-top: 10px; display: none; }
 
-    .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;margin-bottom:20px}
-    .sc{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;position:relative;overflow:hidden;transition:box-shadow .2s}
-    .sc:hover{box-shadow:0 6px 24px rgba(99,102,241,.12)}
-    .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--purple))}
-    .scl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
-    .scv{font-size:26px;font-weight:800;line-height:1}
-    .ci{color:var(--primary)}.cg{color:var(--green)}.ca{color:var(--amber)}.cr{color:var(--red)}.cp{color:var(--purple)}.cb{color:var(--blue)}
+    /* ── APP SHELL ── */
+    #app { display: none; min-height: 100vh; }
+    #app.visible { display: flex; }
 
-    .tc{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
-    .thead{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-    .thead h3{font-size:14px;font-weight:700}
-    .tbg{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--primary-dim);color:var(--primary)}
-    .tbg.red{background:var(--red-dim);color:var(--red)}
-    .tw{overflow-x:auto}
-    table{width:100%;border-collapse:collapse;font-size:12.5px}
-    thead th{padding:9px 13px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--border);white-space:nowrap}
-    tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
-    tbody tr:last-child{border-bottom:none}
-    tbody tr:hover{background:#fafbff}
-    tbody td{padding:10px 13px;white-space:nowrap}
-    .erow{text-align:center!important;padding:28px!important;color:var(--muted);font-size:13px;white-space:normal!important}
+    /* Sidebar — dark gradient matching hero */
+    .sidebar {
+      width: var(--sw);
+      background: linear-gradient(180deg, #1e1b4b 0%, #312e81 60%, #3730a3 100%);
+      display: flex; flex-direction: column;
+      position: fixed; inset-y: 0; left: 0; z-index: 50;
+    }
+    .slogo {
+      padding: 22px 20px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    /* Logo text — exact match to .nav-logo in index.html */
+    .slogo-text {
+      font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -0.5px;
+    }
+    .slogo-text span { color: #a5b4fc; }
+    .slogo-sub { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 2px; font-weight: 500; }
 
-    .b{display:inline-flex;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
-    .ba{background:#dcfce7;color:#15803d}
-    .br{background:var(--primary-dim);color:var(--primary)}
-    .bc{background:#fee2e2;color:#b91c1c}
-    .bs{background:#fef9c3;color:#92400e}
+    .snav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 2px; }
+    .nitem {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      border: none; background: none; font-family: inherit;
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,.6);
+      cursor: pointer; width: 100%; text-align: left; transition: all .15s;
+    }
+    .nitem:hover { background: rgba(255,255,255,.1); color: var(--white); }
+    .nitem.active { background: rgba(255,255,255,.15); color: var(--white); }
+    .nitem.active .nic { opacity: 1; }
+    .nic { font-size: 15px; width: 20px; text-align: center; opacity: .7; }
 
-    .plsp{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    .plcol{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-    .plhd{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-    .plhd h3{font-size:14px;font-weight:700}
-    .cpil{font-size:11px;font-weight:700;background:var(--primary-dim);color:var(--primary);padding:3px 10px;border-radius:20px}
-    .plbd{padding:12px;display:flex;flex-direction:column;gap:8px;max-height:520px;overflow-y:auto}
-    .plcard{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
-    .pcd{font-size:13px;font-weight:700}.pci{font-size:11px;color:var(--primary);font-weight:600;margin-left:5px}
-    .pcc{font-size:12px;color:var(--muted);margin-top:4px}.pcs{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
-    .pcn{font-size:11px;color:var(--purple);margin-top:5px;font-weight:600}
-    .plem{text-align:center;padding:36px;color:var(--muted);font-size:13px}
+    .sfoot { padding: 12px 10px; border-top: 1px solid rgba(255,255,255,.1); }
+    .uchip { background: rgba(255,255,255,.08); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+    .ucn { font-size: 12px; font-weight: 700; color: var(--white); }
+    .uce { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .obtn {
+      width: 100%; padding: 9px 12px; background: none;
+      border: 1.5px solid rgba(255,255,255,.2); border-radius: 10px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,.6); cursor: pointer; transition: all .2s;
+    }
+    .obtn:hover { border-color: #fca5a5; color: #fca5a5; background: rgba(220,38,38,.1); }
 
-    .ov{color:var(--red)!important;font-weight:700!important}
-    .dt{color:var(--amber)!important;font-weight:700!important}
-    .mbtn{padding:5px 12px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s}
-    .mbtn:hover{opacity:.82}
+    /* Main content area */
+    .main { margin-left: var(--sw); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 
-    .bs6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
-    .bs2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
-    .togr{display:flex;gap:6px}
-    .tog{padding:6px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);cursor:pointer;transition:all .15s}
-    .tog.on{background:var(--primary);color:white;border-color:var(--primary)}
+    /* Topbar — white with indigo accent matching nav.scrolled */
+    .topbar {
+      height: 56px; background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 40;
+      box-shadow: 0 1px 20px rgba(0,0,0,.06);
+    }
+    .tbtl { font-size: 15px; font-weight: 800; color: var(--dark); letter-spacing: -0.3px; }
+    .lchip {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 13px; background: #dcfce7;
+      border-radius: 100px; font-size: 12px; font-weight: 700; color: var(--green);
+    }
+    .ldot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-    #toast{position:fixed;bottom:24px;right:24px;background:var(--slate);color:white;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.22)}
-    #toast.show{display:block}
+    .cont { flex: 1; padding: 24px 28px; }
+    .tp { display: none; animation: fup .25s ease; }
+    .tp.active { display: block; }
+    @keyframes fup { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
 
-    @media(max-width:820px){
-      .sidebar{display:none}.main{margin-left:0}
-      .plsp,.bs2{grid-template-columns:1fr}
-      .bs6{grid-template-columns:repeat(3,1fr)}
+    /* Page header */
+    .ph { margin-bottom: 20px; }
+    .ph h2 { font-size: 22px; font-weight: 800; color: var(--dark); letter-spacing: -0.5px; }
+    .ph p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+    /* Filter card */
+    .fc { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 2px 8px rgba(79,70,229,.04); }
+    .fr { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .fr label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
+    .fr select, .fr input[type=date], .fr input[type=text] {
+      padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: 13px; color: var(--dark);
+      background: var(--light); outline: none; transition: border-color .2s; cursor: pointer;
+    }
+    .fr select:focus, .fr input:focus { border-color: var(--indigo); box-shadow: 0 0 0 2px rgba(79,70,229,.1); }
+    .fr input[type=text] { min-width: 230px; }
+    .fsep { width: 1px; height: 22px; background: var(--border); flex-shrink: 0; }
+    .showall { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--muted); background: var(--light); cursor: pointer; user-select: none; white-space: nowrap; }
+    .showall input { accent-color: var(--indigo); cursor: pointer; }
+
+    /* Stat cards — matches feat-card style from index.html */
+    .sg { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 16px; margin-bottom: 22px; }
+    .sc {
+      background: var(--white); border: 1px solid #e0e7ff;
+      border-radius: 16px; padding: 20px 22px;
+      position: relative; overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 2px 12px rgba(79,70,229,.05);
+    }
+    .sc:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(79,70,229,.12); }
+    /* Coloured top strip — same as feat-card::before */
+    .sc::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--indigo), var(--purple)); }
+    .scl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
+    .scv { font-size: 26px; font-weight: 900; line-height: 1; letter-spacing: -0.5px; }
+    .ci { color: var(--indigo); } .cg { color: var(--green); } .ca { color: var(--amber); }
+    .cr { color: var(--red); }   .cp { color: var(--purple); } .cb { color: #0284c7; }
+
+    /* Table card */
+    .tc { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 22px; box-shadow: 0 2px 8px rgba(79,70,229,.04); }
+    .thead { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .thead h3 { font-size: 14px; font-weight: 800; color: var(--dark); }
+    .tbg { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: #eef2ff; color: var(--indigo); }
+    .tbg.red { background: #fef2f2; color: var(--red); }
+    .tw { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    thead th { padding: 9px 14px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--light); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8faff; }
+    tbody td { padding: 10px 14px; white-space: nowrap; }
+    .erow { text-align: center !important; padding: 32px !important; color: var(--muted); font-size: 13px; white-space: normal !important; }
+
+    /* Status badges */
+    .b { display: inline-flex; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+    .ba { background: #dcfce7; color: #15803d; }
+    .br { background: #eef2ff; color: var(--indigo); }
+    .bc { background: #fee2e2; color: #b91c1c; }
+    .bs { background: #fef9c3; color: #92400e; }
+
+    /* Planner */
+    .plsp { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .plcol { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(79,70,229,.04); }
+    .plhd { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .plhd h3 { font-size: 14px; font-weight: 800; color: var(--dark); }
+    .cpil { font-size: 11px; font-weight: 700; background: #eef2ff; color: var(--indigo); padding: 3px 10px; border-radius: 100px; }
+    .plbd { padding: 12px; display: flex; flex-direction: column; gap: 8px; max-height: 520px; overflow-y: auto; }
+    .plcard { background: var(--light); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+    .pcd { font-size: 13px; font-weight: 700; color: var(--dark); }
+    .pci { font-size: 11px; color: var(--indigo); font-weight: 700; margin-left: 5px; }
+    .pcc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .pcs { font-size: 11px; color: var(--muted); margin-top: 3px; font-family: monospace; }
+    .pcn { font-size: 11px; color: var(--purple); margin-top: 5px; font-weight: 600; }
+    .plem { text-align: center; padding: 36px; color: var(--muted); font-size: 13px; }
+
+    /* Returns */
+    .ov { color: var(--red) !important; font-weight: 700 !important; }
+    .dt { color: var(--amber) !important; font-weight: 700 !important; }
+    .mbtn {
+      padding: 5px 12px;
+      background: linear-gradient(135deg, #22c55e, var(--green));
+      color: white; border: none; border-radius: 8px;
+      font-family: inherit; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: transform .15s, opacity .2s;
+    }
+    .mbtn:hover { opacity: .85; transform: translateY(-1px); }
+
+    /* Balance sheet */
+    .bs6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 22px; }
+    .bs2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+    .togr { display: flex; gap: 6px; }
+    .tog { padding: 6px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 700; color: var(--muted); background: var(--light); cursor: pointer; transition: all .15s; }
+    .tog.on { background: var(--indigo); color: white; border-color: var(--indigo); }
+
+    /* Jump to today button */
+    .jbtn { padding: 7px 16px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--light); font-family: inherit; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .15s; }
+    .jbtn:hover { border-color: var(--indigo); color: var(--indigo); background: #eef2ff; }
+
+    /* Toast */
+    #toast { position: fixed; bottom: 24px; right: 24px; background: var(--dark); color: white; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; display: none; z-index: 9999; box-shadow: 0 8px 28px rgba(0,0,0,.22); animation: toastIn .3s ease; }
+    #toast.show { display: block; }
+    @keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+    @media(max-width:820px) {
+      .sidebar { display: none; } .main { margin-left: 0; }
+      .plsp, .bs2 { grid-template-columns: 1fr; }
+      .bs6 { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
 </head>
 <body>
 
+<!-- LOADING -->
 <div id="loading">
   <div class="ring"></div>
-  <div id="ld-lbl">Connecting to Firebase…</div>
+  <div id="ld-lbl">Connecting to BoutiqueOS…</div>
   <div id="ld-err"></div>
 </div>
 
+<!-- ════════ LOGIN ════════ -->
 <div id="login-page">
-  <div class="lw">
-    <div class="ll"><div class="ll-ic">👗</div><div class="ll-tx">Boutique <span>OS</span></div></div>
-    <div class="lcard">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-grid"></div>
+
+  <div class="login-wrap">
+    <!-- Logo matches nav-logo exactly -->
+    <div class="login-logo">Boutique<span>OS</span></div>
+    <div class="login-tagline">Store Dashboard — View your store insights</div>
+
+    <div class="login-card">
       <div id="vl">
-        <div class="ltit">Welcome back</div>
-        <div class="lsub">Sign in with your email and password</div>
+        <div class="lt">Welcome back</div>
+        <div class="ls">Sign in with your store credentials</div>
         <div class="fi"><label>Email Address</label><input type="email" id="li-em" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
         <div class="fi"><label>Password</label><input type="password" id="li-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
         <div class="merr" id="li-err"></div>
@@ -177,21 +326,30 @@
         <div class="flink"><a onclick="showView('vf')">Forgot password?</a></div>
       </div>
       <div id="vf" style="display:none">
-        <div class="ltit">Reset Password</div>
-        <div class="lsub">We'll send a reset link to your email</div>
+        <div class="lt">Reset Password</div>
+        <div class="ls">We'll send a reset link to your email</div>
         <div class="fi"><label>Email Address</label><input type="email" id="fp-em" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doReset()"/></div>
         <div class="merr" id="fp-err"></div>
-        <div class="mok" id="fp-ok">✅ Reset link sent! Check your inbox.</div>
+        <div class="mok"  id="fp-ok">✅ Reset link sent! Check your inbox.</div>
         <button class="lbtn" id="fp-btn" onclick="doReset()">Send Reset Link →</button>
         <div class="flink"><a onclick="showView('vl')">← Back to Sign In</a></div>
       </div>
     </div>
+
+    <!-- Footer link matching index.html footer style -->
+    <div style="text-align:center;margin-top:20px;font-size:12px;color:rgba(255,255,255,.4)">
+      © 2026 BoutiqueOS &nbsp;·&nbsp; <a href="/" style="color:rgba(255,255,255,.5);text-decoration:none" onmouseover="this.style.color='#a5b4fc'" onmouseout="this.style.color='rgba(255,255,255,.5)'">boutiqueos.in</a>
+    </div>
   </div>
 </div>
 
+<!-- ════════ APP ════════ -->
 <div id="app">
   <div class="sidebar">
-    <div class="slogo"><div class="slic">👗</div><div class="sltx">Boutique <span>OS</span></div></div>
+    <div class="slogo">
+      <div class="slogo-text">Boutique<span>OS</span></div>
+      <div class="slogo-sub">Store Dashboard</div>
+    </div>
     <nav class="snav">
       <button class="nitem active" onclick="switchTab('dashboard',this)"><span class="nic">📊</span>Dashboard</button>
       <button class="nitem" onclick="switchTab('balance',this)"><span class="nic">💰</span>Balance Sheet</button>
@@ -199,10 +357,14 @@
       <button class="nitem" onclick="switchTab('returns',this)"><span class="nic">🔄</span>Return Tracker</button>
     </nav>
     <div class="sfoot">
-      <div class="uchip"><div class="ucn" id="uc-n">My Boutique</div><div class="uce" id="uc-e">—</div></div>
+      <div class="uchip">
+        <div class="ucn" id="uc-n">My Boutique</div>
+        <div class="uce" id="uc-e">—</div>
+      </div>
       <button class="obtn" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
+
   <div class="main">
     <div class="topbar">
       <div class="tbtl" id="tbtl">Dashboard</div>
@@ -210,7 +372,7 @@
     </div>
     <div class="cont">
 
-      <!-- DASHBOARD -->
+      <!-- ══ DASHBOARD ══ -->
       <div class="tp active" id="tab-dashboard">
         <div class="ph"><h2>Rental Dashboard</h2><p>All bookings, revenue and status at a glance</p></div>
         <div class="sg">
@@ -255,7 +417,7 @@
         </div>
       </div>
 
-      <!-- BALANCE SHEET -->
+      <!-- ══ BALANCE SHEET ══ -->
       <div class="tp" id="tab-balance">
         <div class="ph"><h2>Balance Sheet</h2><p>Financial summary for the selected date range</p></div>
         <div class="fc"><div class="fr">
@@ -277,7 +439,10 @@
           </div>
           <div class="tc" style="margin:0">
             <div class="thead"><h3>Top 5 Dresses</h3>
-              <div class="togr"><button class="tog on" id="tgbk" onclick="swTop('bookings')">By Bookings</button><button class="tog" id="tgrv" onclick="swTop('revenue')">By Revenue</button></div>
+              <div class="togr">
+                <button class="tog on" id="tgbk" onclick="swTop('bookings')">By Bookings</button>
+                <button class="tog" id="tgrv" onclick="swTop('revenue')">By Revenue</button>
+              </div>
             </div>
             <div class="tw"><table><thead><tr><th>#</th><th>Dress Name</th><th>Bookings</th><th>Revenue</th></tr></thead><tbody id="bs-tp"></tbody></table></div>
           </div>
@@ -288,13 +453,13 @@
         </div>
       </div>
 
-      <!-- PLANNER -->
+      <!-- ══ PLANNER ══ -->
       <div class="tp" id="tab-planner">
         <div class="ph"><h2>Daily Delivery Planner</h2><p>Bookings for selected event date and the next day</p></div>
         <div class="fc"><div class="fr">
           <label>📅 Event Date</label>
           <input type="date" id="pl-dt" onchange="rPlan()"/>
-          <button style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer" onclick="jumpToday()">Jump to Today</button>
+          <button class="jbtn" onclick="jumpToday()">Jump to Today</button>
         </div></div>
         <div class="plsp">
           <div class="plcol"><div class="plhd"><h3 id="pl-h1">📅 Selected Date</h3><span class="cpil" id="pl-c1">0</span></div><div class="plbd" id="pl-b1"></div></div>
@@ -302,7 +467,7 @@
         </div>
       </div>
 
-      <!-- RETURNS -->
+      <!-- ══ RETURNS ══ -->
       <div class="tp" id="tab-returns">
         <div class="ph"><h2>Overdue &amp; Expected Returns</h2><p>Dresses not yet returned — auto-refreshes every 60 seconds</p></div>
         <div class="sg" style="grid-template-columns:repeat(2,1fr);max-width:380px">
@@ -325,7 +490,7 @@
 <div id="toast"></div>
 
 <script type="module">
-// ── ALL HELPERS DEFINED FIRST — no "before initialization" errors ──────────
+// ── HELPERS FIRST — avoids "before initialization" errors ──────────────────
 const ge  = id => document.getElementById(id);
 const txt = (id,v) => { const e=ge(id); if(e) e.textContent=v; };
 const sv  = (id,v) => { const e=ge(id); if(e) e.value=v; };
@@ -336,16 +501,13 @@ const hiE = id => { const e=ge(id); if(e) e.style.display='none'; };
 const fmt = n  => Math.round(n||0).toLocaleString('en-IN');
 const er  = (c,m='No data') => `<tr><td colspan="${c}" class="erow">${m}</td></tr>`;
 
+function setLbl(t) { txt('ld-lbl',t); }
 function showLoadErr(msg) {
-  const e = ge('ld-err');
-  e.innerHTML = msg.replace(/\n/g,'<br>');
-  e.style.display = 'block';
-  const r = document.querySelector('.ring');
-  if (r) r.style.display = 'none';
+  const e=ge('ld-err'); e.innerHTML=msg.replace(/\n/g,'<br>'); e.style.display='block';
+  const r=document.querySelector('.ring'); if(r) r.style.display='none';
   txt('ld-lbl','');
 }
-function setLbl(t) { txt('ld-lbl', t); }
-function showErr(id, msg) { const e=ge(id); if(!e) return; e.textContent=msg; e.style.display='block'; }
+function showErr(id,msg) { const e=ge(id); if(!e)return; e.textContent=msg; e.style.display='block'; }
 function sbadge(s) {
   const u=(s||'').toUpperCase();
   if(u==='ACTIVE')    return `<span class="b ba">Active</span>`;
@@ -365,12 +527,11 @@ window.switchTab = (n,btn) => {
   txt('tbtl',{dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'}[n]||n);
 };
 window.showView = id => {
-  hid('vl'); hid('vf');
-  sho(id);
+  hid('vl'); hid('vf'); sho(id);
   hiE('li-err'); hiE('fp-err'); hiE('fp-ok');
 };
 
-// ── FIREBASE IMPORTS ───────────────────────────────────────────────────────
+// ── FIREBASE ───────────────────────────────────────────────────────────────
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged,
@@ -380,7 +541,6 @@ import { getAuth, onAuthStateChanged,
 import { getFirestore, collection, getDocs, doc, updateDoc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ── CONFIG ─────────────────────────────────────────────────────────────────
 const cfg = {
   apiKey:            "AIzaSyDYxJtPaJm6CBKO4LGS5g8BIsyyVo3KV6Y",
   authDomain:        "boutiqueos-3a75c.firebaseapp.com",
@@ -390,12 +550,11 @@ const cfg = {
   appId:             "1:382726562711:web:b7c840930fcb1955f3dad2"
 };
 
-// ── INIT ───────────────────────────────────────────────────────────────────
 let auth, db;
 try {
-  const app = initializeApp(cfg);
-  auth = getAuth(app);
-  db   = getFirestore(app);
+  const fbApp = initializeApp(cfg);
+  auth = getAuth(fbApp);
+  db   = getFirestore(fbApp);
   setLbl("Checking session…");
 } catch(e) {
   showLoadErr("Firebase init failed:\n" + e.message);
@@ -410,20 +569,13 @@ onAuthStateChanged(auth, user => {
   if (user) { uid=user.uid; enterApp(user.email); }
   else      { sho('login-page','flex'); }
 }, err => {
-  showLoadErr("Auth connection failed:\n" + err.message +
-    "\n\nMake sure boutiqueos.in is added in:\nFirebase Console → Authentication → Settings → Authorized Domains");
+  showLoadErr("Connection failed:\n" + err.message +
+    "\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in");
 });
 
-// Timeout safety net — show error if still loading after 12 seconds
 setTimeout(() => {
   if (!ge('loading').classList.contains('hide')) {
-    showLoadErr(
-      "Connection timed out.\n\n" +
-      "Most likely fix:\n" +
-      "Firebase Console → Authentication → Settings → Authorized Domains\n" +
-      "→ Add:  boutiqueos.in\n\n" +
-      "Then refresh this page."
-    );
+    showLoadErr("Connection timed out.\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add: boutiqueos.in\n\nThen refresh the page.");
   }
 }, 12000);
 
@@ -435,75 +587,51 @@ window.doLogin = async () => {
   try {
     await signInWithEmailAndPassword(auth,em,pw);
   } catch(e) {
-    const m={
-      'auth/user-not-found':    'No account found with this email.',
-      'auth/wrong-password':    'Wrong password. Try again.',
-      'auth/invalid-email':     'Invalid email address.',
-      'auth/too-many-requests': 'Too many attempts. Please wait.',
-      'auth/invalid-credential':'Wrong email or password.',
-    };
+    const m={'auth/user-not-found':'No account found with this email.','auth/wrong-password':'Wrong password.','auth/invalid-email':'Invalid email address.','auth/too-many-requests':'Too many attempts. Please wait.','auth/invalid-credential':'Wrong email or password.'};
     showErr('li-err', m[e.code]||e.message);
     btn.disabled=false; btn.textContent='Sign In →';
   }
 };
-
 window.doReset = async () => {
   const em=ge('fp-em').value.trim();
   if(!em){ showErr('fp-err','Please enter your email.'); return; }
   hiE('fp-err'); hiE('fp-ok');
   const btn=ge('fp-btn'); btn.disabled=true; btn.textContent='Sending…';
-  try {
-    await sendPasswordResetEmail(auth,em);
-    shE('fp-ok');
-  } catch(e) {
-    showErr('fp-err', e.code==='auth/user-not-found'?'No account with this email.':e.message);
-  } finally { btn.disabled=false; btn.textContent='Send Reset Link →'; }
+  try { await sendPasswordResetEmail(auth,em); shE('fp-ok'); }
+  catch(e){ showErr('fp-err', e.code==='auth/user-not-found'?'No account with this email.':e.message); }
+  finally { btn.disabled=false; btn.textContent='Send Reset Link →'; }
 };
-
 window.doLogout = async () => {
-  clearInterval(retT);
-  await signOut(auth);
+  clearInterval(retT); await signOut(auth);
   hid('app'); sho('login-page','flex');
-  ge('li-em').value=''; ge('li-pw').value='';
-  showView('vl');
+  ge('li-em').value=''; ge('li-pw').value=''; showView('vl');
 };
 
 // ── ENTER APP ──────────────────────────────────────────────────────────────
 async function enterApp(email) {
-  hid('login-page');
-  ge('app').style.display='flex';
+  hid('login-page'); ge('app').style.display='flex';
   txt('uc-e', email||'—');
   txt('uc-n', email?email.split('@')[0]:'My Boutique');
-  setDefaults();
-  await loadData();
-  fillDressFilter();
-  rDash(); rBal(); rPlan(); rRet();
-  clearInterval(retT);
-  retT = setInterval(rRet, 60000);
+  setDefaults(); await loadData();
+  fillDressFilter(); rDash(); rBal(); rPlan(); rRet();
+  clearInterval(retT); retT=setInterval(rRet,60000);
 }
-
 function setDefaults() {
   const t=new Date(), f=d=>d.toISOString().slice(0,10);
   sv('d-fr',f(t)); sv('d-to',f(t));
   sv('bs-fr',f(new Date(t.getFullYear(),t.getMonth(),1))); sv('bs-to',f(t));
   sv('pl-dt',f(t));
 }
-
 async function loadData() {
   try {
-    const sub = async n => {
-      const s = await getDocs(collection(db,'stores',uid,n));
-      return s.docs.map(d=>({id:d.id,...d.data()}));
-    };
-    [BK,EX] = await Promise.all([sub('bookings'),sub('expenses')]);
-  } catch(e) { showToast('⚠️ Data error: '+e.message); }
+    const sub=async n=>{ const s=await getDocs(collection(db,'stores',uid,n)); return s.docs.map(d=>({id:d.id,...d.data()})); };
+    [BK,EX]=await Promise.all([sub('bookings'),sub('expenses')]);
+  } catch(e){ showToast('⚠️ Data error: '+e.message); }
 }
-
 function fillDressFilter() {
   const m=new Map();
   BK.forEach(b=>{ if(b.dress_id&&!m.has(b.dress_id)) m.set(b.dress_id,b.dress_name||b.dress_id); });
-  ge('d-drs').innerHTML='<option value="">All Dresses</option>'+
-    [...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('');
+  ge('d-drs').innerHTML='<option value="">All Dresses</option>'+[...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('');
 }
 
 // ── DASHBOARD ──────────────────────────────────────────────────────────────
@@ -512,18 +640,18 @@ window.debD     = () => { clearTimeout(debT); debT=setTimeout(rDash,350); };
 window.rDash    = () => {
   const srch=ge('d-srch').value.toLowerCase(), drs=ge('d-drs').value, sts=ge('d-sts').value.toUpperCase();
   const all=ge('d-all').checked, dtyp=ge('d-dtyp').value, fr=ge('d-fr').value, to=ge('d-to').value;
-  txt('d-tot', BK.length);
-  txt('d-act', BK.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
-  txt('d-rev', '₹ '+fmt(BK.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
+  txt('d-tot',BK.length);
+  txt('d-act',BK.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
+  txt('d-rev','₹ '+fmt(BK.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
   let rows=BK;
   if(srch) rows=rows.filter(r=>(r.customer||'').toLowerCase().includes(srch)||(r.phone||'').includes(srch)||String(r.booking_id||'').toLowerCase().includes(srch)||(r.dress_id||'').toLowerCase().includes(srch));
   if(drs)  rows=rows.filter(r=>r.dress_id===drs);
   if(sts)  rows=rows.filter(r=>(r.status||'').toUpperCase()===sts);
   if(!all&&fr&&to) rows=rows.filter(r=>{ const d=r[dtyp]||''; return d>=fr&&d<=to; });
   rows=[...rows].sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
-  txt('d-cnt', rows.length+' records');
-  ge('d-tb').innerHTML = rows.length ? rows.map(r=>`<tr>
-    <td style="font-weight:700;color:var(--primary)">${r.booking_id||'—'}</td>
+  txt('d-cnt',rows.length+' records');
+  ge('d-tb').innerHTML=rows.length?rows.map(r=>`<tr>
+    <td style="font-weight:700;color:var(--indigo)">${r.booking_id||'—'}</td>
     <td>${r.customer||'—'}</td><td style="color:var(--muted)">${r.phone||'—'}</td>
     <td>${r.dress_name||'—'}</td><td style="color:var(--muted)">${r.dress_id||'—'}</td>
     <td>₹${fmt(r.price)}</td><td>${r.booking_date||'—'}</td><td>${r.event_date||'—'}</td>
@@ -533,7 +661,7 @@ window.rDash    = () => {
     <td>${r.discount||0}</td><td>${r.gst_percent||0}%</td>
     <td style="color:var(--amber)">₹${fmt(r.security_amount)}</td>
     <td style="max-width:160px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td>
-  </tr>`).join('') : er(17,'No records match the current filters');
+  </tr>`).join(''):er(17,'No records match the current filters');
 };
 
 // ── BALANCE SHEET ──────────────────────────────────────────────────────────
@@ -552,11 +680,11 @@ window.rBal = () => {
   const pe=ge('bs-pr'); pe.textContent='₹ '+fmt(np); pe.className='scv '+(np>=0?'cb':'cr');
   const byS={};
   allR.forEach(b=>{ const s=b.status||'—'; if(!byS[s])byS[s]={c:0,r:0}; byS[s].c++; byS[s].r+=(b.grand_total||0); });
-  const sc={ACTIVE:'#15803d',RETURNED:'var(--primary)',CANCELLED:'var(--red)',Sold:'var(--amber)'};
+  const sc={ACTIVE:'#15803d',RETURNED:'var(--indigo)',CANCELLED:'var(--red)',Sold:'var(--amber)'};
   ge('bs-st').innerHTML=Object.entries(byS).map(([s,v])=>`<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.c}</td><td>₹ ${fmt(v.r)}</td></tr>`).join('')||er(3);
   const ds={};
   fil.forEach(b=>{ const k=b.dress_id||'?'; if(!ds[k])ds[k]={n:b.dress_name||k,bk:0,rv:0}; ds[k].bk++; ds[k].rv+=(b.price||0); });
-  ge('bs-tp').innerHTML=Object.values(ds).sort((a,b)=>topSort==='bookings'?b.bk-a.bk:b.rv-a.rv).slice(0,5).map((d,i)=>`<tr><td style="font-weight:800;text-align:center;color:var(--primary)">${i+1}</td><td>${d.n}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rv)}</td></tr>`).join('')||er(4);
+  ge('bs-tp').innerHTML=Object.values(ds).sort((a,b)=>topSort==='bookings'?b.bk-a.bk:b.rv-a.rv).slice(0,5).map((d,i)=>`<tr><td style="font-weight:800;text-align:center;color:var(--indigo)">${i+1}</td><td>${d.n}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rv)}</td></tr>`).join('')||er(4);
   const ec={};
   exF.forEach(e=>{ const n=e.exp_name||'Other'; if(!ec[n])ec[n]=0; ec[n]+=(e.amount||0); });
   ge('bs-eb').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>`<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`).join('')||er(2,'No expenses in this period');
@@ -590,11 +718,11 @@ window.rRet = () => {
     ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1));
     return ev.toISOString().slice(0,10)<=today;
   }).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
-  txt('rt-ct', due.length);
-  txt('rt-bl', '₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
-  txt('rt-bg', due.length?due.length+' pending':'All clear ✅');
+  txt('rt-ct',due.length);
+  txt('rt-bl','₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
+  txt('rt-bg',due.length?due.length+' pending':'All clear ✅');
   ge('rt-tb').innerHTML=due.length?due.map(b=>`<tr>
-    <td style="font-weight:700;color:var(--primary)">${b.booking_id||'—'}</td>
+    <td style="font-weight:700;color:var(--indigo)">${b.booking_id||'—'}</td>
     <td>${b.customer||'—'}</td><td>${b.dress_name||'—'}</td>
     <td class="${b.event_date===today?'dt':'ov'}">${b.event_date||'—'}</td>
     <td>₹${fmt(b.grand_total)}</td><td>₹${fmt(b.total_advance)}</td>
@@ -602,12 +730,12 @@ window.rRet = () => {
     <td style="color:var(--amber)">₹${fmt(b.security_amount)}</td>
     <td style="font-size:11px;color:var(--muted);max-width:140px;white-space:normal">${b.notes||'—'}</td>
     <td><button class="mbtn" onclick="markRet('${b.booking_id}')">Mark Returned</button></td>
-  </tr>`).join(''):`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns!</td></tr>`;
+  </tr>`).join(''):`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns — all caught up!</td></tr>`;
 };
 window.markRet = async bid => {
   try {
     await updateDoc(doc(db,'stores',uid,'bookings',bid),{status:'RETURNED'});
-    showToast('✅ #'+bid+' marked returned');
+    showToast('✅ Booking #'+bid+' marked as returned');
     await loadData(); rRet(); rDash();
   } catch(e){ showToast('❌ '+e.message); }
 };

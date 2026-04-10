@@ -7,288 +7,258 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --indigo: #4f46e5; --indigo-dark: #3730a3; --purple: #7c3aed;
-      --dark: #0f172a; --slate: #475569; --light: #f8fafc; --white: #ffffff;
-      --green: #16a34a; --amber: #d97706; --red: #dc2626;
-      --border: #e2e8f0; --muted: #64748b; --sw: 240px;
+      --indigo:#4f46e5; --indigo-dark:#3730a3; --purple:#7c3aed;
+      --dark:#0f172a; --slate:#475569; --light:#f8fafc; --white:#ffffff;
+      --green:#16a34a; --amber:#d97706; --red:#dc2626;
+      --border:#e2e8f0; --muted:#64748b; --sw:240px;
     }
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--light); color: var(--dark); min-height: 100vh; overflow-x: hidden; }
+    body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--light); color:var(--dark); min-height:100vh; overflow-x:hidden; }
 
     /* ── LOADING ── */
-    #loading { position: fixed; inset: 0; background: var(--white); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; gap: 16px; transition: opacity .4s; }
-    #loading.hide { opacity: 0; pointer-events: none; }
-    .ring { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #e0e7ff; border-top-color: var(--indigo); animation: spin .8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #ld-lbl { font-size: 13px; color: var(--muted); font-weight: 500; }
-    #ld-err { display: none; margin-top: 8px; padding: 14px 20px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; color: var(--red); font-size: 13px; font-weight: 600; text-align: center; max-width: 420px; line-height: 1.6; }
+    #loading { position:fixed; inset:0; background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; gap:16px; transition:opacity .4s; }
+    #loading.hide { opacity:0; pointer-events:none; }
+    .ring { width:44px; height:44px; border-radius:50%; border:3px solid #e0e7ff; border-top-color:var(--indigo); animation:spin .8s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    #ld-lbl { font-size:13px; color:var(--muted); font-weight:500; }
+    #ld-err { display:none; margin-top:8px; padding:14px 20px; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; color:var(--red); font-size:13px; font-weight:600; text-align:center; max-width:420px; line-height:1.6; }
 
     /* ── LOGIN ── */
-    #login-page { display: none; min-height: 100vh; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4f46e5 65%, #7c3aed 100%); align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .orb { position: absolute; border-radius: 50%; filter: blur(80px); animation: float 8s ease-in-out infinite; pointer-events: none; }
-    .orb-1 { width: 400px; height: 400px; background: rgba(124,58,237,.25); top: -100px; right: -80px; }
-    .orb-2 { width: 300px; height: 300px; background: rgba(79,70,229,.3); bottom: -80px; left: -60px; animation-delay: 3s; }
+    #login-page { display:none; min-height:100vh; background:linear-gradient(135deg,#1e1b4b 0%,#312e81 30%,#4f46e5 65%,#7c3aed 100%); align-items:center; justify-content:center; position:relative; overflow:hidden; }
+    .orb { position:absolute; border-radius:50%; filter:blur(80px); animation:float 8s ease-in-out infinite; pointer-events:none; }
+    .orb-1 { width:400px; height:400px; background:rgba(124,58,237,.25); top:-100px; right:-80px; }
+    .orb-2 { width:300px; height:300px; background:rgba(79,70,229,.3); bottom:-80px; left:-60px; animation-delay:3s; }
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
-    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size: 60px 60px; pointer-events: none; }
-    .login-wrap { position: relative; z-index: 1; width: 420px; padding: 0 16px; }
-    .login-logo { text-align: center; font-size: 30px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; margin-bottom: 6px; }
-    .login-logo span { color: #a5b4fc; }
-    .login-tagline { text-align: center; color: rgba(255,255,255,.55); font-size: 13px; margin-bottom: 28px; }
-    .login-card { background: var(--white); border-radius: 20px; padding: 36px 32px; box-shadow: 0 32px 80px rgba(0,0,0,.35), 0 8px 32px rgba(79,70,229,.2); }
-    .lt { font-size: 20px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
-    .ls { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-    .fi { margin-bottom: 14px; }
-    .fi label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .06em; }
-    .fi input { width: 100%; padding: 11px 14px; background: var(--light); border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; color: var(--dark); outline: none; transition: border-color .2s, box-shadow .2s; }
-    .fi input:focus { border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(79,70,229,.12); }
-    .fi input::placeholder { color: #94a3b8; }
-
-    /* Password field with eye toggle */
-    .pw-wrap { position: relative; }
-    .pw-wrap input { padding-right: 44px; }
-    .pw-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: 16px; padding: 4px; line-height: 1; }
-    .pw-eye:hover { color: var(--indigo); }
-
-    .lbtn { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--indigo), var(--purple)); border: none; border-radius: 10px; color: white; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 16px rgba(79,70,229,.38); margin-top: 6px; }
-    .lbtn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(79,70,229,.45); }
-    .lbtn:active { transform: none; }
-    .lbtn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-    .flink { text-align: center; margin-top: 14px; font-size: 13px; color: var(--muted); }
-    .flink a { color: var(--indigo); font-weight: 600; cursor: pointer; }
-    .flink a:hover { text-decoration: underline; }
-    .merr { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; border-radius: 8px; padding: 9px 13px; font-size: 13px; font-weight: 500; margin-top: 10px; display: none; }
-    .mok  { background: #f0fdf4; color: var(--green); border: 1px solid #bbf7d0; border-radius: 8px; padding: 9px 13px; font-size: 13px; font-weight: 500; margin-top: 10px; display: none; }
-    .login-foot { text-align: center; margin-top: 20px; font-size: 12px; color: rgba(255,255,255,.35); }
-    .login-foot a { color: rgba(255,255,255,.45); text-decoration: none; }
-    .login-foot a:hover { color: #a5b4fc; }
+    .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:60px 60px; pointer-events:none; }
+    .login-wrap { position:relative; z-index:1; width:420px; padding:0 16px; }
+    .login-logo { text-align:center; font-size:30px; font-weight:800; color:var(--white); letter-spacing:-0.5px; margin-bottom:6px; }
+    .login-logo span { color:#a5b4fc; }
+    .login-tagline { text-align:center; color:rgba(255,255,255,.55); font-size:13px; margin-bottom:28px; }
+    .login-card { background:var(--white); border-radius:20px; padding:36px 32px; box-shadow:0 32px 80px rgba(0,0,0,.35),0 8px 32px rgba(79,70,229,.2); }
+    .lt { font-size:20px; font-weight:800; color:var(--dark); margin-bottom:4px; }
+    .ls { font-size:13px; color:var(--muted); margin-bottom:24px; }
+    .fi { margin-bottom:14px; }
+    .fi label { display:block; font-size:11px; font-weight:700; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:.06em; }
+    .fi input { width:100%; padding:11px 14px; background:var(--light); border:1.5px solid var(--border); border-radius:10px; font-family:inherit; font-size:14px; color:var(--dark); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .fi input:focus { border-color:var(--indigo); box-shadow:0 0 0 3px rgba(79,70,229,.12); }
+    .fi input::placeholder { color:#94a3b8; }
+    .pw-wrap { position:relative; }
+    .pw-wrap input { padding-right:44px; }
+    .pw-eye { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--muted); font-size:16px; padding:4px; line-height:1; }
+    .pw-eye:hover { color:var(--indigo); }
+    .lbtn { width:100%; padding:13px; background:linear-gradient(135deg,var(--indigo),var(--purple)); border:none; border-radius:10px; color:white; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; transition:transform .2s,box-shadow .2s; box-shadow:0 4px 16px rgba(79,70,229,.38); margin-top:6px; }
+    .lbtn:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(79,70,229,.45); }
+    .lbtn:active { transform:none; }
+    .lbtn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    .flink { text-align:center; margin-top:14px; font-size:13px; color:var(--muted); }
+    .flink a { color:var(--indigo); font-weight:600; cursor:pointer; }
+    .flink a:hover { text-decoration:underline; }
+    .merr { background:#fef2f2; color:#b91c1c; border:1px solid #fecaca; border-radius:8px; padding:9px 13px; font-size:13px; font-weight:500; margin-top:10px; display:none; }
+    .mok  { background:#f0fdf4; color:var(--green); border:1px solid #bbf7d0; border-radius:8px; padding:9px 13px; font-size:13px; font-weight:500; margin-top:10px; display:none; }
+    .login-foot { text-align:center; margin-top:20px; font-size:12px; color:rgba(255,255,255,.35); }
+    .login-foot a { color:rgba(255,255,255,.45); text-decoration:none; }
+    .login-foot a:hover { color:#a5b4fc; }
 
     /* ── APP ── */
-    #app { display: none; min-height: 100vh; }
-    #app.visible { display: flex; }
+    #app { display:none; min-height:100vh; }
+    #app.visible { display:flex; }
 
-    /* ── SIDEBAR ── improved with better visual design ── */
-    .sidebar {
-      width: var(--sw);
-      background: linear-gradient(180deg, #1e1b4b 0%, #2d2a6e 40%, #312e81 100%);
-      display: flex; flex-direction: column;
-      position: fixed; inset-y: 0; left: 0; z-index: 100;
-      box-shadow: 4px 0 24px rgba(0,0,0,.25);
-      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    /* ── DESKTOP SIDEBAR ── */
+    .sidebar { width:var(--sw); background:linear-gradient(180deg,#1e1b4b 0%,#2d2a6e 40%,#312e81 100%); display:flex; flex-direction:column; position:fixed; inset-y:0; left:0; z-index:100; box-shadow:4px 0 24px rgba(0,0,0,.25); }
+    .slogo { padding:24px 20px 18px; border-bottom:1px solid rgba(255,255,255,.08); }
+    .slogo-text { font-size:22px; font-weight:800; color:var(--white); letter-spacing:-0.5px; }
+    .slogo-text span { color:#a5b4fc; }
+    .slogo-sub { font-size:11px; color:rgba(255,255,255,.35); margin-top:3px; font-weight:500; }
+    .store-switcher { padding:10px 14px 6px; }
+    .store-switcher label { font-size:10px; font-weight:700; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:5px; }
+    .store-select { width:100%; padding:7px 10px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:8px; color:var(--white); font-family:inherit; font-size:13px; font-weight:600; outline:none; cursor:pointer; }
+    .store-select option { background:#312e81; }
+    .store-single { padding:10px 14px 6px; font-size:13px; font-weight:700; color:rgba(255,255,255,.75); }
+    .snav { flex:1; padding:8px 10px; display:flex; flex-direction:column; gap:2px; }
+    .nitem { display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:10px; border:none; background:none; font-family:inherit; font-size:13px; font-weight:600; color:rgba(255,255,255,.55); cursor:pointer; width:100%; text-align:left; transition:all .15s; }
+    .nitem:hover { background:rgba(255,255,255,.08); color:rgba(255,255,255,.9); }
+    .nitem.active { background:rgba(255,255,255,.13); color:var(--white); box-shadow:inset 3px 0 0 #a5b4fc; }
+    .nic { font-size:16px; width:20px; text-align:center; opacity:.65; flex-shrink:0; }
+    .nitem.active .nic { opacity:1; }
+    .sfoot { padding:10px 10px 16px; border-top:1px solid rgba(255,255,255,.08); }
+    .uchip { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+    .ucn { font-size:12px; font-weight:700; color:rgba(255,255,255,.85); }
+    .uce { font-size:11px; color:rgba(255,255,255,.4); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .obtn { width:100%; padding:9px 12px; background:none; border:1.5px solid rgba(255,255,255,.15); border-radius:10px; font-family:inherit; font-size:13px; font-weight:600; color:rgba(255,255,255,.55); cursor:pointer; transition:all .2s; }
+    .obtn:hover { border-color:#fca5a5; color:#fca5a5; background:rgba(220,38,38,.1); }
+
+    /* ── MOBILE TOP BAR ── */
+    .mob-topbar { display:none; height:54px; background:linear-gradient(135deg,#1e1b4b,#4f46e5); padding:0 16px; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:200; box-shadow:0 2px 16px rgba(0,0,0,.25); }
+    .mob-logo { font-size:18px; font-weight:800; color:white; letter-spacing:-0.3px; }
+    .mob-logo span { color:#a5b4fc; }
+    .mob-right { display:flex; align-items:center; gap:8px; }
+    .mob-live { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:#86efac; }
+    .mob-live-dot { width:6px; height:6px; border-radius:50%; background:#22c55e; animation:pulse 2s infinite; }
+    .ham-btn { background:none; border:none; cursor:pointer; color:white; font-size:22px; line-height:1; padding:4px 6px; transition:transform .15s; }
+    .ham-btn.open { transform:rotate(90deg); }
+
+    /* ── MOBILE DROPDOWN — drops from top, full width ── */
+    .mob-dropdown {
+      display:none;
+      position:fixed; top:54px; left:0; right:0; z-index:199;
+      background:linear-gradient(180deg,#1e1b4b 0%,#312e81 100%);
+      border-bottom:1px solid rgba(255,255,255,.1);
+      box-shadow:0 8px 32px rgba(0,0,0,.4);
+      animation:dropDown .2s cubic-bezier(.4,0,.2,1);
     }
-    /* mobile-hidden only applies on small screens — see media query below */
+    .mob-dropdown.open { display:block; }
+    @keyframes dropDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:none} }
+    .mob-dd-body { padding:12px 14px 16px; }
 
-    /* Sidebar logo area */
-    .slogo {
-      padding: 24px 20px 20px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      position: relative;
+    /* Store info row inside dropdown */
+    .mob-dd-store { display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,.08); }
+    .mob-dd-store-lbl { font-size:10px; font-weight:700; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.08em; }
+    .mob-dd-store-name { font-size:13px; font-weight:700; color:rgba(255,255,255,.8); margin-top:2px; }
+    .mob-store-sel { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); border-radius:8px; color:white; font-family:inherit; font-size:13px; font-weight:600; padding:6px 10px; outline:none; }
+    .mob-store-sel option { background:#312e81; }
+
+    /* Nav grid in dropdown */
+    .mob-dd-nav { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+    .mob-dd-btn {
+      display:flex; align-items:center; gap:10px;
+      padding:13px 14px; border-radius:10px; border:none;
+      background:rgba(255,255,255,.07); font-family:inherit;
+      font-size:13px; font-weight:600; color:rgba(255,255,255,.7);
+      cursor:pointer; text-align:left; transition:all .15s;
     }
-    .slogo-top { display: flex; align-items: center; justify-content: space-between; }
-    .slogo-text { font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; line-height: 1; }
-    .slogo-text span { color: #a5b4fc; }
-    .slogo-sub { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 4px; font-weight: 500; letter-spacing: .03em; }
-    .sidebar-close { display: none; background: none; border: none; color: rgba(255,255,255,.5); font-size: 20px; cursor: pointer; padding: 2px; line-height: 1; }
-    .sidebar-close:hover { color: white; }
+    .mob-dd-btn:hover { background:rgba(255,255,255,.13); color:white; }
+    .mob-dd-btn.active { background:rgba(165,180,252,.2); color:white; border:1px solid rgba(165,180,252,.25); }
+    .mob-dd-icon { font-size:18px; }
 
-    /* Store switcher */
-    .store-switcher { padding: 12px 14px 4px; }
-    .store-switcher label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: .08em; display: block; margin-bottom: 6px; }
-    .store-select {
-      width: 100%; padding: 8px 10px;
-      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
-      border-radius: 8px; color: var(--white);
-      font-family: inherit; font-size: 13px; font-weight: 600;
-      outline: none; cursor: pointer; appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a5b4fc' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 10px center;
-      padding-right: 28px;
-    }
-    .store-select:focus { border-color: rgba(165,180,252,.5); background-color: rgba(255,255,255,.12); }
-    .store-select option { background: #312e81; color: white; }
-    .store-switcher-single { padding: 12px 14px 4px; }
-    .store-name-display { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.8); padding: 6px 0; }
+    /* Sign out row in dropdown */
+    .mob-dd-foot { display:flex; align-items:center; justify-content:space-between; padding-top:10px; border-top:1px solid rgba(255,255,255,.08); }
+    .mob-dd-user { font-size:11px; color:rgba(255,255,255,.38); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; margin-right:10px; }
+    .mob-dd-out { background:none; border:1px solid rgba(255,255,255,.18); border-radius:8px; color:rgba(255,255,255,.6); font-family:inherit; font-size:12px; font-weight:600; padding:5px 14px; cursor:pointer; white-space:nowrap; transition:all .2s; }
+    .mob-dd-out:hover { border-color:#fca5a5; color:#fca5a5; }
 
-    /* Nav items */
-    .snav { flex: 1; padding: 10px 10px; display: flex; flex-direction: column; gap: 2px; }
-    .nitem {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 14px; border-radius: 10px;
-      border: none; background: none; font-family: inherit;
-      font-size: 13px; font-weight: 600; color: rgba(255,255,255,.55);
-      cursor: pointer; width: 100%; text-align: left; transition: all .15s;
-      position: relative;
-    }
-    .nitem:hover { background: rgba(255,255,255,.08); color: rgba(255,255,255,.9); }
-    .nitem.active {
-      background: rgba(255,255,255,.13);
-      color: var(--white);
-      box-shadow: inset 3px 0 0 #a5b4fc;
-    }
-    .nitem.active .nic { opacity: 1; }
-    .nic { font-size: 16px; width: 20px; text-align: center; opacity: .6; flex-shrink: 0; }
-    .nitem-label { flex: 1; }
-
-    /* Sidebar footer */
-    .sfoot { padding: 12px 10px 16px; border-top: 1px solid rgba(255,255,255,.08); }
-    .uchip { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
-    .ucn { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.85); }
-    .uce { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .obtn { width: 100%; padding: 9px 12px; background: none; border: 1.5px solid rgba(255,255,255,.15); border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.55); cursor: pointer; transition: all .2s; }
-    .obtn:hover { border-color: #fca5a5; color: #fca5a5; background: rgba(220,38,38,.1); }
-
-    /* ── MOBILE TOPBAR ── */
-    .mob-topbar { display: none; height: 56px; background: linear-gradient(135deg, #1e1b4b, #4f46e5); padding: 0 16px; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 90; box-shadow: 0 2px 12px rgba(0,0,0,.2); }
-    .mob-logo { font-size: 18px; font-weight: 800; color: white; }
-    .mob-logo span { color: #a5b4fc; }
-    .mob-right { display: flex; align-items: center; gap: 10px; }
-    .mob-live { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #86efac; }
-    .mob-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
-    .ham-btn { background: none; border: none; cursor: pointer; color: white; font-size: 22px; line-height: 1; padding: 4px; }
-
-    /* Sidebar overlay for mobile */
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 99; backdrop-filter: blur(2px); }
-    .sidebar-overlay.show { display: block; }
+    /* Tap outside to close */
+    .mob-dd-overlay { display:none; position:fixed; inset:0; top:54px; z-index:198; }
+    .mob-dd-overlay.show { display:block; }
 
     /* ── DESKTOP TOPBAR ── */
-    .topbar { height: 56px; background: var(--white); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; box-shadow: 0 1px 20px rgba(0,0,0,.05); }
-    .tbtl { font-size: 16px; font-weight: 800; color: var(--dark); letter-spacing: -0.3px; }
-    .lchip { display: flex; align-items: center; gap: 6px; padding: 5px 13px; background: #dcfce7; border-radius: 100px; font-size: 12px; font-weight: 700; color: var(--green); }
-    .ldot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+    .topbar { height:56px; background:var(--white); border-bottom:1px solid var(--border); padding:0 28px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:40; box-shadow:0 1px 20px rgba(0,0,0,.05); }
+    .tbtl { font-size:16px; font-weight:800; color:var(--dark); letter-spacing:-0.3px; }
+    .lchip { display:flex; align-items:center; gap:6px; padding:5px 13px; background:#dcfce7; border-radius:100px; font-size:12px; font-weight:700; color:var(--green); }
+    .ldot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-    /* ── MAIN CONTENT ── */
-    .main { margin-left: var(--sw); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
-    .cont { flex: 1; padding: 24px 28px; }
-    .tp { display: none; animation: fup .25s ease; }
-    .tp.active { display: block; }
+    /* ── MAIN ── */
+    .main { margin-left:var(--sw); flex:1; display:flex; flex-direction:column; min-height:100vh; }
+    .cont { flex:1; padding:24px 28px; }
+    .tp { display:none; animation:fup .25s ease; }
+    .tp.active { display:block; }
     @keyframes fup { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+    .ph { margin-bottom:20px; }
+    .ph h2 { font-size:22px; font-weight:800; color:var(--dark); letter-spacing:-0.5px; }
+    .ph p  { font-size:13px; color:var(--muted); margin-top:3px; }
 
-    .ph { margin-bottom: 20px; }
-    .ph h2 { font-size: 22px; font-weight: 800; color: var(--dark); letter-spacing: -0.5px; }
-    .ph p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
-
-    /* ── FILTER CARD ── */
-    .fc { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 2px 8px rgba(79,70,229,.04); }
-    .fr { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .fr label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
-    .fr select, .fr input[type=date], .fr input[type=text] { padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; color: var(--dark); background: var(--light); outline: none; transition: border-color .2s; cursor: pointer; }
-    .fr select:focus, .fr input:focus { border-color: var(--indigo); box-shadow: 0 0 0 2px rgba(79,70,229,.1); }
-    .fr input[type=text] { min-width: 220px; }
-    .fsep { width: 1px; height: 22px; background: var(--border); flex-shrink: 0; }
-    .showall { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--muted); background: var(--light); cursor: pointer; user-select: none; white-space: nowrap; }
-    .showall input { accent-color: var(--indigo); cursor: pointer; }
+    /* ── FILTERS ── */
+    .fc { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:14px 18px; margin-bottom:20px; display:flex; flex-direction:column; gap:10px; box-shadow:0 2px 8px rgba(79,70,229,.04); }
+    .fr { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .fr label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; }
+    .fr select,.fr input[type=date],.fr input[type=text] { padding:7px 10px; border:1.5px solid var(--border); border-radius:8px; font-family:inherit; font-size:13px; color:var(--dark); background:var(--light); outline:none; transition:border-color .2s; cursor:pointer; }
+    .fr select:focus,.fr input:focus { border-color:var(--indigo); box-shadow:0 0 0 2px rgba(79,70,229,.1); }
+    .fr input[type=text] { min-width:220px; }
+    .fsep { width:1px; height:22px; background:var(--border); flex-shrink:0; }
+    .showall { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:12px; font-weight:600; color:var(--muted); background:var(--light); cursor:pointer; user-select:none; white-space:nowrap; }
+    .showall input { accent-color:var(--indigo); cursor:pointer; }
 
     /* ── STAT CARDS ── */
-    .sg { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 16px; margin-bottom: 22px; }
-    .sc { background: var(--white); border: 1px solid #e0e7ff; border-radius: 16px; padding: 20px 22px; position: relative; overflow: hidden; transition: transform .2s, box-shadow .2s; box-shadow: 0 2px 12px rgba(79,70,229,.06); }
-    .sc:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(79,70,229,.13); }
-    .sc::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--indigo), var(--purple)); }
-    .scl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
-    .scv { font-size: 26px; font-weight: 900; line-height: 1; letter-spacing: -0.5px; }
-    .ci { color: var(--indigo); } .cg { color: var(--green); } .ca { color: var(--amber); }
-    .cr { color: var(--red); }   .cp { color: var(--purple); } .cb { color: #0284c7; }
+    .sg { display:grid; grid-template-columns:repeat(auto-fill,minmax(175px,1fr)); gap:16px; margin-bottom:22px; }
+    .sc { background:var(--white); border:1px solid #e0e7ff; border-radius:16px; padding:20px 22px; position:relative; overflow:hidden; transition:transform .2s,box-shadow .2s; box-shadow:0 2px 12px rgba(79,70,229,.06); }
+    .sc:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(79,70,229,.13); }
+    .sc::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--indigo),var(--purple)); }
+    .scl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px; }
+    .scv { font-size:26px; font-weight:900; line-height:1; letter-spacing:-0.5px; }
+    .ci{color:var(--indigo)}.cg{color:var(--green)}.ca{color:var(--amber)}.cr{color:var(--red)}.cp{color:var(--purple)}.cb{color:#0284c7}
 
     /* ── TABLE ── */
-    .tc { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 22px; box-shadow: 0 2px 8px rgba(79,70,229,.04); }
-    .thead { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-    .thead h3 { font-size: 14px; font-weight: 800; color: var(--dark); }
-    .tbg { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: #eef2ff; color: var(--indigo); }
-    .tbg.red { background: #fef2f2; color: var(--red); }
-    .tw { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    thead th { padding: 9px 14px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--light); border-bottom: 1px solid var(--border); white-space: nowrap; }
-    tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: #f8faff; }
-    tbody td { padding: 10px 14px; white-space: nowrap; }
-    .erow { text-align: center !important; padding: 32px !important; color: var(--muted); font-size: 13px; white-space: normal !important; }
-
-    /* Status badges */
-    .b { display: inline-flex; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 700; }
-    .ba { background: #dcfce7; color: #15803d; }
-    .br { background: #eef2ff; color: var(--indigo); }
-    .bc { background: #fee2e2; color: #b91c1c; }
-    .bs { background: #fef9c3; color: #92400e; }
+    .tc { background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:22px; box-shadow:0 2px 8px rgba(79,70,229,.04); }
+    .thead { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+    .thead h3 { font-size:14px; font-weight:800; color:var(--dark); }
+    .tbg { font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; background:#eef2ff; color:var(--indigo); }
+    .tbg.red { background:#fef2f2; color:var(--red); }
+    .tw { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    table { width:100%; border-collapse:collapse; font-size:12.5px; }
+    thead th { padding:9px 14px; text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:var(--light); border-bottom:1px solid var(--border); white-space:nowrap; }
+    tbody tr { border-bottom:1px solid var(--border); transition:background .12s; }
+    tbody tr:last-child { border-bottom:none; }
+    tbody tr:hover { background:#f8faff; }
+    tbody td { padding:10px 14px; white-space:nowrap; }
+    .erow { text-align:center!important; padding:32px!important; color:var(--muted); font-size:13px; white-space:normal!important; }
+    .b { display:inline-flex; padding:3px 10px; border-radius:100px; font-size:11px; font-weight:700; }
+    .ba{background:#dcfce7;color:#15803d}.br{background:#eef2ff;color:var(--indigo)}.bc{background:#fee2e2;color:#b91c1c}.bs{background:#fef9c3;color:#92400e}
 
     /* ── PLANNER ── */
-    .plsp { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .plcol { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(79,70,229,.04); }
-    .plhd { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .plhd h3 { font-size: 14px; font-weight: 800; color: var(--dark); }
-    .cpil { font-size: 11px; font-weight: 700; background: #eef2ff; color: var(--indigo); padding: 3px 10px; border-radius: 100px; }
-    .plbd { padding: 12px; display: flex; flex-direction: column; gap: 8px; max-height: 500px; overflow-y: auto; }
-    .plcard { background: var(--light); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
-    .pcd { font-size: 13px; font-weight: 700; color: var(--dark); }
-    .pci { font-size: 11px; color: var(--indigo); font-weight: 700; margin-left: 5px; }
-    .pcc { font-size: 12px; color: var(--muted); margin-top: 4px; }
-    .pcs { font-size: 11px; color: var(--muted); margin-top: 3px; font-family: monospace; }
-    .pcn { font-size: 11px; color: var(--purple); margin-top: 5px; font-weight: 600; }
-    .plem { text-align: center; padding: 36px; color: var(--muted); font-size: 13px; }
+    .plsp { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .plcol { background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(79,70,229,.04); }
+    .plhd { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+    .plhd h3 { font-size:14px; font-weight:800; color:var(--dark); }
+    .cpil { font-size:11px; font-weight:700; background:#eef2ff; color:var(--indigo); padding:3px 10px; border-radius:100px; }
+    .plbd { padding:12px; display:flex; flex-direction:column; gap:8px; max-height:500px; overflow-y:auto; }
+    .plcard { background:var(--light); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+    .pcd{font-size:13px;font-weight:700;color:var(--dark)}.pci{font-size:11px;color:var(--indigo);font-weight:700;margin-left:5px}
+    .pcc{font-size:12px;color:var(--muted);margin-top:4px}.pcs{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
+    .pcn{font-size:11px;color:var(--purple);margin-top:5px;font-weight:600}
+    .plem{text-align:center;padding:36px;color:var(--muted);font-size:13px}
+    .ov{color:var(--red)!important;font-weight:700!important}.dt{color:var(--amber)!important;font-weight:700!important}
 
-    /* ── RETURNS ── (no mark returned button — read only) */
-    .ov { color: var(--red) !important; font-weight: 700 !important; }
-    .dt { color: var(--amber) !important; font-weight: 700 !important; }
+    /* ── BALANCE ── */
+    .bs6{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:22px}
+    .bs2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+    .togr{display:flex;gap:6px}
+    .tog{padding:6px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);background:var(--light);cursor:pointer;transition:all .15s}
+    .tog.on{background:var(--indigo);color:white;border-color:var(--indigo)}
+    .jbtn{padding:7px 16px;border:1.5px solid var(--border);border-radius:8px;background:var(--light);font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+    .jbtn:hover{border-color:var(--indigo);color:var(--indigo);background:#eef2ff}
 
-    /* ── BALANCE SHEET ── */
-    .bs6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 22px; }
-    .bs2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
-    .togr { display: flex; gap: 6px; }
-    .tog { padding: 6px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 700; color: var(--muted); background: var(--light); cursor: pointer; transition: all .15s; }
-    .tog.on { background: var(--indigo); color: white; border-color: var(--indigo); }
-    .jbtn { padding: 7px 16px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--light); font-family: inherit; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .15s; }
-    .jbtn:hover { border-color: var(--indigo); color: var(--indigo); background: #eef2ff; }
+    /* ── MOBILE BOTTOM NAV ── */
+    .mob-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--white); border-top:1px solid var(--border); z-index:90; padding:6px 0 env(safe-area-inset-bottom,6px); box-shadow:0 -4px 20px rgba(0,0,0,.08); }
+    .mob-nav-inner { display:flex; }
+    .mob-nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:5px 4px; background:none; border:none; cursor:pointer; font-family:inherit; color:var(--muted); transition:color .15s; }
+    .mob-nav-btn.active { color:var(--indigo); }
+    .mob-nav-icon { font-size:20px; }
+    .mob-nav-lbl { font-size:10px; font-weight:700; }
 
     /* Toast */
-    #toast { position: fixed; bottom: 24px; right: 24px; background: var(--dark); color: white; padding: 11px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; display: none; z-index: 9999; box-shadow: 0 8px 28px rgba(0,0,0,.22); }
-    #toast.show { display: block; animation: toastIn .3s ease; }
-    @keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
-
-    /* ── MOBILE BOTTOM NAV — like index.html mobile menu ── */
-    .mob-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--border); z-index: 90; padding: 8px 0 env(safe-area-inset-bottom); box-shadow: 0 -4px 20px rgba(0,0,0,.08); }
-    .mob-nav-inner { display: flex; justify-content: space-around; }
-    .mob-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 4px; background: none; border: none; cursor: pointer; font-family: inherit; color: var(--muted); transition: color .15s; }
-    .mob-nav-btn.active { color: var(--indigo); }
-    .mob-nav-icon { font-size: 20px; }
-    .mob-nav-lbl { font-size: 10px; font-weight: 700; letter-spacing: .02em; }
+    #toast{position:fixed;bottom:80px;right:16px;background:var(--dark);color:white;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.22)}
+    #toast.show{display:block;animation:toastIn .3s ease}
+    @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 820px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .sidebar-close { display: block; }
-      .mob-topbar { display: flex; }
-      .mob-nav { display: block; }
-      .main { margin-left: 0; padding-bottom: 72px; }
-      .topbar { display: none; }
-      .cont { padding: 16px; }
-      .bs6 { grid-template-columns: repeat(2, 1fr); }
-      .bs2 { grid-template-columns: 1fr; }
-      .plsp { grid-template-columns: 1fr; }
-      .sg { grid-template-columns: repeat(2, 1fr); }
-      .fr input[type=text] { min-width: 100%; }
-      .fsep { display: none; }
-      .ph h2 { font-size: 18px; }
+    @media(max-width:820px){
+      .sidebar{display:none}
+      .topbar{display:none}
+      .mob-topbar{display:flex}
+      .mob-nav{display:block}
+      .main{margin-left:0;padding-bottom:72px}
+      .cont{padding:14px}
+      .bs6{grid-template-columns:1fr 1fr}
+      .bs2{grid-template-columns:1fr}
+      .plsp{grid-template-columns:1fr}
+      .sg{grid-template-columns:1fr 1fr}
+      .fr input[type=text]{min-width:100%}
+      .fsep{display:none}
+      .ph h2{font-size:18px}
+      #toast{bottom:80px}
     }
-    @media (max-width: 480px) {
-      .bs6 { grid-template-columns: 1fr 1fr; }
-      .sg { grid-template-columns: 1fr 1fr; }
-      .login-card { padding: 28px 20px; }
+    @media(max-width:400px){
+      .login-card{padding:26px 18px}
     }
   </style>
 </head>
 <body>
 
 <!-- LOADING -->
-<div id="loading">
-  <div class="ring"></div>
-  <div id="ld-lbl">Connecting to BoutiqueOS…</div>
-  <div id="ld-err"></div>
-</div>
+<div id="loading"><div class="ring"></div><div id="ld-lbl">Connecting to BoutiqueOS…</div><div id="ld-err"></div></div>
 
 <!-- ════════ LOGIN ════════ -->
 <div id="login-page">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="hero-grid"></div>
   <div class="login-wrap">
     <div class="login-logo">Boutique<span>OS</span></div>
     <div class="login-tagline">Store Dashboard — View your store insights</div>
@@ -301,7 +271,7 @@
           <label>Password</label>
           <div class="pw-wrap">
             <input type="password" id="li-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
-            <button class="pw-eye" type="button" onclick="togglePw('li-pw',this)" title="Show/hide password">👁</button>
+            <button class="pw-eye" type="button" onclick="togglePw('li-pw',this)">👁</button>
           </div>
         </div>
         <div class="merr" id="li-err"></div>
@@ -313,7 +283,7 @@
         <div class="ls">We'll send a reset link to your email</div>
         <div class="fi"><label>Email Address</label><input type="email" id="fp-em" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doReset()"/></div>
         <div class="merr" id="fp-err"></div>
-        <div class="mok"  id="fp-ok">✅ Reset link sent! Check your inbox.</div>
+        <div class="mok" id="fp-ok">✅ Reset link sent! Check your inbox.</div>
         <button class="lbtn" id="fp-btn" onclick="doReset()">Send Reset Link →</button>
         <div class="flink"><a onclick="showView('vl')">← Back to Sign In</a></div>
       </div>
@@ -325,62 +295,69 @@
 <!-- ════════ APP ════════ -->
 <div id="app">
 
-  <!-- Sidebar overlay (mobile) -->
-  <div class="sidebar-overlay" id="soverlay" onclick="closeSidebar()"></div>
-
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
+  <!-- ── DESKTOP SIDEBAR ── -->
+  <div class="sidebar">
     <div class="slogo">
-      <div class="slogo-top">
-        <div>
-          <div class="slogo-text">Boutique<span>OS</span></div>
-          <div class="slogo-sub">Store Dashboard</div>
-        </div>
-        <button class="sidebar-close" onclick="closeSidebar()">✕</button>
-      </div>
+      <div class="slogo-text">Boutique<span>OS</span></div>
+      <div class="slogo-sub">Store Dashboard</div>
     </div>
-
-    <!-- Store switcher — shown only when user has multiple stores -->
-    <div id="store-switcher-wrap" style="display:none">
+    <div id="desk-store-multi" style="display:none">
       <div class="store-switcher">
         <label>Select Store</label>
         <select class="store-select" id="store-select" onchange="switchStore(this.value)"></select>
       </div>
     </div>
-    <!-- Single store name — shown when user has only one store -->
-    <div id="store-single-wrap" style="display:none">
-      <div class="store-switcher-single">
-        <label style="font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:4px">Store</label>
-        <div class="store-name-display" id="store-name-display">—</div>
-      </div>
+    <div id="desk-store-single" style="display:none">
+      <div class="store-single" id="desk-store-name">—</div>
     </div>
-
     <nav class="snav">
-      <button class="nitem active" onclick="switchTab('dashboard',this)"><span class="nic">📊</span><span class="nitem-label">Dashboard</span></button>
-      <button class="nitem" onclick="switchTab('balance',this)"><span class="nic">💰</span><span class="nitem-label">Balance Sheet</span></button>
-      <button class="nitem" onclick="switchTab('planner',this)"><span class="nic">📅</span><span class="nitem-label">Planner</span></button>
-      <button class="nitem" onclick="switchTab('returns',this)"><span class="nic">🔄</span><span class="nitem-label">Return Tracker</span></button>
+      <button class="nitem active" onclick="switchTab('dashboard',this)"><span class="nic">📊</span>Dashboard</button>
+      <button class="nitem" onclick="switchTab('balance',this)"><span class="nic">💰</span>Balance Sheet</button>
+      <button class="nitem" onclick="switchTab('planner',this)"><span class="nic">📅</span>Planner</button>
+      <button class="nitem" onclick="switchTab('returns',this)"><span class="nic">🔄</span>Return Tracker</button>
     </nav>
-
     <div class="sfoot">
-      <div class="uchip">
-        <div class="ucn" id="uc-n">My Boutique</div>
-        <div class="uce" id="uc-e">—</div>
-      </div>
+      <div class="uchip"><div class="ucn" id="uc-n">—</div><div class="uce" id="uc-e">—</div></div>
       <button class="obtn" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
 
-  <!-- Mobile top bar -->
+  <!-- ── MOBILE TOP BAR ── -->
   <div class="mob-topbar">
-    <button class="ham-btn" onclick="openSidebar()">☰</button>
+    <button class="ham-btn" id="ham-btn" onclick="toggleDropdown()">☰</button>
     <div class="mob-logo">Boutique<span>OS</span></div>
-    <div class="mob-right">
-      <div class="mob-live"><div class="mob-live-dot"></div>Live</div>
-    </div>
+    <div class="mob-right"><div class="mob-live"><div class="mob-live-dot"></div>Live</div></div>
   </div>
 
-  <!-- Main -->
+  <!-- ── MOBILE DROPDOWN MENU ── -->
+  <div class="mob-dropdown" id="mob-dropdown">
+    <div class="mob-dd-body">
+      <!-- Store switcher row -->
+      <div class="mob-dd-store" id="mob-store-row">
+        <div>
+          <div class="mob-dd-store-lbl">Store</div>
+          <div class="mob-dd-store-name" id="mob-store-name">—</div>
+        </div>
+        <select class="mob-store-sel" id="mob-store-select" style="display:none" onchange="switchStore(this.value)"></select>
+      </div>
+      <!-- 2x2 nav grid -->
+      <div class="mob-dd-nav">
+        <button class="mob-dd-btn active" id="mdb-dashboard" onclick="mobSwitchTab('dashboard')"><span class="mob-dd-icon">📊</span>Dashboard</button>
+        <button class="mob-dd-btn" id="mdb-balance"   onclick="mobSwitchTab('balance')"  ><span class="mob-dd-icon">💰</span>Balance Sheet</button>
+        <button class="mob-dd-btn" id="mdb-planner"   onclick="mobSwitchTab('planner')"  ><span class="mob-dd-icon">📅</span>Planner</button>
+        <button class="mob-dd-btn" id="mdb-returns"   onclick="mobSwitchTab('returns')"  ><span class="mob-dd-icon">🔄</span>Return Tracker</button>
+      </div>
+      <!-- User + sign out -->
+      <div class="mob-dd-foot">
+        <div class="mob-dd-user" id="mob-dd-user">—</div>
+        <button class="mob-dd-out" onclick="doLogout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+  <!-- Tap outside to close -->
+  <div class="mob-dd-overlay" id="mob-dd-overlay" onclick="closeDropdown()"></div>
+
+  <!-- ── DESKTOP TOPBAR ── -->
   <div class="main">
     <div class="topbar">
       <div class="tbtl" id="tbtl">Dashboard</div>
@@ -388,7 +365,7 @@
     </div>
     <div class="cont">
 
-      <!-- ══ DASHBOARD ══ -->
+      <!-- DASHBOARD -->
       <div class="tp active" id="tab-dashboard">
         <div class="ph"><h2>Rental Dashboard</h2><p>All bookings, revenue and status at a glance</p></div>
         <div class="sg">
@@ -406,19 +383,14 @@
             <div class="fsep"></div>
             <label>Status</label>
             <select id="d-sts" onchange="rDash()">
-              <option value="">All Status</option>
-              <option value="ACTIVE">Active</option>
-              <option value="Sold">Sold</option>
-              <option value="RETURNED">Returned</option>
+              <option value="">All Status</option><option value="ACTIVE">Active</option>
+              <option value="Sold">Sold</option><option value="RETURNED">Returned</option>
               <option value="CANCELLED">Cancelled</option>
             </select>
           </div>
           <div class="fr">
             <label>📅 Filter by</label>
-            <select id="d-dtyp" onchange="rDash()">
-              <option value="booking_date">Booking Date</option>
-              <option value="event_date">Event Date</option>
-            </select>
+            <select id="d-dtyp" onchange="rDash()"><option value="booking_date">Booking Date</option><option value="event_date">Event Date</option></select>
             <label>From</label><input type="date" id="d-fr" onchange="rDash()"/>
             <label>To</label><input type="date" id="d-to" onchange="rDash()"/>
             <label class="showall"><input type="checkbox" id="d-all" checked onchange="togDates();rDash()"/> Show All Dates</label>
@@ -433,7 +405,7 @@
         </div>
       </div>
 
-      <!-- ══ BALANCE SHEET ══ -->
+      <!-- BALANCE SHEET -->
       <div class="tp" id="tab-balance">
         <div class="ph"><h2>Balance Sheet</h2><p>Financial summary for the selected date range</p></div>
         <div class="fc"><div class="fr">
@@ -449,27 +421,16 @@
           <div class="sc"><div class="scl">Net Profit</div><div class="scv cb" id="bs-pr">—</div></div>
         </div>
         <div class="bs2">
+          <div class="tc" style="margin:0"><div class="thead"><h3>Booking Status Breakdown</h3></div><div class="tw"><table><thead><tr><th>Status</th><th>Count</th><th>Revenue</th></tr></thead><tbody id="bs-st"></tbody></table></div></div>
           <div class="tc" style="margin:0">
-            <div class="thead"><h3>Booking Status Breakdown</h3></div>
-            <div class="tw"><table><thead><tr><th>Status</th><th>Count</th><th>Revenue</th></tr></thead><tbody id="bs-st"></tbody></table></div>
-          </div>
-          <div class="tc" style="margin:0">
-            <div class="thead"><h3>Top 5 Dresses</h3>
-              <div class="togr">
-                <button class="tog on" id="tgbk" onclick="swTop('bookings')">By Bookings</button>
-                <button class="tog" id="tgrv" onclick="swTop('revenue')">By Revenue</button>
-              </div>
-            </div>
+            <div class="thead"><h3>Top 5 Dresses</h3><div class="togr"><button class="tog on" id="tgbk" onclick="swTop('bookings')">By Bookings</button><button class="tog" id="tgrv" onclick="swTop('revenue')">By Revenue</button></div></div>
             <div class="tw"><table><thead><tr><th>#</th><th>Dress Name</th><th>Bookings</th><th>Revenue</th></tr></thead><tbody id="bs-tp"></tbody></table></div>
           </div>
         </div>
-        <div class="tc">
-          <div class="thead"><h3>Expense Breakdown by Category</h3></div>
-          <div class="tw"><table><thead><tr><th>Expense Name</th><th>Total Spent</th></tr></thead><tbody id="bs-eb"></tbody></table></div>
-        </div>
+        <div class="tc"><div class="thead"><h3>Expense Breakdown by Category</h3></div><div class="tw"><table><thead><tr><th>Expense Name</th><th>Total Spent</th></tr></thead><tbody id="bs-eb"></tbody></table></div></div>
       </div>
 
-      <!-- ══ PLANNER ══ -->
+      <!-- PLANNER -->
       <div class="tp" id="tab-planner">
         <div class="ph"><h2>Daily Delivery Planner</h2><p>Bookings for selected event date and the next day</p></div>
         <div class="fc"><div class="fr">
@@ -483,7 +444,7 @@
         </div>
       </div>
 
-      <!-- ══ RETURNS ══ (read-only — no mark returned button) -->
+      <!-- RETURNS (read-only) -->
       <div class="tp" id="tab-returns">
         <div class="ph"><h2>Overdue &amp; Expected Returns</h2><p>Dresses not yet returned — auto-refreshes every 60 seconds</p></div>
         <div class="sg" style="grid-template-columns:repeat(2,1fr);max-width:380px">
@@ -505,327 +466,207 @@
   <!-- Mobile bottom nav -->
   <div class="mob-nav">
     <div class="mob-nav-inner">
-      <button class="mob-nav-btn active" onclick="switchTab('dashboard',this);closeSidebar()" id="mn-dashboard"><span class="mob-nav-icon">📊</span><span class="mob-nav-lbl">Dashboard</span></button>
-      <button class="mob-nav-btn" onclick="switchTab('balance',this);closeSidebar()" id="mn-balance"><span class="mob-nav-icon">💰</span><span class="mob-nav-lbl">Balance</span></button>
-      <button class="mob-nav-btn" onclick="switchTab('planner',this);closeSidebar()" id="mn-planner"><span class="mob-nav-icon">📅</span><span class="mob-nav-lbl">Planner</span></button>
-      <button class="mob-nav-btn" onclick="switchTab('returns',this);closeSidebar()" id="mn-returns"><span class="mob-nav-icon">🔄</span><span class="mob-nav-lbl">Returns</span></button>
+      <button class="mob-nav-btn active" id="mn-dashboard" onclick="mobSwitchTab('dashboard')"><span class="mob-nav-icon">📊</span><span class="mob-nav-lbl">Dashboard</span></button>
+      <button class="mob-nav-btn" id="mn-balance"   onclick="mobSwitchTab('balance')"  ><span class="mob-nav-icon">💰</span><span class="mob-nav-lbl">Balance</span></button>
+      <button class="mob-nav-btn" id="mn-planner"   onclick="mobSwitchTab('planner')"  ><span class="mob-nav-icon">📅</span><span class="mob-nav-lbl">Planner</span></button>
+      <button class="mob-nav-btn" id="mn-returns"   onclick="mobSwitchTab('returns')"  ><span class="mob-nav-icon">🔄</span><span class="mob-nav-lbl">Returns</span></button>
     </div>
   </div>
 
-</div>
+</div><!-- /app -->
 <div id="toast"></div>
 
 <script type="module">
-// ── HELPERS FIRST ─────────────────────────────────────────────────────────
-const ge  = id => document.getElementById(id);
-const txt = (id,v) => { const e=ge(id); if(e) e.textContent=v; };
-const sv  = (id,v) => { const e=ge(id); if(e) e.value=v; };
-const sho = (id,d='block') => { const e=ge(id); if(e) e.style.display=d; };
-const hid = id => { const e=ge(id); if(e) e.style.display='none'; };
-const shE = id => { const e=ge(id); if(e) e.style.display='block'; };
-const hiE = id => { const e=ge(id); if(e) e.style.display='none'; };
-const fmt = n  => Math.round(n||0).toLocaleString('en-IN');
-const er  = (c,m='No data') => `<tr><td colspan="${c}" class="erow">${m}</td></tr>`;
+const ge=(id)=>document.getElementById(id);
+const txt=(id,v)=>{const e=ge(id);if(e)e.textContent=v};
+const sv=(id,v)=>{const e=ge(id);if(e)e.value=v};
+const sho=(id,d='block')=>{const e=ge(id);if(e)e.style.display=d};
+const hid=(id)=>{const e=ge(id);if(e)e.style.display='none'};
+const shE=(id)=>{const e=ge(id);if(e)e.style.display='block'};
+const hiE=(id)=>{const e=ge(id);if(e)e.style.display='none'};
+const fmt=(n)=>Math.round(n||0).toLocaleString('en-IN');
+const er=(c,m='No data')=>`<tr><td colspan="${c}" class="erow">${m}</td></tr>`;
 
-function setLbl(t) { txt('ld-lbl',t); }
-function showLoadErr(msg) {
-  const e=ge('ld-err'); e.innerHTML=msg.replace(/\n/g,'<br>'); e.style.display='block';
-  const r=document.querySelector('.ring'); if(r) r.style.display='none';
-  txt('ld-lbl','');
-}
-function showErr(id,msg) { const e=ge(id); if(!e)return; e.textContent=msg; e.style.display='block'; }
-function sbadge(s) {
-  const u=(s||'').toUpperCase();
-  if(u==='ACTIVE')    return `<span class="b ba">Active</span>`;
-  if(u==='RETURNED')  return `<span class="b br">Returned</span>`;
-  if(u==='CANCELLED') return `<span class="b bc">Cancelled</span>`;
-  if(u==='SOLD'||s==='Sold') return `<span class="b bs">Sold</span>`;
-  return `<span class="b br">${s||'—'}</span>`;
-}
-window.showToast = (msg,dur=3500) => {
-  const t=ge('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),dur);
+function setLbl(t){txt('ld-lbl',t)}
+function showLoadErr(msg){const e=ge('ld-err');e.innerHTML=msg.replace(/\n/g,'<br>');e.style.display='block';const r=document.querySelector('.ring');if(r)r.style.display='none';txt('ld-lbl','')}
+function showErr(id,msg){const e=ge(id);if(!e)return;e.textContent=msg;e.style.display='block'}
+function sbadge(s){const u=(s||'').toUpperCase();if(u==='ACTIVE')return`<span class="b ba">Active</span>`;if(u==='RETURNED')return`<span class="b br">Returned</span>`;if(u==='CANCELLED')return`<span class="b bc">Cancelled</span>`;if(u==='SOLD'||s==='Sold')return`<span class="b bs">Sold</span>`;return`<span class="b br">${s||'—'}</span>`}
+window.showToast=(msg,dur=3500)=>{const t=ge('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)};
+
+window.togglePw=(id,btn)=>{const i=ge(id);if(!i)return;const s=i.type==='password';i.type=s?'text':'password';btn.textContent=s?'🙈':'👁'};
+
+// ── MOBILE DROPDOWN ───────────────────────────────────────────────────────
+window.toggleDropdown=()=>{
+  const dd=ge('mob-dropdown'), ov=ge('mob-dd-overlay'), btn=ge('ham-btn');
+  const isOpen=dd.classList.contains('open');
+  if(isOpen){dd.classList.remove('open');ov.classList.remove('show');btn.classList.remove('open');}
+  else{dd.classList.add('open');ov.classList.add('show');btn.classList.add('open');}
+};
+window.closeDropdown=()=>{
+  ge('mob-dropdown').classList.remove('open');
+  ge('mob-dd-overlay').classList.remove('show');
+  ge('ham-btn').classList.remove('open');
 };
 
-// Password visibility toggle
-window.togglePw = (inputId, btn) => {
-  const inp=ge(inputId);
-  if(!inp) return;
-  const show = inp.type==='password';
-  inp.type = show ? 'text' : 'password';
-  btn.textContent = show ? '🙈' : '👁';
-};
-
-// Sidebar mobile controls
-window.openSidebar = () => {
-  if (window.innerWidth > 820) return;
-  ge('sidebar').classList.add('open');
-  ge('soverlay').classList.add('show');
-  document.body.style.overflow='hidden';
-};
-window.closeSidebar = () => {
-  ge('sidebar').classList.remove('open');
-  ge('soverlay').classList.remove('show');
-  document.body.style.overflow='';
-};
-
-// Tab switching — syncs both sidebar and bottom nav
-window.switchTab = (n, btn) => {
+// Tab switch — works for both desktop sidebar and mobile
+const TAB_TITLES={dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'};
+window.switchTab=(n,btn)=>{
   document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nitem').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));
   ge('tab-'+n).classList.add('active');
-  if(btn) btn.classList.add('active');
-  // Sync the other nav
-  const mn = ge('mn-'+n); if(mn) mn.classList.add('active');
-  // Sync sidebar
-  document.querySelectorAll('.nitem').forEach(b=>{
-    if(b.onclick && b.onclick.toString().includes("'"+n+"'")) b.classList.add('active');
-  });
-  txt('tbtl',{dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'}[n]||n);
+  if(btn)btn.classList.add('active');
+  txt('tbtl',TAB_TITLES[n]||n);
+};
+window.mobSwitchTab=(n)=>{
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.mob-dd-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.nitem').forEach(b=>b.classList.remove('active'));
+  ge('tab-'+n).classList.add('active');
+  const mn=ge('mn-'+n);if(mn)mn.classList.add('active');
+  const mdb=ge('mdb-'+n);if(mdb)mdb.classList.add('active');
+  txt('tbtl',TAB_TITLES[n]||n);
+  closeDropdown();
+  window.scrollTo({top:0,behavior:'smooth'});
 };
 
-window.showView = id => {
-  hid('vl'); hid('vf'); sho(id);
-  hiE('li-err'); hiE('fp-err'); hiE('fp-ok');
-};
+window.showView=id=>{hid('vl');hid('vf');sho(id);hiE('li-err');hiE('fp-err');hiE('fp-ok')};
 
-// ── FIREBASE ───────────────────────────────────────────────────────────────
-import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged,
-         signInWithEmailAndPassword,
-         sendPasswordResetEmail, signOut }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, getDoc }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+// ── FIREBASE ──────────────────────────────────────────────────────────────
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,sendPasswordResetEmail,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,collection,getDocs,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const cfg = {
-  apiKey:            "AIzaSyDYxJtPaJm6CBKO4LGS5g8BIsyyVo3KV6Y",
-  authDomain:        "boutiqueos-3a75c.firebaseapp.com",
-  projectId:         "boutiqueos-3a75c",
-  storageBucket:     "boutiqueos-3a75c.firebasestorage.app",
-  messagingSenderId: "382726562711",
-  appId:             "1:382726562711:web:b7c840930fcb1955f3dad2"
-};
+const cfg={apiKey:"AIzaSyDYxJtPaJm6CBKO4LGS5g8BIsyyVo3KV6Y",authDomain:"boutiqueos-3a75c.firebaseapp.com",projectId:"boutiqueos-3a75c",storageBucket:"boutiqueos-3a75c.firebasestorage.app",messagingSenderId:"382726562711",appId:"1:382726562711:web:b7c840930fcb1955f3dad2"};
 
-let auth, db;
-try {
-  const fbApp = initializeApp(cfg);
-  auth = getAuth(fbApp); db = getFirestore(fbApp);
-  setLbl("Checking session…");
-} catch(e) { showLoadErr("Firebase init failed:\n"+e.message); }
+let auth,db;
+try{const a=initializeApp(cfg);auth=getAuth(a);db=getFirestore(a);setLbl("Checking session…")}
+catch(e){showLoadErr("Firebase init failed:\n"+e.message)}
 
-// ── STATE ──────────────────────────────────────────────────────────────────
-let uid=null, currentStoreId=null, allStores=[], BK=[], EX=[], topSort='bookings', debT=null, retT=null;
+let uid=null,currentStoreId=null,allStores=[],BK=[],EX=[],topSort='bookings',debT=null,retT=null;
 
-// ── AUTH STATE ─────────────────────────────────────────────────────────────
-onAuthStateChanged(auth, async user => {
+onAuthStateChanged(auth,async user=>{
   ge('loading').classList.add('hide');
-  if (user) { uid=user.uid; await enterApp(user.email); }
-  else      { sho('login-page','flex'); }
-}, err => {
-  showLoadErr("Connection failed:\n"+err.message+"\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in");
-});
+  if(user){uid=user.uid;await enterApp(user.email)}
+  else{sho('login-page','flex')}
+},err=>showLoadErr("Connection failed:\n"+err.message+"\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in"));
 
-setTimeout(() => {
-  if (!ge('loading').classList.contains('hide'))
-    showLoadErr("Connection timed out.\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add: boutiqueos.in\n\nThen refresh.");
-}, 12000);
+setTimeout(()=>{if(!ge('loading').classList.contains('hide'))showLoadErr("Connection timed out.\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in\n\nThen refresh.")},12000);
 
-// ── AUTH ACTIONS ───────────────────────────────────────────────────────────
-window.doLogin = async () => {
-  const em=ge('li-em').value.trim(), pw=ge('li-pw').value;
-  if(!em||!pw){ showErr('li-err','Please enter email and password.'); return; }
-  const btn=ge('li-btn'); btn.disabled=true; btn.textContent='Signing in…'; hiE('li-err');
-  try { await signInWithEmailAndPassword(auth,em,pw); }
-  catch(e) {
-    const m={'auth/user-not-found':'No account found.','auth/wrong-password':'Wrong password.','auth/invalid-email':'Invalid email.','auth/too-many-requests':'Too many attempts.','auth/invalid-credential':'Wrong email or password.'};
-    showErr('li-err', m[e.code]||e.message);
-    btn.disabled=false; btn.textContent='Sign In →';
-  }
+window.doLogin=async()=>{
+  const em=ge('li-em').value.trim(),pw=ge('li-pw').value;
+  if(!em||!pw){showErr('li-err','Please enter email and password.');return}
+  const btn=ge('li-btn');btn.disabled=true;btn.textContent='Signing in…';hiE('li-err');
+  try{await signInWithEmailAndPassword(auth,em,pw)}
+  catch(e){const m={'auth/user-not-found':'No account found.','auth/wrong-password':'Wrong password.','auth/invalid-email':'Invalid email.','auth/too-many-requests':'Too many attempts.','auth/invalid-credential':'Wrong email or password.'};showErr('li-err',m[e.code]||e.message);btn.disabled=false;btn.textContent='Sign In →'}
 };
-window.doReset = async () => {
+window.doReset=async()=>{
   const em=ge('fp-em').value.trim();
-  if(!em){ showErr('fp-err','Please enter your email.'); return; }
-  hiE('fp-err'); hiE('fp-ok');
-  const btn=ge('fp-btn'); btn.disabled=true; btn.textContent='Sending…';
-  try { await sendPasswordResetEmail(auth,em); shE('fp-ok'); }
-  catch(e){ showErr('fp-err', e.code==='auth/user-not-found'?'No account with this email.':e.message); }
-  finally { btn.disabled=false; btn.textContent='Send Reset Link →'; }
+  if(!em){showErr('fp-err','Please enter your email.');return}
+  hiE('fp-err');hiE('fp-ok');const btn=ge('fp-btn');btn.disabled=true;btn.textContent='Sending…';
+  try{await sendPasswordResetEmail(auth,em);shE('fp-ok')}
+  catch(e){showErr('fp-err',e.code==='auth/user-not-found'?'No account with this email.':e.message)}
+  finally{btn.disabled=false;btn.textContent='Send Reset Link →'}
 };
-window.doLogout = async () => {
-  clearInterval(retT); await signOut(auth);
-  hid('app'); sho('login-page','flex');
-  ge('li-em').value=''; ge('li-pw').value=''; showView('vl');
-};
+window.doLogout=async()=>{clearInterval(retT);await signOut(auth);hid('app');sho('login-page','flex');ge('li-em').value='';ge('li-pw').value='';showView('vl')};
 
-// ── ENTER APP ──────────────────────────────────────────────────────────────
-async function enterApp(email) {
-  hid('login-page'); ge('app').style.display='flex';
-  txt('uc-e', email||'—');
-  txt('uc-n', email?email.split('@')[0]:'My Boutique');
-  setDefaults();
-  await resolveStores();  // figure out which stores this user can access
-  await loadData();
-  fillDressFilter(); rDash(); rBal(); rPlan(); rRet();
-  clearInterval(retT); retT=setInterval(rRet,60000);
+async function enterApp(email){
+  hid('login-page');ge('app').style.display='flex';
+  txt('uc-e',email||'—');txt('uc-n',email?email.split('@')[0]:'My Boutique');
+  txt('mob-dd-user',email||'—');
+  setDefaults();await resolveStores();await loadData();
+  fillDressFilter();rDash();rBal();rPlan();rRet();
+  clearInterval(retT);retT=setInterval(rRet,60000);
 }
 
-// ── STORE RESOLUTION ───────────────────────────────────────────────────────
-// Reads user's store list from users/{uid} doc
-// If multiple stores → show dropdown; if one → show name only
-async function resolveStores() {
-  try {
-    const userDoc = await getDoc(doc(db,'users',uid));
-    if (userDoc.exists() && userDoc.data().stores && userDoc.data().stores.length > 0) {
-      allStores = userDoc.data().stores; // array of {id, name}
-    } else {
-      // Fallback: treat uid as storeId (simple single-store setup)
-      allStores = [{ id: uid, name: 'My Store' }];
-    }
-  } catch(e) {
-    allStores = [{ id: uid, name: 'My Store' }];
-  }
-
-  currentStoreId = allStores[0].id;
-
-  if (allStores.length > 1) {
-    // Show store switcher dropdown
-    hid('store-single-wrap');
-    sho('store-switcher-wrap');
-    ge('store-select').innerHTML = allStores.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-  } else {
-    // Show store name only
-    hid('store-switcher-wrap');
-    sho('store-single-wrap');
-    txt('store-name-display', allStores[0].name);
+async function resolveStores(){
+  try{
+    const ud=await getDoc(doc(db,'users',uid));
+    allStores=(ud.exists()&&ud.data().stores&&ud.data().stores.length>0)?ud.data().stores:[{id:uid,name:'My Store'}];
+  }catch(e){allStores=[{id:uid,name:'My Store'}]}
+  currentStoreId=allStores[0].id;
+  if(allStores.length>1){
+    const opts=allStores.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+    sho('desk-store-multi');hid('desk-store-single');
+    ge('store-select').innerHTML=opts;
+    sho('mob-store-select');
+    ge('mob-store-select').innerHTML=opts;
+  }else{
+    hid('desk-store-multi');sho('desk-store-single');
+    txt('desk-store-name',allStores[0].name);
+    txt('mob-store-name',allStores[0].name);
+    hid('mob-store-select');
   }
 }
-
-window.switchStore = async (storeId) => {
-  currentStoreId = storeId;
-  await loadData();
-  fillDressFilter(); rDash(); rBal(); rPlan(); rRet();
-  showToast('Switched to ' + (allStores.find(s=>s.id===storeId)?.name||storeId));
+window.switchStore=async(id)=>{
+  currentStoreId=id;await loadData();
+  fillDressFilter();rDash();rBal();rPlan();rRet();
+  showToast('Switched to '+(allStores.find(s=>s.id===id)?.name||id));
 };
 
-// ── DATA ────────────────────────────────────────────────────────────────────
-function setDefaults() {
-  const t=new Date(), f=d=>d.toISOString().slice(0,10);
-  sv('d-fr',f(t)); sv('d-to',f(t));
-  sv('bs-fr',f(new Date(t.getFullYear(),t.getMonth(),1))); sv('bs-to',f(t));
-  sv('pl-dt',f(t));
+function setDefaults(){const t=new Date(),f=d=>d.toISOString().slice(0,10);sv('d-fr',f(t));sv('d-to',f(t));sv('bs-fr',f(new Date(t.getFullYear(),t.getMonth(),1)));sv('bs-to',f(t));sv('pl-dt',f(t))}
+async function loadData(){
+  try{const sub=async n=>{const s=await getDocs(collection(db,'stores',currentStoreId,n));return s.docs.map(d=>({id:d.id,...d.data()}))};[BK,EX]=await Promise.all([sub('bookings'),sub('expenses')])}
+  catch(e){showToast('⚠️ Data error: '+e.message)}
 }
-async function loadData() {
-  try {
-    const sub=async n=>{ const s=await getDocs(collection(db,'stores',currentStoreId,n)); return s.docs.map(d=>({id:d.id,...d.data()})); };
-    [BK,EX]=await Promise.all([sub('bookings'),sub('expenses')]);
-  } catch(e){ showToast('⚠️ Data error: '+e.message); }
-}
-function fillDressFilter() {
-  const m=new Map();
-  BK.forEach(b=>{ if(b.dress_id&&!m.has(b.dress_id)) m.set(b.dress_id,b.dress_name||b.dress_id); });
-  ge('d-drs').innerHTML='<option value="">All Dresses</option>'+[...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('');
-}
+function fillDressFilter(){const m=new Map();BK.forEach(b=>{if(b.dress_id&&!m.has(b.dress_id))m.set(b.dress_id,b.dress_name||b.dress_id)});ge('d-drs').innerHTML='<option value="">All Dresses</option>'+[...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('')}
 
-// ── DASHBOARD ──────────────────────────────────────────────────────────────
-window.togDates = () => { const a=ge('d-all').checked; ge('d-fr').disabled=a; ge('d-to').disabled=a; };
-window.debD     = () => { clearTimeout(debT); debT=setTimeout(rDash,350); };
-window.rDash    = () => {
-  const srch=ge('d-srch').value.toLowerCase(), drs=ge('d-drs').value, sts=ge('d-sts').value.toUpperCase();
-  const all=ge('d-all').checked, dtyp=ge('d-dtyp').value, fr=ge('d-fr').value, to=ge('d-to').value;
-  txt('d-tot',BK.length);
-  txt('d-act',BK.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
+window.togDates=()=>{const a=ge('d-all').checked;ge('d-fr').disabled=a;ge('d-to').disabled=a};
+window.debD=()=>{clearTimeout(debT);debT=setTimeout(rDash,350)};
+window.rDash=()=>{
+  const srch=ge('d-srch').value.toLowerCase(),drs=ge('d-drs').value,sts=ge('d-sts').value.toUpperCase();
+  const all=ge('d-all').checked,dtyp=ge('d-dtyp').value,fr=ge('d-fr').value,to=ge('d-to').value;
+  txt('d-tot',BK.length);txt('d-act',BK.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
   txt('d-rev','₹ '+fmt(BK.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
   let rows=BK;
-  if(srch) rows=rows.filter(r=>(r.customer||'').toLowerCase().includes(srch)||(r.phone||'').includes(srch)||String(r.booking_id||'').toLowerCase().includes(srch)||(r.dress_id||'').toLowerCase().includes(srch));
-  if(drs)  rows=rows.filter(r=>r.dress_id===drs);
-  if(sts)  rows=rows.filter(r=>(r.status||'').toUpperCase()===sts);
-  if(!all&&fr&&to) rows=rows.filter(r=>{ const d=r[dtyp]||''; return d>=fr&&d<=to; });
+  if(srch)rows=rows.filter(r=>(r.customer||'').toLowerCase().includes(srch)||(r.phone||'').includes(srch)||String(r.booking_id||'').toLowerCase().includes(srch)||(r.dress_id||'').toLowerCase().includes(srch));
+  if(drs)rows=rows.filter(r=>r.dress_id===drs);
+  if(sts)rows=rows.filter(r=>(r.status||'').toUpperCase()===sts);
+  if(!all&&fr&&to)rows=rows.filter(r=>{const d=r[dtyp]||'';return d>=fr&&d<=to});
   rows=[...rows].sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
   txt('d-cnt',rows.length+' records');
-  ge('d-tb').innerHTML=rows.length?rows.map(r=>`<tr>
-    <td style="font-weight:700;color:var(--indigo)">${r.booking_id||'—'}</td>
-    <td>${r.customer||'—'}</td><td style="color:var(--muted)">${r.phone||'—'}</td>
-    <td>${r.dress_name||'—'}</td><td style="color:var(--muted)">${r.dress_id||'—'}</td>
-    <td>₹${fmt(r.price)}</td><td>${r.booking_date||'—'}</td><td>${r.event_date||'—'}</td>
-    <td style="text-align:center">${r.booking_days||1}</td><td>${sbadge(r.status)}</td>
-    <td style="font-weight:700">₹${fmt(r.grand_total)}</td><td>₹${fmt(r.total_advance)}</td>
-    <td style="font-weight:700;color:${(r.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(r.total_balance)}</td>
-    <td>${r.discount||0}</td><td>${r.gst_percent||0}%</td>
-    <td style="color:var(--amber)">₹${fmt(r.security_amount)}</td>
-    <td style="max-width:160px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td>
-  </tr>`).join(''):er(17,'No records match the current filters');
+  ge('d-tb').innerHTML=rows.length?rows.map(r=>`<tr><td style="font-weight:700;color:var(--indigo)">${r.booking_id||'—'}</td><td>${r.customer||'—'}</td><td style="color:var(--muted)">${r.phone||'—'}</td><td>${r.dress_name||'—'}</td><td style="color:var(--muted)">${r.dress_id||'—'}</td><td>₹${fmt(r.price)}</td><td>${r.booking_date||'—'}</td><td>${r.event_date||'—'}</td><td style="text-align:center">${r.booking_days||1}</td><td>${sbadge(r.status)}</td><td style="font-weight:700">₹${fmt(r.grand_total)}</td><td>₹${fmt(r.total_advance)}</td><td style="font-weight:700;color:${(r.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(r.total_balance)}</td><td>${r.discount||0}</td><td>${r.gst_percent||0}%</td><td style="color:var(--amber)">₹${fmt(r.security_amount)}</td><td style="max-width:160px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td></tr>`).join(''):er(17,'No records match the current filters');
 };
 
-// ── BALANCE SHEET ──────────────────────────────────────────────────────────
-window.swTop = s => { topSort=s; ge('tgbk').className='tog'+(s==='bookings'?' on':''); ge('tgrv').className='tog'+(s==='revenue'?' on':''); rBal(); };
-window.rBal = () => {
-  const d1=ge('bs-fr').value, d2=ge('bs-to').value;
+window.swTop=s=>{topSort=s;ge('tgbk').className='tog'+(s==='bookings'?' on':'');ge('tgrv').className='tog'+(s==='revenue'?' on':'');rBal()};
+window.rBal=()=>{
+  const d1=ge('bs-fr').value,d2=ge('bs-to').value;
   const inR=b=>(!d1||(b.booking_date||'')>=d1)&&(!d2||(b.booking_date||'')<=d2);
-  const fil=BK.filter(b=>inR(b)&&(b.status||'').toUpperCase()!=='CANCELLED');
-  const allR=BK.filter(inR);
-  const rv=fil.reduce((s,b)=>s+(b.grand_total||0),0), cl=fil.reduce((s,b)=>s+(b.total_advance||0),0);
-  const pd=fil.reduce((s,b)=>s+(b.total_balance||0),0), gs=fil.reduce((s,b)=>s+(b.gst_amount||0),0);
+  const fil=BK.filter(b=>inR(b)&&(b.status||'').toUpperCase()!=='CANCELLED'),allR=BK.filter(inR);
+  const rv=fil.reduce((s,b)=>s+(b.grand_total||0),0),cl=fil.reduce((s,b)=>s+(b.total_advance||0),0);
+  const pd=fil.reduce((s,b)=>s+(b.total_balance||0),0),gs=fil.reduce((s,b)=>s+(b.gst_amount||0),0);
   const exF=EX.filter(e=>(!d1||(e.exp_date||'')>=d1)&&(!d2||(e.exp_date||'')<=d2));
-  const ex=exF.reduce((s,e)=>s+(e.amount||0),0), np=(rv-gs)-ex;
-  txt('bs-rv','₹ '+fmt(rv)); txt('bs-cl','₹ '+fmt(cl)); txt('bs-pd','₹ '+fmt(pd));
-  txt('bs-gs','₹ '+fmt(gs)); txt('bs-ex','₹ '+fmt(ex));
-  const pe=ge('bs-pr'); pe.textContent='₹ '+fmt(np); pe.className='scv '+(np>=0?'cb':'cr');
-  const byS={};
-  allR.forEach(b=>{ const s=b.status||'—'; if(!byS[s])byS[s]={c:0,r:0}; byS[s].c++; byS[s].r+=(b.grand_total||0); });
+  const ex=exF.reduce((s,e)=>s+(e.amount||0),0),np=(rv-gs)-ex;
+  txt('bs-rv','₹ '+fmt(rv));txt('bs-cl','₹ '+fmt(cl));txt('bs-pd','₹ '+fmt(pd));txt('bs-gs','₹ '+fmt(gs));txt('bs-ex','₹ '+fmt(ex));
+  const pe=ge('bs-pr');pe.textContent='₹ '+fmt(np);pe.className='scv '+(np>=0?'cb':'cr');
+  const byS={};allR.forEach(b=>{const s=b.status||'—';if(!byS[s])byS[s]={c:0,r:0};byS[s].c++;byS[s].r+=(b.grand_total||0)});
   const sc={ACTIVE:'#15803d',RETURNED:'var(--indigo)',CANCELLED:'var(--red)',Sold:'var(--amber)'};
   ge('bs-st').innerHTML=Object.entries(byS).map(([s,v])=>`<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.c}</td><td>₹ ${fmt(v.r)}</td></tr>`).join('')||er(3);
-  const ds={};
-  fil.forEach(b=>{ const k=b.dress_id||'?'; if(!ds[k])ds[k]={n:b.dress_name||k,bk:0,rv:0}; ds[k].bk++; ds[k].rv+=(b.price||0); });
+  const ds={};fil.forEach(b=>{const k=b.dress_id||'?';if(!ds[k])ds[k]={n:b.dress_name||k,bk:0,rv:0};ds[k].bk++;ds[k].rv+=(b.price||0)});
   ge('bs-tp').innerHTML=Object.values(ds).sort((a,b)=>topSort==='bookings'?b.bk-a.bk:b.rv-a.rv).slice(0,5).map((d,i)=>`<tr><td style="font-weight:800;text-align:center;color:var(--indigo)">${i+1}</td><td>${d.n}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rv)}</td></tr>`).join('')||er(4);
-  const ec={};
-  exF.forEach(e=>{ const n=e.exp_name||'Other'; if(!ec[n])ec[n]=0; ec[n]+=(e.amount||0); });
+  const ec={};exF.forEach(e=>{const n=e.exp_name||'Other';if(!ec[n])ec[n]=0;ec[n]+=(e.amount||0)});
   ge('bs-eb').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>`<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`).join('')||er(2,'No expenses in this period');
 };
 
-// ── PLANNER ────────────────────────────────────────────────────────────────
-window.jumpToday = () => { sv('pl-dt',new Date().toISOString().slice(0,10)); rPlan(); };
-window.rPlan = () => {
-  const sel=ge('pl-dt').value; if(!sel) return;
-  const nx=new Date(sel+'T00:00:00'); nx.setDate(nx.getDate()+1); const nxs=nx.toISOString().slice(0,10);
+window.jumpToday=()=>{sv('pl-dt',new Date().toISOString().slice(0,10));rPlan()};
+window.rPlan=()=>{
+  const sel=ge('pl-dt').value;if(!sel)return;
+  const nx=new Date(sel+'T00:00:00');nx.setDate(nx.getDate()+1);const nxs=nx.toISOString().slice(0,10);
   const its=BK.filter(b=>(b.event_date===sel||b.event_date===nxs)&&(b.status||'').toUpperCase()!=='CANCELLED');
-  const s1=its.filter(b=>b.event_date===sel), s2=its.filter(b=>b.event_date===nxs);
+  const s1=its.filter(b=>b.event_date===sel),s2=its.filter(b=>b.event_date===nxs);
   const fD=s=>s?new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
-  txt('pl-h1',`📅 ${fD(sel)} (Selected)`); txt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
-  txt('pl-c1',s1.length); txt('pl-c2',s2.length);
-  const mk=a=>a.length?a.map(b=>`<div class="plcard">
-    <div><span class="pcd">${b.dress_name||'—'}</span><span class="pci">[#${b.booking_id}]</span></div>
-    <div class="pcc">👤 ${b.customer||'—'} (${b.phone||'—'})</div>
-    <div class="pcs">📏 CH ${b.chest||'—'} | W ${b.waist||'—'} | L ${b.length||'—'}</div>
-    ${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}</div>`).join('')
-    :'<div class="plem">No events on this day</div>';
-  ge('pl-b1').innerHTML=mk(s1); ge('pl-b2').innerHTML=mk(s2);
+  txt('pl-h1',`📅 ${fD(sel)} (Selected)`);txt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
+  txt('pl-c1',s1.length);txt('pl-c2',s2.length);
+  const mk=a=>a.length?a.map(b=>`<div class="plcard"><div><span class="pcd">${b.dress_name||'—'}</span><span class="pci">[#${b.booking_id}]</span></div><div class="pcc">👤 ${b.customer||'—'} (${b.phone||'—'})</div><div class="pcs">📏 CH ${b.chest||'—'} | W ${b.waist||'—'} | L ${b.length||'—'}</div>${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}</div>`).join(''):'<div class="plem">No events on this day</div>';
+  ge('pl-b1').innerHTML=mk(s1);ge('pl-b2').innerHTML=mk(s2);
 };
 
-// ── RETURNS (read-only) ────────────────────────────────────────────────────
-window.rRet = () => {
+window.rRet=()=>{
   const today=new Date().toISOString().slice(0,10);
-  const due=BK.filter(b=>{
-    if((b.status||'').toUpperCase()!=='ACTIVE') return false;
-    const ev=new Date((b.event_date||'9999-12-31')+'T00:00:00');
-    ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1));
-    return ev.toISOString().slice(0,10)<=today;
-  }).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
-  txt('rt-ct',due.length);
-  txt('rt-bl','₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
+  const due=BK.filter(b=>{if((b.status||'').toUpperCase()!=='ACTIVE')return false;const ev=new Date((b.event_date||'9999-12-31')+'T00:00:00');ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1));return ev.toISOString().slice(0,10)<=today}).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
+  txt('rt-ct',due.length);txt('rt-bl','₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
   txt('rt-bg',due.length?due.length+' pending':'All clear ✅');
-  ge('rt-tb').innerHTML=due.length?due.map(b=>`<tr>
-    <td style="font-weight:700;color:var(--indigo)">${b.booking_id||'—'}</td>
-    <td>${b.customer||'—'}</td><td>${b.dress_name||'—'}</td>
-    <td class="${b.event_date===today?'dt':'ov'}">${b.event_date||'—'}</td>
-    <td style="text-align:center">${b.booking_days||1}</td>
-    <td>₹${fmt(b.grand_total)}</td><td>₹${fmt(b.total_advance)}</td>
-    <td style="font-weight:700;color:${(b.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(b.total_balance)}</td>
-    <td style="color:var(--amber)">₹${fmt(b.security_amount)}</td>
-    <td style="font-size:11px;color:var(--muted);max-width:140px;white-space:normal">${b.notes||'—'}</td>
-  </tr>`).join(''):`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns — all caught up!</td></tr>`;
+  ge('rt-tb').innerHTML=due.length?due.map(b=>`<tr><td style="font-weight:700;color:var(--indigo)">${b.booking_id||'—'}</td><td>${b.customer||'—'}</td><td>${b.dress_name||'—'}</td><td class="${b.event_date===today?'dt':'ov'}">${b.event_date||'—'}</td><td style="text-align:center">${b.booking_days||1}</td><td>₹${fmt(b.grand_total)}</td><td>₹${fmt(b.total_advance)}</td><td style="font-weight:700;color:${(b.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(b.total_balance)}</td><td style="color:var(--amber)">₹${fmt(b.security_amount)}</td><td style="font-size:11px;color:var(--muted);max-width:140px;white-space:normal">${b.notes||'—'}</td></tr>`).join(''):`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns — all caught up!</td></tr>`;
 };
 </script>
 </body>

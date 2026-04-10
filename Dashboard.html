@@ -3,19 +3,27 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- CSP: allow Firebase, Google Fonts, and self -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src https://fonts.gstatic.com;
+    connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com;
+    frame-src https://boutiqueos-3a75c.firebaseapp.com;
+    img-src 'self' data:;
+  "/>
   <title>Boutique OS — Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --primary:#4f46e5; --primary-h:#4338ca; --primary-dim:#eef2ff; --primary-border:#c7d2fe;
-      --purple:#7c3aed; --purple-dim:#f5f3ff;
-      --blue:#0284c7; --blue-dim:#f0f9ff;
-      --green:#16a34a; --green-dim:#f0fdf4;
-      --amber:#d97706; --amber-dim:#fffbeb;
-      --red:#dc2626; --red-dim:#fef2f2;
-      --slate:#1e293b; --muted:#64748b; --border:#e2e8f0;
-      --bg:#f8fafc; --white:#ffffff;
-      --sidebar-w:230px;
+      --primary:#4f46e5;--primary-dim:#eef2ff;--primary-border:#c7d2fe;
+      --purple:#7c3aed;--blue:#0284c7;--blue-dim:#f0f9ff;
+      --green:#16a34a;--green-dim:#f0fdf4;
+      --amber:#d97706;--amber-dim:#fffbeb;
+      --red:#dc2626;--red-dim:#fef2f2;
+      --slate:#1e293b;--muted:#64748b;--border:#e2e8f0;
+      --bg:#f8fafc;--white:#fff;--sidebar-w:230px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--slate);min-height:100vh}
@@ -23,68 +31,68 @@
     /* LOADING */
     #loading{position:fixed;inset:0;background:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:14px;transition:opacity .4s}
     #loading.hide{opacity:0;pointer-events:none}
-    .ring{width:42px;height:42px;border-radius:50%;border:3px solid var(--primary-border);border-top-color:var(--primary);animation:spin .8s linear infinite}
+    .ring{width:44px;height:44px;border-radius:50%;border:3px solid var(--primary-border);border-top-color:var(--primary);animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .ring-label{font-size:13px;color:var(--muted);font-weight:500}
+    .ring-lbl{font-size:13px;color:var(--muted);font-weight:500}
+    #load-err{margin-top:8px;padding:12px 20px;background:var(--red-dim);border:1px solid #fecaca;border-radius:10px;color:var(--red);font-size:13px;font-weight:600;text-align:center;max-width:380px;display:none;line-height:1.5}
 
     /* LOGIN */
     #login-page{display:none;min-height:100vh;background:linear-gradient(135deg,#eef2ff 0%,#f5f3ff 55%,#ede9fe 100%);align-items:center;justify-content:center}
-    .login-wrap{width:400px}
-    .login-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
-    .login-logo-icon{width:46px;height:46px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 18px rgba(99,102,241,.35)}
-    .login-logo-text{font-size:24px;font-weight:800;color:var(--slate)}
-    .login-logo-text span{color:var(--primary)}
-    .login-card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px 36px;box-shadow:0 20px 60px rgba(99,102,241,.12),0 2px 8px rgba(0,0,0,.05)}
-    .login-title{font-size:20px;font-weight:800;margin-bottom:4px}
-    .login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
-    .field{margin-bottom:16px}
-    .field label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
-    .field input{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--slate);outline:none;transition:border-color .2s,box-shadow .2s}
-    .field input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.13)}
-    .field input::placeholder{color:#94a3b8}
-    .login-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--primary),var(--purple));border:none;border-radius:10px;color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;box-shadow:0 4px 16px rgba(99,102,241,.38);margin-top:6px}
-    .login-btn:hover{opacity:.9;transform:translateY(-1px)}
-    .login-btn:active{transform:none}
-    .login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-    .forgot-link{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
-    .forgot-link a{color:var(--primary);font-weight:600;cursor:pointer}
-    .forgot-link a:hover{text-decoration:underline}
-    .msg-error{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
-    .msg-ok{background:var(--green-dim);color:var(--green);border:1px solid #bbf7d0;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
+    .lw{width:400px}
+    .ll{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
+    .ll-icon{width:46px;height:46px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 18px rgba(99,102,241,.35)}
+    .ll-text{font-size:24px;font-weight:800;color:var(--slate)}
+    .ll-text span{color:var(--primary)}
+    .lc{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px 36px;box-shadow:0 20px 60px rgba(99,102,241,.12)}
+    .lt{font-size:20px;font-weight:800;margin-bottom:4px}
+    .ls{font-size:13px;color:var(--muted);margin-bottom:28px}
+    .fi{margin-bottom:16px}
+    .fi label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+    .fi input{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--slate);outline:none;transition:border-color .2s,box-shadow .2s}
+    .fi input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.13)}
+    .fi input::placeholder{color:#94a3b8}
+    .lbtn{width:100%;padding:13px;background:linear-gradient(135deg,var(--primary),var(--purple));border:none;border-radius:10px;color:white;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;box-shadow:0 4px 16px rgba(99,102,241,.38);margin-top:6px}
+    .lbtn:hover{opacity:.9;transform:translateY(-1px)}
+    .lbtn:active{transform:none}
+    .lbtn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+    .fl{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
+    .fl a{color:var(--primary);font-weight:600;cursor:pointer}
+    .fl a:hover{text-decoration:underline}
+    .merr{background:var(--red-dim);color:#b91c1c;border:1px solid #fecaca;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
+    .mok{background:var(--green-dim);color:var(--green);border:1px solid #bbf7d0;border-radius:8px;padding:9px 13px;font-size:13px;font-weight:500;margin-top:10px;display:none}
 
     /* APP */
     #app{display:none;min-height:100vh}
     #app.visible{display:flex}
     .sidebar{width:var(--sidebar-w);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;inset-y:0;left:0;z-index:50}
-    .sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-    .sl-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-    .sl-text{font-size:16px;font-weight:800;color:var(--slate)}
-    .sl-text span{color:var(--primary)}
-    .sidebar-nav{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2px}
-    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;width:100%;text-align:left;transition:all .15s}
-    .nav-item:hover{background:var(--bg);color:var(--slate)}
-    .nav-item.active{background:var(--primary-dim);color:var(--primary)}
-    .ni{font-size:15px;width:20px;text-align:center}
-    .sidebar-foot{padding:12px 8px;border-top:1px solid var(--border)}
-    .user-chip{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:8px}
-    .uc-name{font-size:12px;font-weight:700;color:var(--slate)}
-    .uc-email{font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .logout-btn{width:100%;padding:9px 12px;background:none;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
-    .logout-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
+    .sl{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .sl-ic{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .sl-tx{font-size:16px;font-weight:800;color:var(--slate)}
+    .sl-tx span{color:var(--primary)}
+    .snav{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2px}
+    .ni{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:none;background:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;width:100%;text-align:left;transition:all .15s}
+    .ni:hover{background:var(--bg);color:var(--slate)}
+    .ni.active{background:var(--primary-dim);color:var(--primary)}
+    .nic{font-size:15px;width:20px;text-align:center}
+    .sft{padding:12px 8px;border-top:1px solid var(--border)}
+    .uc{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+    .ucn{font-size:12px;font-weight:700;color:var(--slate)}
+    .uce{font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .outbtn{width:100%;padding:9px 12px;background:none;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+    .outbtn:hover{border-color:var(--red);color:var(--red);background:var(--red-dim)}
     .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
     .topbar{height:56px;background:var(--white);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
-    .topbar-title{font-size:16px;font-weight:800;color:var(--slate)}
-    .live-chip{display:flex;align-items:center;gap:6px;padding:5px 13px;background:var(--green-dim);border-radius:20px;font-size:12px;font-weight:700;color:var(--green)}
-    .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+    .tbt{font-size:16px;font-weight:800;color:var(--slate)}
+    .lchip{display:flex;align-items:center;gap:6px;padding:5px 13px;background:var(--green-dim);border-radius:20px;font-size:12px;font-weight:700;color:var(--green)}
+    .ldot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-    .content{flex:1;padding:24px 28px}
-    .tab-panel{display:none;animation:fadeUp .25s ease}
-    .tab-panel.active{display:block}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .cont{flex:1;padding:24px 28px}
+    .tp{display:none;animation:fup .25s ease}
+    .tp.active{display:block}
+    @keyframes fup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-    /* PAGE HEADER */
     .ph{margin-bottom:20px}
-    .ph h2{font-size:20px;font-weight:800;color:var(--slate)}
+    .ph h2{font-size:20px;font-weight:800}
     .ph p{font-size:13px;color:var(--muted);margin-top:3px}
 
     /* FILTER CARD */
@@ -92,29 +100,27 @@
     .fr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .fr label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
     .fr select,.fr input[type=date],.fr input[type=text]{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;color:var(--slate);background:var(--bg);outline:none;transition:border-color .2s;cursor:pointer}
-    .fr select:focus,.fr input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(99,102,241,.1)}
+    .fr select:focus,.fr input:focus{border-color:var(--primary)}
     .fr input[type=text]{min-width:230px}
     .fsep{width:1px;height:22px;background:var(--border);flex-shrink:0}
-    .show-all{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);cursor:pointer;user-select:none;white-space:nowrap}
-    .show-all input{accent-color:var(--primary);cursor:pointer}
+    .showall{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);cursor:pointer;user-select:none;white-space:nowrap}
+    .showall input{accent-color:var(--primary);cursor:pointer}
 
     /* STAT CARDS */
     .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;margin-bottom:20px}
-    .sc{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;position:relative;transition:box-shadow .2s;overflow:hidden}
+    .sc{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;position:relative;overflow:hidden;transition:box-shadow .2s}
     .sc:hover{box-shadow:0 6px 24px rgba(99,102,241,.12)}
     .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--purple))}
-    .sc-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
-    .sc-val{font-size:26px;font-weight:800;line-height:1}
-    .ci{color:var(--primary)}.cg{color:var(--green)}.ca{color:var(--amber)}
-    .cr{color:var(--red)}.cp{color:var(--purple)}.cb{color:var(--blue)}
+    .sc-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+    .sc-v{font-size:26px;font-weight:800;line-height:1}
+    .ci{color:var(--primary)}.cg{color:var(--green)}.ca{color:var(--amber)}.cr{color:var(--red)}.cp{color:var(--purple)}.cb{color:var(--blue)}
 
     /* TABLE */
     .tc{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px}
     .th{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
     .th h3{font-size:14px;font-weight:700}
-    .tbadge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--primary-dim);color:var(--primary)}
-    .tbadge.red{background:var(--red-dim);color:var(--red)}
-    .tbadge.green{background:var(--green-dim);color:var(--green)}
+    .tbg{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--primary-dim);color:var(--primary)}
+    .tbg.red{background:var(--red-dim);color:var(--red)}
     .tw{overflow-x:auto}
     table{width:100%;border-collapse:collapse;font-size:12.5px}
     thead th{padding:9px 13px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--border);white-space:nowrap}
@@ -122,9 +128,8 @@
     tbody tr:last-child{border-bottom:none}
     tbody tr:hover{background:#fafbff}
     tbody td{padding:10px 13px;white-space:nowrap}
-    .erow{text-align:center;padding:28px!important;color:var(--muted);font-size:13px;white-space:normal!important}
+    .erow{text-align:center!important;padding:28px!important;color:var(--muted);font-size:13px;white-space:normal!important}
 
-    /* STATUS BADGES */
     .b{display:inline-flex;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
     .b-active{background:#dcfce7;color:#15803d}
     .b-returned{background:var(--primary-dim);color:var(--primary)}
@@ -132,134 +137,123 @@
     .b-sold{background:#fef9c3;color:#92400e}
 
     /* PLANNER */
-    .pl-split{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    .pl-col{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-    .pl-hd{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-    .pl-hd h3{font-size:14px;font-weight:700}
-    .cpill{font-size:11px;font-weight:700;background:var(--primary-dim);color:var(--primary);padding:3px 10px;border-radius:20px}
-    .pl-body{padding:12px;display:flex;flex-direction:column;gap:8px;max-height:520px;overflow-y:auto}
-    .pl-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+    .plsp{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .plc{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .plh{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .plh h3{font-size:14px;font-weight:700}
+    .cpil{font-size:11px;font-weight:700;background:var(--primary-dim);color:var(--primary);padding:3px 10px;border-radius:20px}
+    .plb{padding:12px;display:flex;flex-direction:column;gap:8px;max-height:520px;overflow-y:auto}
+    .plcard{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
     .pcd{font-size:13px;font-weight:700}
     .pci{font-size:11px;color:var(--primary);font-weight:600;margin-left:5px}
     .pcc{font-size:12px;color:var(--muted);margin-top:4px}
     .pcs{font-size:11px;color:var(--muted);margin-top:3px;font-family:monospace}
     .pcn{font-size:11px;color:var(--purple);margin-top:5px;font-weight:600}
-    .pl-empty{text-align:center;padding:36px;color:var(--muted);font-size:13px}
+    .plem{text-align:center;padding:36px;color:var(--muted);font-size:13px}
 
-    /* RETURNS */
     .overdue{color:var(--red)!important;font-weight:700!important}
-    .due-today{color:var(--amber)!important;font-weight:700!important}
-    .mark-btn{padding:5px 12px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s}
-    .mark-btn:hover{opacity:.82}
+    .duetoday{color:var(--amber)!important;font-weight:700!important}
+    .mbtn{padding:5px 12px;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;border:none;border-radius:7px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s}
+    .mbtn:hover{opacity:.82}
 
-    /* BALANCE SHEET */
     .bs6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
     .bs2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
-    .tog-row{display:flex;gap:6px}
+    .togr{display:flex;gap:6px}
     .tog{padding:6px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);cursor:pointer;transition:all .15s}
     .tog.on{background:var(--primary);color:white;border-color:var(--primary)}
 
-    /* TOAST */
-    #toast{position:fixed;bottom:24px;right:24px;background:var(--slate);color:white;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.22);animation:toastIn .3s ease}
+    #toast{position:fixed;bottom:24px;right:24px;background:var(--slate);color:white;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:500;display:none;z-index:9999;box-shadow:0 8px 28px rgba(0,0,0,.22)}
     #toast.show{display:block}
-    @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
     @media(max-width:820px){
       .sidebar{display:none}.main{margin-left:0}
-      .pl-split,.bs2{grid-template-columns:1fr}
+      .plsp,.bs2{grid-template-columns:1fr}
       .bs6{grid-template-columns:repeat(3,1fr)}
     }
   </style>
 </head>
 <body>
 
+<!-- LOADING -->
 <div id="loading">
   <div class="ring"></div>
-  <div class="ring-label">Loading Boutique OS…</div>
+  <div class="ring-lbl" id="load-lbl">Connecting to Firebase…</div>
+  <div id="load-err"></div>
 </div>
 
-<!-- ════════ LOGIN ════════ -->
+<!-- LOGIN -->
 <div id="login-page">
-  <div class="login-wrap">
-    <div class="login-logo">
-      <div class="login-logo-icon">👗</div>
-      <div class="login-logo-text">Boutique <span>OS</span></div>
+  <div class="lw">
+    <div class="ll">
+      <div class="ll-icon">👗</div>
+      <div class="ll-text">Boutique <span>OS</span></div>
     </div>
-    <div class="login-card">
-
-      <!-- Sign In -->
-      <div id="view-login">
-        <div class="login-title">Welcome back</div>
-        <div class="login-sub">Sign in with your email and password</div>
-        <div class="field"><label>Email Address</label><input type="email" id="li-email" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-        <div class="field"><label>Password</label><input type="password" id="li-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-        <div class="msg-error" id="li-err"></div>
-        <button class="login-btn" id="li-btn" onclick="doLogin()">Sign In →</button>
-        <div class="forgot-link"><a onclick="showView('forgot')">Forgot password?</a></div>
+    <div class="lc">
+      <div id="vl">
+        <div class="lt">Welcome back</div>
+        <div class="ls">Sign in with your email and password</div>
+        <div class="fi"><label>Email Address</label><input type="email" id="li-em" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+        <div class="fi"><label>Password</label><input type="password" id="li-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+        <div class="merr" id="li-err"></div>
+        <button class="lbtn" id="li-btn" onclick="doLogin()">Sign In →</button>
+        <div class="fl"><a onclick="showView('vf')">Forgot password?</a></div>
       </div>
-
-      <!-- Forgot Password -->
-      <div id="view-forgot" style="display:none">
-        <div class="login-title">Reset Password</div>
-        <div class="login-sub">Enter your email — we'll send a reset link</div>
-        <div class="field"><label>Email Address</label><input type="email" id="fp-email" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doReset()"/></div>
-        <div class="msg-error" id="fp-err"></div>
-        <div class="msg-ok" id="fp-ok">✅ Reset link sent! Check your inbox.</div>
-        <button class="login-btn" id="fp-btn" onclick="doReset()">Send Reset Link →</button>
-        <div class="forgot-link"><a onclick="showView('login')">← Back to Sign In</a></div>
+      <div id="vf" style="display:none">
+        <div class="lt">Reset Password</div>
+        <div class="ls">We'll send a reset link to your email</div>
+        <div class="fi"><label>Email Address</label><input type="email" id="fp-em" placeholder="you@yourboutique.com" onkeydown="if(event.key==='Enter')doReset()"/></div>
+        <div class="merr" id="fp-err"></div>
+        <div class="mok" id="fp-ok">✅ Reset link sent! Check your inbox.</div>
+        <button class="lbtn" id="fp-btn" onclick="doReset()">Send Reset Link →</button>
+        <div class="fl"><a onclick="showView('vl')">← Back to Sign In</a></div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- ════════ APP ════════ -->
+<!-- APP -->
 <div id="app">
   <div class="sidebar">
-    <div class="sidebar-logo">
-      <div class="sl-icon">👗</div>
-      <div class="sl-text">Boutique <span>OS</span></div>
+    <div class="sl">
+      <div class="sl-ic">👗</div>
+      <div class="sl-tx">Boutique <span>OS</span></div>
     </div>
-    <nav class="sidebar-nav">
-      <button class="nav-item active" onclick="switchTab('dashboard',this)"><span class="ni">📊</span>Dashboard</button>
-      <button class="nav-item" onclick="switchTab('balance',this)"><span class="ni">💰</span>Balance Sheet</button>
-      <button class="nav-item" onclick="switchTab('planner',this)"><span class="ni">📅</span>Planner</button>
-      <button class="nav-item" onclick="switchTab('returns',this)"><span class="ni">🔄</span>Return Tracker</button>
+    <nav class="snav">
+      <button class="ni active" onclick="switchTab('dashboard',this)"><span class="nic">📊</span>Dashboard</button>
+      <button class="ni" onclick="switchTab('balance',this)"><span class="nic">💰</span>Balance Sheet</button>
+      <button class="ni" onclick="switchTab('planner',this)"><span class="nic">📅</span>Planner</button>
+      <button class="ni" onclick="switchTab('returns',this)"><span class="nic">🔄</span>Return Tracker</button>
     </nav>
-    <div class="sidebar-foot">
-      <div class="user-chip">
-        <div class="uc-name" id="uc-name">My Boutique</div>
-        <div class="uc-email" id="uc-email">—</div>
-      </div>
-      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+    <div class="sft">
+      <div class="uc"><div class="ucn" id="uc-n">My Boutique</div><div class="uce" id="uc-e">—</div></div>
+      <button class="outbtn" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
-
   <div class="main">
     <div class="topbar">
-      <div class="topbar-title" id="topbar-title">Dashboard</div>
-      <div class="live-chip"><div class="live-dot"></div>Live Data</div>
+      <div class="tbt" id="tbt">Dashboard</div>
+      <div class="lchip"><div class="ldot"></div>Live Data</div>
     </div>
-    <div class="content">
+    <div class="cont">
 
-      <!-- ══ DASHBOARD ══ -->
-      <div class="tab-panel active" id="tab-dashboard">
+      <!-- DASHBOARD -->
+      <div class="tp active" id="tab-dashboard">
         <div class="ph"><h2>Rental Dashboard</h2><p>All bookings, revenue and status at a glance</p></div>
         <div class="sg">
-          <div class="sc"><div class="sc-lbl">Total Bookings</div><div class="sc-val ci" id="d-total">—</div></div>
-          <div class="sc"><div class="sc-lbl">Active Bookings</div><div class="sc-val cg" id="d-active">—</div></div>
-          <div class="sc"><div class="sc-lbl">Total Revenue</div><div class="sc-val ca" id="d-revenue">—</div></div>
+          <div class="sc"><div class="sc-l">Total Bookings</div><div class="sc-v ci" id="d-tot">—</div></div>
+          <div class="sc"><div class="sc-l">Active Bookings</div><div class="sc-v cg" id="d-act">—</div></div>
+          <div class="sc"><div class="sc-l">Total Revenue</div><div class="sc-v ca" id="d-rev">—</div></div>
         </div>
         <div class="fc">
           <div class="fr">
             <label>🔍 Search</label>
-            <input type="text" id="d-search" placeholder="Name / Phone / Booking ID / Dress ID" oninput="debounceDash()"/>
+            <input type="text" id="d-srch" placeholder="Name / Phone / Booking ID / Dress ID" oninput="debD()"/>
             <div class="fsep"></div>
             <label>👗 Dress</label>
-            <select id="d-dress" onchange="renderDashboard()"><option value="">All Dresses</option></select>
+            <select id="d-drs" onchange="rDash()"><option value="">All Dresses</option></select>
             <div class="fsep"></div>
             <label>Status</label>
-            <select id="d-status" onchange="renderDashboard()">
+            <select id="d-sts" onchange="rDash()">
               <option value="">All Status</option>
               <option value="ACTIVE">Active</option>
               <option value="Sold">Sold</option>
@@ -269,108 +263,87 @@
           </div>
           <div class="fr">
             <label>📅 Filter by</label>
-            <select id="d-datetype" onchange="renderDashboard()">
+            <select id="d-dtyp" onchange="rDash()">
               <option value="booking_date">Booking Date</option>
               <option value="event_date">Event Date</option>
             </select>
-            <label>From</label><input type="date" id="d-from" onchange="renderDashboard()"/>
-            <label>To</label><input type="date" id="d-to" onchange="renderDashboard()"/>
-            <label class="show-all">
-              <input type="checkbox" id="d-showall" checked onchange="toggleDates();renderDashboard()"/>
-              Show All Dates
-            </label>
+            <label>From</label><input type="date" id="d-fr" onchange="rDash()"/>
+            <label>To</label><input type="date" id="d-to" onchange="rDash()"/>
+            <label class="showall"><input type="checkbox" id="d-all" checked onchange="togDates();rDash()"/> Show All Dates</label>
           </div>
         </div>
         <div class="tc">
-          <div class="th"><h3>Bookings</h3><span class="tbadge" id="d-count">0 records</span></div>
+          <div class="th"><h3>Bookings</h3><span class="tbg" id="d-cnt">0 records</span></div>
           <div class="tw"><table>
-            <thead><tr>
-              <th>ID</th><th>Customer</th><th>Phone</th><th>Dress</th><th>Dress ID</th>
-              <th>Price</th><th>Booking Date</th><th>Event Date</th><th>Days</th><th>Status</th>
-              <th>Grand Total</th><th>Advance</th><th>Balance</th><th>Discount</th>
-              <th>GST%</th><th>Security Dep.</th><th>Notes</th>
-            </tr></thead>
-            <tbody id="d-tbody"></tbody>
+            <thead><tr><th>ID</th><th>Customer</th><th>Phone</th><th>Dress</th><th>Dress ID</th><th>Price</th><th>Booking Date</th><th>Event Date</th><th>Days</th><th>Status</th><th>Grand Total</th><th>Advance</th><th>Balance</th><th>Discount</th><th>GST%</th><th>Security</th><th>Notes</th></tr></thead>
+            <tbody id="d-tb"></tbody>
           </table></div>
         </div>
       </div>
 
-      <!-- ══ BALANCE SHEET ══ -->
-      <div class="tab-panel" id="tab-balance">
+      <!-- BALANCE SHEET -->
+      <div class="tp" id="tab-balance">
         <div class="ph"><h2>Balance Sheet</h2><p>Financial summary for the selected date range</p></div>
         <div class="fc">
           <div class="fr">
-            <label>From</label><input type="date" id="bs-from" onchange="renderBalance()"/>
-            <label>To</label><input type="date" id="bs-to" onchange="renderBalance()"/>
+            <label>From</label><input type="date" id="bs-fr" onchange="rBal()"/>
+            <label>To</label><input type="date" id="bs-to" onchange="rBal()"/>
           </div>
         </div>
         <div class="bs6">
-          <div class="sc"><div class="sc-lbl">Total Revenue</div><div class="sc-val ci" id="bs-rev">—</div></div>
-          <div class="sc"><div class="sc-lbl">Total Collected</div><div class="sc-val cg" id="bs-col">—</div></div>
-          <div class="sc"><div class="sc-lbl">Pending Balance</div><div class="sc-val ca" id="bs-pend">—</div></div>
-          <div class="sc"><div class="sc-lbl">GST Collected</div><div class="sc-val cp" id="bs-gst">—</div></div>
-          <div class="sc"><div class="sc-lbl">Total Expenses</div><div class="sc-val cr" id="bs-exp">—</div></div>
-          <div class="sc"><div class="sc-lbl">Net Profit</div><div class="sc-val cb" id="bs-profit">—</div></div>
+          <div class="sc"><div class="sc-l">Total Revenue</div><div class="sc-v ci" id="bs-rv">—</div></div>
+          <div class="sc"><div class="sc-l">Total Collected</div><div class="sc-v cg" id="bs-cl">—</div></div>
+          <div class="sc"><div class="sc-l">Pending Balance</div><div class="sc-v ca" id="bs-pd">—</div></div>
+          <div class="sc"><div class="sc-l">GST Collected</div><div class="sc-v cp" id="bs-gs">—</div></div>
+          <div class="sc"><div class="sc-l">Total Expenses</div><div class="sc-v cr" id="bs-ex">—</div></div>
+          <div class="sc"><div class="sc-l">Net Profit</div><div class="sc-v cb" id="bs-pr">—</div></div>
         </div>
         <div class="bs2">
           <div class="tc" style="margin:0">
             <div class="th"><h3>Booking Status Breakdown</h3></div>
-            <div class="tw"><table><thead><tr><th>Status</th><th>Count</th><th>Revenue</th></tr></thead><tbody id="bs-status"></tbody></table></div>
+            <div class="tw"><table><thead><tr><th>Status</th><th>Count</th><th>Revenue</th></tr></thead><tbody id="bs-st"></tbody></table></div>
           </div>
           <div class="tc" style="margin:0">
-            <div class="th">
-              <h3>Top 5 Dresses</h3>
-              <div class="tog-row">
-                <button class="tog on" id="tog-bk" onclick="switchTopDress('bookings')">By Bookings</button>
-                <button class="tog" id="tog-rv" onclick="switchTopDress('revenue')">By Revenue</button>
-              </div>
+            <div class="th"><h3>Top 5 Dresses</h3>
+              <div class="togr"><button class="tog on" id="tgbk" onclick="swTop('bookings')">By Bookings</button><button class="tog" id="tgrv" onclick="swTop('revenue')">By Revenue</button></div>
             </div>
-            <div class="tw"><table><thead><tr><th>#</th><th>Dress Name</th><th>Bookings</th><th>Revenue</th></tr></thead><tbody id="bs-top"></tbody></table></div>
+            <div class="tw"><table><thead><tr><th>#</th><th>Dress Name</th><th>Bookings</th><th>Revenue</th></tr></thead><tbody id="bs-tp"></tbody></table></div>
           </div>
         </div>
         <div class="tc">
           <div class="th"><h3>Expense Breakdown by Category</h3></div>
-          <div class="tw"><table><thead><tr><th>Expense Name</th><th>Total Spent</th></tr></thead><tbody id="bs-expbody"></tbody></table></div>
+          <div class="tw"><table><thead><tr><th>Expense Name</th><th>Total Spent</th></tr></thead><tbody id="bs-eb"></tbody></table></div>
         </div>
       </div>
 
-      <!-- ══ PLANNER ══ -->
-      <div class="tab-panel" id="tab-planner">
+      <!-- PLANNER -->
+      <div class="tp" id="tab-planner">
         <div class="ph"><h2>Daily Delivery Planner</h2><p>Bookings for selected event date and the next day</p></div>
         <div class="fc">
           <div class="fr">
             <label>📅 Event Date</label>
-            <input type="date" id="pl-date" onchange="renderPlanner()"/>
+            <input type="date" id="pl-dt" onchange="rPlan()"/>
             <button style="padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer" onclick="jumpToday()">Jump to Today</button>
           </div>
         </div>
-        <div class="pl-split">
-          <div class="pl-col">
-            <div class="pl-hd"><h3 id="pl-h1">📅 Selected Date</h3><span class="cpill" id="pl-c1">0</span></div>
-            <div class="pl-body" id="pl-b1"></div>
-          </div>
-          <div class="pl-col">
-            <div class="pl-hd"><h3 id="pl-h2">⏳ Next Day</h3><span class="cpill" id="pl-c2">0</span></div>
-            <div class="pl-body" id="pl-b2"></div>
-          </div>
+        <div class="plsp">
+          <div class="plc"><div class="plh"><h3 id="pl-h1">📅 Selected Date</h3><span class="cpil" id="pl-c1">0</span></div><div class="plb" id="pl-b1"></div></div>
+          <div class="plc"><div class="plh"><h3 id="pl-h2">⏳ Next Day</h3><span class="cpil" id="pl-c2">0</span></div><div class="plb" id="pl-b2"></div></div>
         </div>
       </div>
 
-      <!-- ══ RETURN TRACKER ══ -->
-      <div class="tab-panel" id="tab-returns">
-        <div class="ph"><h2>Overdue &amp; Expected Returns Tracker</h2><p>Dresses from past events not yet marked as returned — auto-refreshes every 60 seconds</p></div>
+      <!-- RETURNS -->
+      <div class="tp" id="tab-returns">
+        <div class="ph"><h2>Overdue &amp; Expected Returns Tracker</h2><p>Dresses not yet returned — auto-refreshes every 60 seconds</p></div>
         <div class="sg" style="grid-template-columns:repeat(2,1fr);max-width:380px">
-          <div class="sc"><div class="sc-lbl">Pending Returns</div><div class="sc-val cr" id="ret-count">—</div></div>
-          <div class="sc"><div class="sc-lbl">Balance Due</div><div class="sc-val ca" id="ret-bal">—</div></div>
+          <div class="sc"><div class="sc-l">Pending Returns</div><div class="sc-v cr" id="rt-ct">—</div></div>
+          <div class="sc"><div class="sc-l">Balance Due</div><div class="sc-v ca" id="rt-bl">—</div></div>
         </div>
         <div class="tc">
-          <div class="th"><h3>Items Due for Return</h3><span class="tbadge red" id="ret-badge">—</span></div>
+          <div class="th"><h3>Items Due for Return</h3><span class="tbg red" id="rt-bg">—</span></div>
           <div class="tw"><table>
-            <thead><tr>
-              <th>Booking ID</th><th>Customer</th><th>Dress</th><th>Event Date</th>
-              <th>Total</th><th>Advance</th><th>Balance</th><th>Security</th><th>Notes</th><th>Action</th>
-            </tr></thead>
-            <tbody id="ret-tbody"></tbody>
+            <thead><tr><th>Booking ID</th><th>Customer</th><th>Dress</th><th>Event Date</th><th>Total</th><th>Advance</th><th>Balance</th><th>Security</th><th>Notes</th><th>Action</th></tr></thead>
+            <tbody id="rt-tb"></tbody>
           </table></div>
         </div>
       </div>
@@ -382,353 +355,236 @@
 <div id="toast"></div>
 
 <script type="module">
-// ═══════════════════════════════════════════════════
-// FIREBASE CONFIG — boutiqueos-3a75c
-// ═══════════════════════════════════════════════════
-import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp }      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged,
-         signInWithEmailAndPassword, signOut,
-         sendPasswordResetEmail }                 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+         signInWithEmailAndPassword,
+         sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection,
-         getDocs, doc, updateDoc }                from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+         getDocs, doc, updateDoc }         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
+// ── CONFIG ──────────────────────────────────────────
+const cfg = {
   apiKey:            "AIzaSyDYxJtPaJm6CBKO4LGS5g8BIsyyVo3KV6Y",
   authDomain:        "boutiqueos-3a75c.firebaseapp.com",
   projectId:         "boutiqueos-3a75c",
   storageBucket:     "boutiqueos-3a75c.firebasestorage.app",
   messagingSenderId: "382726562711",
-  appId:             "1:382726562711:web:b7c840930fcb1955f3dad2",
-  measurementId:     "G-LP4G6H46L0"
+  appId:             "1:382726562711:web:b7c840930fcb1955f3dad2"
 };
 
-const app  = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db   = getFirestore(app);
-
-// ─── State ───────────────────────────────────────
-let _storeId  = null;
-let _bookings = [];
-let _expenses = [];
-let _topSort  = 'bookings';
-let _debTimer = null;
-let _retTimer = null;
-
-// ─── Boot ────────────────────────────────────────
-setDefaults();
-onAuthStateChanged(auth, user => {
-  hide('loading');
-  if (user) {
-    _storeId = user.uid;
-    enterApp(user.email);
-  } else {
-    show('login-page', 'flex');
-  }
-});
-
-function setDefaults() {
-  const t = new Date();
-  const fmt = d => d.toISOString().slice(0,10);
-  const firstOfMonth = new Date(t.getFullYear(), t.getMonth(), 1);
-  setVal('d-from', fmt(t));   setVal('d-to', fmt(t));
-  setVal('bs-from', fmt(firstOfMonth)); setVal('bs-to', fmt(t));
-  setVal('pl-date', fmt(t));
+// ── INIT ─────────────────────────────────────────────
+let auth, db;
+try {
+  const fbApp = initializeApp(cfg);
+  auth = getAuth(fbApp);
+  db   = getFirestore(fbApp);
+  setLbl("Firebase connected — checking session…");
+} catch(e) {
+  showLoadErr("Firebase init failed: " + e.message + "\n\nCheck your internet connection and try again.");
+  throw e;
 }
 
-// ─── Auth ────────────────────────────────────────
-window.showView = v => {
-  hide('view-login'); hide('view-forgot');
-  show('view-'+v);
-  hideEl('li-err'); hideEl('fp-err'); hideEl('fp-ok');
+// ── STATE ────────────────────────────────────────────
+let uid = null, BK = [], EX = [], topSort = 'bookings', debT = null, retT = null;
+
+// ── AUTH STATE ───────────────────────────────────────
+onAuthStateChanged(auth, user => {
+  g('loading').classList.add('hide');
+  if (user) { uid = user.uid; enterApp(user.email); }
+  else      { show('login-page','flex'); }
+}, err => {
+  showLoadErr("Auth error: " + err.message);
+});
+
+// Timeout: if still spinning after 10s, show error
+setTimeout(() => {
+  const ld = g('loading');
+  if (!ld.classList.contains('hide')) {
+    showLoadErr("Connection timed out.\n\nPossible causes:\n• No internet connection\n• Firebase domain not authorized\n\nFix: Firebase Console → Authentication → Settings → Authorized Domains → Add boutiqueos.in");
+  }
+}, 10000);
+
+// ── AUTH ACTIONS ─────────────────────────────────────
+window.showView = id => {
+  ['vl','vf'].forEach(v => g(v) && (g(v).style.display='none'));
+  g(id) && (g(id).style.display='block');
+  ['li-err','fp-err','fp-ok'].forEach(hideEl);
 };
 
 window.doLogin = async () => {
-  const email = g('li-email').value.trim();
-  const pass  = g('li-pass').value;
-  if (!email || !pass) { showErr('li-err','Please enter your email and password.'); return; }
-  const btn = g('li-btn');
-  btn.disabled = true; btn.textContent = 'Signing in…';
-  hideEl('li-err');
+  const em = g('li-em').value.trim(), pw = g('li-pw').value;
+  if (!em || !pw) { showErr('li-err','Please enter email and password.'); return; }
+  const btn = g('li-btn'); btn.disabled=true; btn.textContent='Signing in…'; hideEl('li-err');
   try {
-    await signInWithEmailAndPassword(auth, email, pass);
+    await signInWithEmailAndPassword(auth, em, pw);
   } catch(e) {
-    const msgs = {
-      'auth/user-not-found':    'No account found with this email.',
-      'auth/wrong-password':    'Incorrect password. Try again.',
-      'auth/invalid-email':     'Invalid email address.',
-      'auth/too-many-requests': 'Too many attempts. Please try again later.',
-      'auth/invalid-credential':'Incorrect email or password.',
-    };
-    showErr('li-err', msgs[e.code] || e.message);
-    btn.disabled = false; btn.textContent = 'Sign In →';
+    const m={'auth/user-not-found':'No account with this email.','auth/wrong-password':'Wrong password.','auth/invalid-email':'Invalid email.','auth/too-many-requests':'Too many attempts. Wait a moment.','auth/invalid-credential':'Wrong email or password.'};
+    showErr('li-err', m[e.code]||e.message);
+    btn.disabled=false; btn.textContent='Sign In →';
   }
 };
 
 window.doReset = async () => {
-  const email = g('fp-email').value.trim();
-  if (!email) { showErr('fp-err','Please enter your email.'); return; }
+  const em = g('fp-em').value.trim();
+  if (!em) { showErr('fp-err','Please enter your email.'); return; }
   hideEl('fp-err'); hideEl('fp-ok');
-  const btn = g('fp-btn');
-  btn.disabled = true; btn.textContent = 'Sending…';
+  const btn=g('fp-btn'); btn.disabled=true; btn.textContent='Sending…';
   try {
-    await sendPasswordResetEmail(auth, email);
+    await sendPasswordResetEmail(auth, em);
     showEl('fp-ok');
-  } catch(e) {
-    showErr('fp-err', e.code === 'auth/user-not-found' ? 'No account with this email.' : e.message);
-  } finally {
-    btn.disabled = false; btn.textContent = 'Send Reset Link →';
-  }
+  } catch(e) { showErr('fp-err', e.code==='auth/user-not-found'?'No account with this email.':e.message); }
+  finally { btn.disabled=false; btn.textContent='Send Reset Link →'; }
 };
 
 window.doLogout = async () => {
-  clearInterval(_retTimer);
-  await signOut(auth);
+  clearInterval(retT); await signOut(auth);
   hideEl('app'); show('login-page','flex');
-  g('li-email').value = ''; g('li-pass').value = '';
-  showView('login');
+  g('li-em').value=''; g('li-pw').value=''; showView('vl');
 };
 
-// ─── Enter App ───────────────────────────────────
+// ── ENTER APP ────────────────────────────────────────
 async function enterApp(email) {
   hide('login-page');
-  g('app').style.display = 'flex';
-  setTxt('uc-email', email || '—');
-  setTxt('uc-name',  email ? email.split('@')[0] : 'My Boutique');
-  await fetchAllData();
-  populateDressFilter();
-  renderDashboard();
-  renderBalance();
-  renderPlanner();
-  renderReturns();
-  clearInterval(_retTimer);
-  _retTimer = setInterval(renderReturns, 60000);
+  g('app').style.display='flex';
+  setTxt('uc-e', email||'—');
+  setTxt('uc-n', email?email.split('@')[0]:'My Boutique');
+  setDefaults();
+  await loadData();
+  fillDressFilter();
+  rDash(); rBal(); rPlan(); rRet();
+  clearInterval(retT); retT = setInterval(rRet, 60000);
 }
 
-// ─── Firestore ───────────────────────────────────
-async function fetchAllData() {
+function setDefaults() {
+  const t=new Date(), f=d=>d.toISOString().slice(0,10);
+  const fm=new Date(t.getFullYear(),t.getMonth(),1);
+  sv('d-fr',f(t)); sv('d-to',f(t)); sv('bs-fr',f(fm)); sv('bs-to',f(t)); sv('pl-dt',f(t));
+}
+
+async function loadData() {
   try {
-    const getSub = async name => {
-      const snap = await getDocs(collection(db,'stores',_storeId,name));
-      return snap.docs.map(d => ({id:d.id,...d.data()}));
-    };
-    [_bookings, _expenses] = await Promise.all([getSub('bookings'), getSub('expenses')]);
-  } catch(e) {
-    showToast('⚠️ Could not load data: ' + e.message);
-  }
+    setLbl('Loading your data…');
+    const sub = async n => { const s=await getDocs(collection(db,'stores',uid,n)); return s.docs.map(d=>({id:d.id,...d.data()})); };
+    [BK,EX] = await Promise.all([sub('bookings'),sub('expenses')]);
+  } catch(e) { toast('⚠️ Data load error: '+e.message); }
 }
 
-function populateDressFilter() {
-  const seen = new Map();
-  _bookings.forEach(b => { if(b.dress_id && !seen.has(b.dress_id)) seen.set(b.dress_id, b.dress_name||b.dress_id); });
-  const sorted = [...seen.entries()].sort((a,b) => a[1].localeCompare(b[1]));
-  g('d-dress').innerHTML = '<option value="">All Dresses</option>' +
-    sorted.map(([id,name]) => `<option value="${id}">${name}</option>`).join('');
+function fillDressFilter() {
+  const m=new Map(); BK.forEach(b=>{ if(b.dress_id&&!m.has(b.dress_id)) m.set(b.dress_id,b.dress_name||b.dress_id); });
+  g('d-drs').innerHTML='<option value="">All Dresses</option>'+[...m.entries()].sort((a,b)=>a[1].localeCompare(b[1])).map(([id,n])=>`<option value="${id}">${n}</option>`).join('');
 }
 
-// ════════════════════════════════════════════════
-// DASHBOARD
-// ════════════════════════════════════════════════
-window.toggleDates = () => {
-  const all = g('d-showall').checked;
-  g('d-from').disabled = all; g('d-to').disabled = all;
-};
-window.debounceDash = () => { clearTimeout(_debTimer); _debTimer = setTimeout(renderDashboard, 350); };
+// ── DASHBOARD ────────────────────────────────────────
+window.togDates = () => { const a=g('d-all').checked; g('d-fr').disabled=a; g('d-to').disabled=a; };
+window.debD     = () => { clearTimeout(debT); debT=setTimeout(rDash,350); };
 
-window.renderDashboard = () => {
-  const search   = g('d-search').value.toLowerCase();
-  const dressF   = g('d-dress').value;
-  const statusF  = g('d-status').value.toUpperCase();
-  const allDates = g('d-showall').checked;
-  const dateType = g('d-datetype').value;
-  const fromD    = g('d-from').value;
-  const toD      = g('d-to').value;
-
-  // Stat cards from full dataset
-  setTxt('d-total',   _bookings.length);
-  setTxt('d-active',  _bookings.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
-  setTxt('d-revenue', '₹ '+fmt(_bookings.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
-
-  // Filtered rows
-  let rows = _bookings;
-  if (search) rows = rows.filter(r =>
-    (r.customer||'').toLowerCase().includes(search) ||
-    (r.phone||'').includes(search) ||
-    String(r.booking_id||'').toLowerCase().includes(search) ||
-    (r.dress_id||'').toLowerCase().includes(search));
-  if (dressF)   rows = rows.filter(r => r.dress_id === dressF);
-  if (statusF)  rows = rows.filter(r => (r.status||'').toUpperCase() === statusF);
-  if (!allDates && fromD && toD)
-    rows = rows.filter(r => { const d=r[dateType]||''; return d>=fromD && d<=toD; });
-  rows = [...rows].sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
-
-  setTxt('d-count', rows.length+' records');
-  g('d-tbody').innerHTML = rows.length ? rows.map(r=>`
-    <tr>
-      <td style="font-weight:700;color:var(--primary)">${r.booking_id||'—'}</td>
-      <td>${r.customer||'—'}</td>
-      <td style="color:var(--muted)">${r.phone||'—'}</td>
-      <td>${r.dress_name||'—'}</td>
-      <td style="color:var(--muted)">${r.dress_id||'—'}</td>
-      <td>₹${fmt(r.price)}</td>
-      <td>${r.booking_date||'—'}</td>
-      <td>${r.event_date||'—'}</td>
-      <td style="text-align:center">${r.booking_days||1}</td>
-      <td>${sBadge(r.status)}</td>
-      <td style="font-weight:700">₹${fmt(r.grand_total)}</td>
-      <td>₹${fmt(r.total_advance)}</td>
-      <td style="font-weight:700;color:${(r.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(r.total_balance)}</td>
-      <td>${r.discount||0}</td>
-      <td>${r.gst_percent||0}%</td>
-      <td style="color:var(--amber)">₹${fmt(r.security_amount)}</td>
-      <td style="max-width:160px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td>
-    </tr>`).join('')
-  : `<tr><td colspan="17" class="erow">No records match the current filters</td></tr>`;
+window.rDash = () => {
+  const srch=g('d-srch').value.toLowerCase(), drs=g('d-drs').value, sts=g('d-sts').value.toUpperCase();
+  const all=g('d-all').checked, dtyp=g('d-dtyp').value, fr=g('d-fr').value, to=g('d-to').value;
+  setTxt('d-tot', BK.length);
+  setTxt('d-act', BK.filter(b=>(b.status||'').toUpperCase()==='ACTIVE').length);
+  setTxt('d-rev', '₹ '+fmt(BK.filter(b=>(b.status||'').toUpperCase()!=='CANCELLED').reduce((s,b)=>s+(b.grand_total||0),0)));
+  let rows=BK;
+  if(srch) rows=rows.filter(r=>(r.customer||'').toLowerCase().includes(srch)||(r.phone||'').includes(srch)||String(r.booking_id||'').toLowerCase().includes(srch)||(r.dress_id||'').toLowerCase().includes(srch));
+  if(drs)  rows=rows.filter(r=>r.dress_id===drs);
+  if(sts)  rows=rows.filter(r=>(r.status||'').toUpperCase()===sts);
+  if(!all&&fr&&to) rows=rows.filter(r=>{ const d=r[dtyp]||''; return d>=fr&&d<=to; });
+  rows=[...rows].sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
+  setTxt('d-cnt',rows.length+' records');
+  g('d-tb').innerHTML=rows.length?rows.map(r=>`<tr>
+    <td style="font-weight:700;color:var(--primary)">${r.booking_id||'—'}</td>
+    <td>${r.customer||'—'}</td><td style="color:var(--muted)">${r.phone||'—'}</td>
+    <td>${r.dress_name||'—'}</td><td style="color:var(--muted)">${r.dress_id||'—'}</td>
+    <td>₹${fmt(r.price)}</td><td>${r.booking_date||'—'}</td><td>${r.event_date||'—'}</td>
+    <td style="text-align:center">${r.booking_days||1}</td><td>${sbadge(r.status)}</td>
+    <td style="font-weight:700">₹${fmt(r.grand_total)}</td><td>₹${fmt(r.total_advance)}</td>
+    <td style="font-weight:700;color:${(r.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(r.total_balance)}</td>
+    <td>${r.discount||0}</td><td>${r.gst_percent||0}%</td>
+    <td style="color:var(--amber)">₹${fmt(r.security_amount)}</td>
+    <td style="max-width:160px;white-space:normal;font-size:11px;color:var(--muted)">${r.notes||'—'}</td>
+  </tr>`).join(''):`<tr><td colspan="17" class="erow">No records match the current filters</td></tr>`;
 };
 
-// ════════════════════════════════════════════════
-// BALANCE SHEET
-// ════════════════════════════════════════════════
-window.switchTopDress = sort => {
-  _topSort = sort;
-  g('tog-bk').className='tog'+(sort==='bookings'?' on':'');
-  g('tog-rv').className='tog'+(sort==='revenue'?' on':'');
-  renderBalance();
-};
+// ── BALANCE SHEET ─────────────────────────────────────
+window.swTop = s => { topSort=s; g('tgbk').className='tog'+(s==='bookings'?' on':''); g('tgrv').className='tog'+(s==='revenue'?' on':''); rBal(); };
 
-window.renderBalance = () => {
-  const d1=g('bs-from').value, d2=g('bs-to').value;
-  const inRange = b => (!d1||(b.booking_date||'')>=d1)&&(!d2||(b.booking_date||'')<=d2);
-  const filtered = _bookings.filter(b=>inRange(b)&&(b.status||'').toUpperCase()!=='CANCELLED');
-  const all      = _bookings.filter(b=>inRange(b));
-
-  const totalRev = filtered.reduce((s,b)=>s+(b.grand_total||0),0);
-  const totalCol = filtered.reduce((s,b)=>s+(b.total_advance||0),0);
-  const totalBal = filtered.reduce((s,b)=>s+(b.total_balance||0),0);
-  const totalGst = filtered.reduce((s,b)=>s+(b.gst_amount||0),0);
-  const expInRange = _expenses.filter(e=>(!d1||(e.exp_date||'')>=d1)&&(!d2||(e.exp_date||'')<=d2));
-  const totalExp = expInRange.reduce((s,e)=>s+(e.amount||0),0);
-  const netProfit = (totalRev-totalGst)-totalExp;
-
-  setTxt('bs-rev','₹ '+fmt(totalRev)); setTxt('bs-col','₹ '+fmt(totalCol));
-  setTxt('bs-pend','₹ '+fmt(totalBal)); setTxt('bs-gst','₹ '+fmt(totalGst));
-  setTxt('bs-exp','₹ '+fmt(totalExp));
-  const pe=g('bs-profit'); pe.textContent='₹ '+fmt(netProfit); pe.className='sc-val '+(netProfit>=0?'cb':'cr');
-
-  const byS={};
-  all.forEach(b=>{const s=b.status||'—';if(!byS[s])byS[s]={count:0,rev:0};byS[s].count++;byS[s].rev+=(b.grand_total||0);});
+window.rBal = () => {
+  const d1=g('bs-fr').value, d2=g('bs-to').value;
+  const inR=b=>(!d1||(b.booking_date||'')>=d1)&&(!d2||(b.booking_date||'')<=d2);
+  const fil=BK.filter(b=>inR(b)&&(b.status||'').toUpperCase()!=='CANCELLED');
+  const allR=BK.filter(inR);
+  const rv=fil.reduce((s,b)=>s+(b.grand_total||0),0), cl=fil.reduce((s,b)=>s+(b.total_advance||0),0);
+  const pd=fil.reduce((s,b)=>s+(b.total_balance||0),0), gs=fil.reduce((s,b)=>s+(b.gst_amount||0),0);
+  const exF=EX.filter(e=>(!d1||(e.exp_date||'')>=d1)&&(!d2||(e.exp_date||'')<=d2));
+  const ex=exF.reduce((s,e)=>s+(e.amount||0),0), np=(rv-gs)-ex;
+  setTxt('bs-rv','₹ '+fmt(rv)); setTxt('bs-cl','₹ '+fmt(cl)); setTxt('bs-pd','₹ '+fmt(pd));
+  setTxt('bs-gs','₹ '+fmt(gs)); setTxt('bs-ex','₹ '+fmt(ex));
+  const pe=g('bs-pr'); pe.textContent='₹ '+fmt(np); pe.className='sc-v '+(np>=0?'cb':'cr');
+  const byS={}; allR.forEach(b=>{ const s=b.status||'—'; if(!byS[s])byS[s]={c:0,r:0}; byS[s].c++; byS[s].r+=(b.grand_total||0); });
   const sc={ACTIVE:'#15803d',RETURNED:'var(--primary)',CANCELLED:'var(--red)',Sold:'var(--amber)'};
-  g('bs-status').innerHTML=Object.entries(byS).map(([s,v])=>
-    `<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.count}</td><td>₹ ${fmt(v.rev)}</td></tr>`
-  ).join('')||eRow(3);
-
-  const ds={};
-  filtered.forEach(b=>{const k=b.dress_id||'?';if(!ds[k])ds[k]={name:b.dress_name||k,bk:0,rev:0};ds[k].bk++;ds[k].rev+=(b.price||0);});
-  const top=Object.values(ds).sort((a,b)=>_topSort==='bookings'?b.bk-a.bk:b.rev-a.rev).slice(0,5);
-  g('bs-top').innerHTML=top.map((d,i)=>
-    `<tr><td style="font-weight:800;text-align:center;color:var(--primary)">${i+1}</td><td>${d.name}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rev)}</td></tr>`
-  ).join('')||eRow(4);
-
-  const ec={};
-  expInRange.forEach(e=>{const n=e.exp_name||'Other';if(!ec[n])ec[n]=0;ec[n]+=(e.amount||0);});
-  g('bs-expbody').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>
-    `<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`
-  ).join('')||eRow(2,'No expenses recorded in this period');
+  g('bs-st').innerHTML=Object.entries(byS).map(([s,v])=>`<tr><td style="color:${sc[s]||'var(--muted)'};font-weight:700">${s}</td><td>${v.c}</td><td>₹ ${fmt(v.r)}</td></tr>`).join('')||er(3);
+  const ds={}; fil.forEach(b=>{ const k=b.dress_id||'?'; if(!ds[k])ds[k]={n:b.dress_name||k,bk:0,rv:0}; ds[k].bk++; ds[k].rv+=(b.price||0); });
+  g('bs-tp').innerHTML=Object.values(ds).sort((a,b)=>topSort==='bookings'?b.bk-a.bk:b.rv-a.rv).slice(0,5).map((d,i)=>`<tr><td style="font-weight:800;text-align:center;color:var(--primary)">${i+1}</td><td>${d.n}</td><td style="text-align:center">${d.bk}</td><td>₹ ${fmt(d.rv)}</td></tr>`).join('')||er(4);
+  const ec={}; exF.forEach(e=>{ const n=e.exp_name||'Other'; if(!ec[n])ec[n]=0; ec[n]+=(e.amount||0); });
+  g('bs-eb').innerHTML=Object.entries(ec).sort((a,b)=>b[1]-a[1]).map(([n,a])=>`<tr><td>${n}</td><td>₹ ${fmt(a)}</td></tr>`).join('')||er(2,'No expenses in this period');
 };
 
-// ════════════════════════════════════════════════
-// PLANNER
-// ════════════════════════════════════════════════
-window.jumpToday = () => { setVal('pl-date',new Date().toISOString().slice(0,10)); renderPlanner(); };
-
-window.renderPlanner = () => {
-  const sel=g('pl-date').value; if(!sel) return;
-  const nx=new Date(sel+'T00:00:00'); nx.setDate(nx.getDate()+1);
-  const nxs=nx.toISOString().slice(0,10);
-  const items=_bookings.filter(b=>(b.event_date===sel||b.event_date===nxs)&&(b.status||'').toUpperCase()!=='CANCELLED');
-  const s1=items.filter(b=>b.event_date===sel), s2=items.filter(b=>b.event_date===nxs);
-  const fD=s=>{if(!s)return'—';return new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});};
-  setTxt('pl-h1',`📅 ${fD(sel)} (Selected Date)`); setTxt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
+// ── PLANNER ──────────────────────────────────────────
+window.jumpToday = () => { sv('pl-dt',new Date().toISOString().slice(0,10)); rPlan(); };
+window.rPlan = () => {
+  const sel=g('pl-dt').value; if(!sel) return;
+  const nx=new Date(sel+'T00:00:00'); nx.setDate(nx.getDate()+1); const nxs=nx.toISOString().slice(0,10);
+  const its=BK.filter(b=>(b.event_date===sel||b.event_date===nxs)&&(b.status||'').toUpperCase()!=='CANCELLED');
+  const s1=its.filter(b=>b.event_date===sel), s2=its.filter(b=>b.event_date===nxs);
+  const fD=s=>s?new Date(s+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
+  setTxt('pl-h1',`📅 ${fD(sel)} (Selected)`); setTxt('pl-h2',`⏳ ${fD(nxs)} (Next Day)`);
   setTxt('pl-c1',s1.length); setTxt('pl-c2',s2.length);
-  const mk=arr=>arr.length?arr.map(b=>`
-    <div class="pl-card">
-      <div><span class="pcd">${b.dress_name||'—'}</span><span class="pci">[ID #${b.booking_id}]</span></div>
-      <div class="pcc">👤 ${b.customer||'—'} (${b.phone||'—'})</div>
-      <div class="pcs">📏 CH ${b.chest||'—'} | W ${b.waist||'—'} | L ${b.length||'—'}</div>
-      ${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}`
-    +`</div>`).join(''):'<div class="pl-empty">No events on this day</div>';
+  const mk=a=>a.length?a.map(b=>`<div class="plcard"><div><span class="pcd">${b.dress_name||'—'}</span><span class="pci">[#${b.booking_id}]</span></div><div class="pcc">👤 ${b.customer||'—'} (${b.phone||'—'})</div><div class="pcs">📏 CH ${b.chest||'—'} | W ${b.waist||'—'} | L ${b.length||'—'}</div>${b.notes?`<div class="pcn">📝 ${b.notes}</div>`:''}</div>`).join(''):'<div class="plem">No events on this day</div>';
   g('pl-b1').innerHTML=mk(s1); g('pl-b2').innerHTML=mk(s2);
 };
 
-// ════════════════════════════════════════════════
-// RETURN TRACKER
-// ════════════════════════════════════════════════
-window.renderReturns = () => {
+// ── RETURNS ──────────────────────────────────────────
+window.rRet = () => {
   const today=new Date().toISOString().slice(0,10);
-  const due=_bookings.filter(b=>{
-    if((b.status||'').toUpperCase()!=='ACTIVE') return false;
-    const ev=new Date((b.event_date||'9999-12-31')+'T00:00:00');
-    ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1));
-    return ev.toISOString().slice(0,10)<=today;
-  }).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
-
-  setTxt('ret-count',due.length);
-  setTxt('ret-bal','₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0)));
-  setTxt('ret-badge',due.length?due.length+' pending':'All clear ✅');
-
-  g('ret-tbody').innerHTML=due.length?due.map(b=>{
-    const isToday=b.event_date===today;
-    return `<tr>
-      <td style="font-weight:700;color:var(--primary)">${b.booking_id||'—'}</td>
-      <td>${b.customer||'—'}</td>
-      <td>${b.dress_name||'—'}</td>
-      <td class="${isToday?'due-today':'overdue'}">${b.event_date||'—'}</td>
-      <td>₹${fmt(b.grand_total)}</td>
-      <td>₹${fmt(b.total_advance)}</td>
-      <td style="font-weight:700;color:${(b.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(b.total_balance)}</td>
-      <td style="color:var(--amber)">₹${fmt(b.security_amount)}</td>
-      <td style="font-size:11px;color:var(--muted);max-width:140px;white-space:normal">${b.notes||'—'}</td>
-      <td><button class="mark-btn" onclick="markReturned('${b.booking_id}','${b.item_id||b.booking_id}',${b.total_balance||0})">Mark Returned</button></td>
-    </tr>`;
-  }).join('')
-  :`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns — all caught up!</td></tr>`;
+  const due=BK.filter(b=>{ if((b.status||'').toUpperCase()!=='ACTIVE') return false; const ev=new Date((b.event_date||'9999-12-31')+'T00:00:00'); ev.setDate(ev.getDate()+(parseInt(b.booking_days)||1)); return ev.toISOString().slice(0,10)<=today; }).sort((a,b)=>(a.event_date||'').localeCompare(b.event_date||''));
+  setTxt('rt-ct',due.length); setTxt('rt-bl','₹ '+fmt(due.reduce((s,b)=>s+(b.total_balance||0),0))); setTxt('rt-bg',due.length?due.length+' pending':'All clear ✅');
+  g('rt-tb').innerHTML=due.length?due.map(b=>`<tr>
+    <td style="font-weight:700;color:var(--primary)">${b.booking_id||'—'}</td>
+    <td>${b.customer||'—'}</td><td>${b.dress_name||'—'}</td>
+    <td class="${b.event_date===today?'duetoday':'overdue'}">${b.event_date||'—'}</td>
+    <td>₹${fmt(b.grand_total)}</td><td>₹${fmt(b.total_advance)}</td>
+    <td style="font-weight:700;color:${(b.total_balance||0)>0?'var(--red)':'var(--green)'}">₹${fmt(b.total_balance)}</td>
+    <td style="color:var(--amber)">₹${fmt(b.security_amount)}</td>
+    <td style="font-size:11px;color:var(--muted);max-width:140px;white-space:normal">${b.notes||'—'}</td>
+    <td><button class="mbtn" onclick="markRet('${b.booking_id}')">Mark Returned</button></td>
+  </tr>`).join(''):`<tr><td colspan="10" class="erow" style="color:var(--green);font-weight:600">✅ No pending returns!</td></tr>`;
+};
+window.markRet = async bid => {
+  try { await updateDoc(doc(db,'stores',uid,'bookings',bid),{status:'RETURNED'}); toast('✅ #'+bid+' marked returned'); await loadData(); rRet(); rDash(); }
+  catch(e){ toast('❌ '+e.message); }
 };
 
-window.markReturned = async (bookingId, itemId, balance) => {
-  try {
-    await updateDoc(doc(db,'stores',_storeId,'bookings',bookingId),{status:'RETURNED'});
-    showToast(`✅ Booking #${bookingId} marked as returned`);
-    await fetchAllData(); renderReturns(); renderDashboard();
-  } catch(e) { showToast('❌ Error: '+e.message); }
-};
-
-// ─── UI helpers ──────────────────────────────────
-const g      = i => document.getElementById(i);
-const setTxt = (i,v) => { const e=g(i); if(e) e.textContent=v; };
-const setVal = (i,v) => { const e=g(i); if(e) e.value=v; };
-const show   = (i,d='block') => { const e=g(i); if(e) e.style.display=d; };
-const hide   = i => { const e=g(i); if(e) e.style.display='none'; };
-const showEl = i => { const e=g(i); if(e) e.style.display='block'; };
-const hideEl = i => { const e=g(i); if(e) e.style.display='none'; };
-const fmt    = n => Math.round(n||0).toLocaleString('en-IN');
-const eRow   = (cols,msg='No data') => `<tr><td colspan="${cols}" class="erow">${msg}</td></tr>`;
-
-function sBadge(s) {
-  const m={'ACTIVE':'active','RETURNED':'returned','CANCELLED':'cancelled','SOLD':'sold','Sold':'sold'};
-  const c=m[(s||'').toUpperCase()]||m[s]||'returned';
-  return `<span class="b b-${c}">${s||'—'}</span>`;
+// ── HELPERS ──────────────────────────────────────────
+const g=i=>document.getElementById(i);
+const setTxt=(i,v)=>{const e=g(i);if(e)e.textContent=v};
+const sv=(i,v)=>{const e=g(i);if(e)e.value=v};
+const show=(i,d='block')=>{const e=g(i);if(e)e.style.display=d};
+const hide=i=>{const e=g(i);if(e)e.style.display='none'};
+const showEl=i=>{const e=g(i);if(e)e.style.display='block'};
+const hideEl=i=>{const e=g(i);if(e)e.style.display='none'};
+const fmt=n=>Math.round(n||0).toLocaleString('en-IN');
+const er=(c,m='No data')=>`<tr><td colspan="${c}" class="erow">${m}</td></tr>`;
+const setLbl=t=>setTxt('load-lbl',t);
+function showLoadErr(msg){
+  const e=g('load-err'); e.style.display='block';
+  e.innerHTML=msg.replace(/\n/g,'<br>');
+  g('ring-lbl') && (g('ring-lbl').style.display='none');
+  document.querySelector('.ring') && (document.querySelector('.ring').style.display='none');
 }
-function showErr(elId,msg) { const e=g(elId); if(!e)return; e.textContent=msg; e.style.display='block'; }
-window.showToast = (msg,dur=3500) => {
-  const t=g('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),dur);
-};
-window.switchTab = (name,btn) => {
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  g('tab-'+name).classList.add('active'); btn.classList.add('active');
-  const titles={dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'};
-  setTxt('topbar-title',titles[name]||name);
-};
+function showErr(id,msg){const e=g(id);if(!e)return;e.textContent=msg;e.style.display='block';}
+function sbadge(s){const m={'ACTIVE':'active','RETURNED':'returned','CANCELLED':'cancelled','SOLD':'sold','Sold':'sold'};const c=m[(s||'').toUpperCase()]||m[s]||'returned';return`<span class="b b-${c}">${s||'—'}</span>`;}
+function toast(msg,dur=3500){const t=g('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+window.switchTab=(n,btn)=>{document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.ni').forEach(b=>b.classList.remove('active'));g('tab-'+n).classList.add('active');btn.classList.add('active');setTxt('tbt',{dashboard:'Dashboard',balance:'Balance Sheet',planner:'Planner',returns:'Return Tracker'}[n]||n);};
 </script>
 </body>
 </html>
